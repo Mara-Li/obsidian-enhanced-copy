@@ -20,6 +20,6 @@ export interface CopyReadingInMarkdownSettings {
 export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
 	convertLinks: ConversionOfLinks.keep,
 	removeFootNotesLinks: ConversionOfFootnotes.keep,
-	highlight: true,
+	highlight: false,
 };
 

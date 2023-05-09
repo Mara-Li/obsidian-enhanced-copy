@@ -1,12 +1,13 @@
 {
-  "settings" : "[ COPY AS MARKDOWN IN READING VIEW ]",
+  "settings" : "[ COPY OPTIONS ]",
   "commands": "Copy selected text as Markdown",
+  "links": "Links",
   "copyLinksAsText" : {
     "title": "Links format",
     "desc" : "Adjust the way links are formatted when copying to the clipboard.",
-    "keep": "Keep all links formatting and contents",
-    "remove": "Remove all links formatting and keep only the alt-text / name",
-    "external" : "Keep the alt for internal links and keep the URL for external links"
+    "keep": "Keep formatting",
+    "remove": "Remove all formatting for all links",
+    "external" : "Remove all formatting for internal links only"
   },
   "removeFootnotesLinks" : {
     "title": "Footnotes format",
@@ -15,9 +16,12 @@
     "remove": "Remove all links formatting and contents",
     "format" : "Remove all links formatting but keep contents as [^1]"
   },
-  "unconventionalMarkdown": "Unconventional Markdown",
+  "unconventionalMarkdown": {
+    "title" : "Unconventional Markdown",
+    "desc" : "Removed unconventional Markdown markup, which is not supported by all Markdown interpreters."
+  },
   "highlight": {
     "title": "Highlight",
-    "desc": "Remove the markdown Highlight (==) from the copied text, as it is not a standard markdown syntax."
+    "desc": "Remove the highlight markup (==)."
   }
 }

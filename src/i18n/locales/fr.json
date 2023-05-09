@@ -1,9 +1,13 @@
 {
-  "settings" : "[ COPIER EN TANT QUE MARKDOWN DANS LA VUE DE LECTURE ]",
+  "settings" : "[ COPY OPTIONS ]",
+  "links": "Liens",
   "commands" : "Copier le texte sélectionné en Markdown",
   "copyLinksAsText" : {
     "title": "Format des liens",
-    "desc" : "Copier les liens en tant que texte brut, sans formatage (suppression des parenthèses et des crochets)."
+    "desc" : "Copier les liens en tant que texte brut, sans formatage (suppression des parenthèses et des crochets).",
+    "keep": "Conserver le formatage",
+    "remove": "Supprimer le formatage pour tous les liens",
+    "external": "Supprimer le formatage pour les liens internes seulement"
   },
   "removeFootnotesLinks" : {
     "title": "Formatage des footnotes",
@@ -11,5 +15,13 @@
     "keep": "Conserver le formatage et le contenu",
     "remove": "Supprimer tous les liens, le formatage et le contenu",
     "format" : "Supprimer la mise en forme de tous les liens, mais conserver le contenu sous forme de [^1]"
+  },
+  "unconventionalMarkdown" : {
+    "title" : "Markdown non conventionnel",
+    "desc": "Suppression des balises Markdown non conventionnelles, qui ne sont pas prise en charge par tous les interpréteurs Markdown."
+  },
+  "highlight": {
+    "title" : "Surlignage",
+    "desc" : "Suppression de la balise de surlignage (==)"
   }
 }
