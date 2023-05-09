@@ -22,12 +22,14 @@ jobs:
         run: |
           npm install
           mkdir ${{ env.PLUGIN_NAME }}
-          npm run build -- --output-dir .
+          npm run build
       - name: copy style
         if: env.STYLE == 'true'
-        run: "cp styles.css ${{ env.PLUGIN_NAME }}"
+        run: "cp ./dist/styles.css ${{ env.PLUGIN_NAME }}"
       - name: Copy files
-        run: "cp manifest.json ${{ env.PLUGIN_NAME }}"
+        run: |
+          cp ./dist/main.js ${{ env.PLUGIN_NAME }}
+          cp ./dist/manifest.json ${{ env.PLUGIN_NAME }}
       - name: Create zip
         run: |
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
@@ -36,8 +38,7 @@ jobs:
           $GITHUB_OUTPUT
       - name: Create changelog
         run: |
-          npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o
-          "CHANGELOG.md" > CHANGELOG-LATEST.md
+          npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o "CHANGELOG.md" > CHANGELOG-LATEST.md
       - name: Create Release with css
         if: env.STYLE == 'true'
         uses: softprops/action-gh-release@v1

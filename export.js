@@ -27,6 +27,6 @@ console.log(c.blueBright(`Copying plugin in ${c.underline(pluginDir)}`));
 fs.copyFileSync("./dist/main.js", path.join(pluginDir, "main.js"));
 fs.copyFileSync("./dist/manifest.json", path.join(pluginDir, "manifest.json"));
 if (fs.existsSync("./dist/styles.css")) {
-	fs.copyFileSync(".dist/styles.css", path.join(pluginDir,"dist", "styles.css"));
+	fs.copyFileSync("./dist/styles.css", path.join(pluginDir, "styles.css"));
 }
 console.log(c.green("✔️ Plugin copied to your main vault. Please reload the plugin to see changes."));
