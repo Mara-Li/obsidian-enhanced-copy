@@ -29,7 +29,7 @@ jobs:
       - name: Copy files
         run: "cp manifest.json ${{ env.PLUGIN_NAME }}"
       - name: Create zip
-        run: >
+        run: |
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
           ls
           echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >>
