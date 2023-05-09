@@ -1,6 +1,15 @@
 {
+  "settings" : "[ COPIER EN TANT QUE MARKDOWN DANS LA VUE DE LECTURE ]",
+  "commands" : "Copier le texte sélectionné en Markdown",
   "copyLinksAsText" : {
-    "title": "Copy Links as Text",
-    "desc" : "Copy only the title / alt of the links, not the URL (removing all brackets and parentheses)."
+    "title": "Format des liens",
+    "desc" : "Copier les liens en tant que texte brut, sans formatage (suppression des parenthèses et des crochets)."
+  },
+  "removeFootnotesLinks" : {
+    "title": "Formatage des footnotes",
+    "desc" : "Modifier le formatage des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
+    "keep": "Conserver le formatage et le contenu",
+    "remove": "Supprimer tous les liens, le formatage et le contenu",
+    "format" : "Supprimer la mise en forme de tous les liens, mais conserver le contenu sous forme de [^1]"
   }
 }

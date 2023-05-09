@@ -33,11 +33,9 @@ export function removeLinksBracketsInMarkdown(markdown: string, settings: CopyRe
 		markdown = markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
 		//also remove footnotes format : [[1]](#text)
 	} if (settings.removeFootNotesLinks === TypeConversionOfFootnotes.remove) {
-		console.log("remove footnotes links");
 		//keep links but remove footnotes format : [[1]](#text)
 		markdown = markdown.replace(regexFootNotes, "");
 	} else if (settings.removeFootNotesLinks === TypeConversionOfFootnotes.format) {
-		console.log("format footnotes links");
 		//keep links but format footnotes format : [[1]](#text)
 		markdown = markdown.replace(regexFootNotes, "[^$1]");
 	}

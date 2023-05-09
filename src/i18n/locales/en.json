@@ -1,11 +1,13 @@
 {
+  "settings" : "[ COPY AS MARKDOWN IN READING VIEW ]",
+  "commands": "Copy selected text as Markdown",
   "copyLinksAsText" : {
-    "title": "Copy Links as Text",
+    "title": "Links format",
     "desc" : "Copy only the title / alt of the links, not the URL (removing all brackets and parentheses)."
   },
   "removeFootnotesLinks" : {
-    "title": "Remove Footnotes contents",
-    "desc" : "Remove the number/meaning in footnotes when selected.",
+    "title": "Footnotes format",
+    "desc" : "Adjust the way footnotes are formatted when copying them to the clipboard.",
     "keep": "Keep all links formatting and contents",
     "remove": "Remove all links formatting and contents",
     "format" : "Remove all links formatting but keep contents as [^1]"

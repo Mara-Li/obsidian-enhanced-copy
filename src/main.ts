@@ -26,7 +26,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		
 		this.addCommand({
 			id: "copy-reading-in-markdown",
-			name: "Copy Reading in Markdown",
+			name: i18next.t("commands"),
 			callback: () => {
 				//check if in reading mode
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
@@ -46,7 +46,6 @@ export default class CopyReadingInMarkdown extends Plugin {
 					}
 				}
 				if (selectedText && selectedText.trim().length > 0) {
-					console.log(selectedText);
 					selectedText = removeLinksBracketsInMarkdown(selectedText, this.settings);
 					navigator.clipboard.writeText(selectedText);
 				}
@@ -55,7 +54,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		
 	}
 	onunload() {
-		console.log("unloading plugin");
+		console.log("Unloading CopyReadingInMarkdown");
 	}
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());

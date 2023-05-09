@@ -11,7 +11,7 @@ export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this;
 		containerEl.empty();
-		containerEl.createEl("h2", { text: "Settings for my awesome plugin." });
+		containerEl.createEl("h2", { text: i18next.t("settings") });
 		new Setting(containerEl)
 			.setName(i18next.t("copyLinksAsText.title"))
 			.setDesc(i18next.t("copyLinksAsText.desc"))
