@@ -1,4 +1,4 @@
-import { Editor, ItemView, MarkdownView, Plugin, editorLivePreviewField, htmlToMarkdown } from "obsidian";
+import { Editor, ItemView, MarkdownView, Plugin, htmlToMarkdown } from "obsidian";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface CopyReadingInMarkdownSettings {}
@@ -55,18 +55,10 @@ export default class CopyReadingInMarkdown extends Plugin {
 	}
 
 	getIframeSelectionHasHTML() {
-		const activeCanvas = this.app.workspace.getActiveViewOfType(ItemView);
-		const canvasHTML = activeCanvas?.contentEl;
-		const iframe = canvasHTML?.querySelector("iframe");
-		const iframeSelection = iframe?.contentWindow || iframe?.contentDocument;
-		const iframeSelectedText = iframeSelection?.getSelection()?.toString();
-		if (iframeSelectedText) {
-			const editor = this.app.workspace.activeEditor;
-			if (editor) {
-				const editorMode = editor.editor;
-				return this.copySelectionRange(editorMode);
-			}
-			return "";
+		const editor = this.app.workspace.activeEditor;
+		if (editor) {
+			const editorMode = editor.editor;
+			return this.copySelectionRange(editorMode);
 		} else {
 			return this.getSelectionHasHTML();
 		}
