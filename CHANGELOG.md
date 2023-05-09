@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.10](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.9...0.0.10) (2023-05-09)
+
+
+### Bug Fixes
+
+* new pdf view broken copy ([071a55f](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/071a55fe4202007d2bfe3af1d38918ea7bde8610))
+
 ## [0.0.9](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.8...0.0.9) (2023-05-09)
 
 ## [0.0.8](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.7...0.0.8) (2023-05-09)
