@@ -1,0 +1,78 @@
+name: Release
+"on":
+  push:
+    tags:
+      - "*"
+env:
+  PLUGIN_NAME: copy-reading-in-markdown
+  STYLE: false
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Build
+        id: build
+        run: |
+          npm install
+          npm run build
+          mkdir ${{ env.PLUGIN_NAME }}
+          cp main.js ${{ env.PLUGIN_NAME }}
+      - name: copy style
+        if: env.STYLE == 'true'
+        run: "cp styles.css ${{ env.PLUGIN_NAME }}"
+      - name: Copy files
+        run: "cp manifest.json ${{ env.PLUGIN_NAME }}"
+      - name: Create zip
+        run: >
+          zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
+
+          ls
+
+          echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >>
+          $GITHUB_OUTPUT
+      - name: Create changelog
+        run: |
+          npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o
+          "CHANGELOG.md" > CHANGELOG-LATEST.md
+      - name: Create Release with css
+        if: env.STYLE == 'true'
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          VERSION: "${{ github.ref }}"
+        with:
+          tag_name: "${{ github.ref_name }}"
+          name: "${{ github.ref_name }}"
+          body_path: CHANGELOG-LATEST.md
+          draft: false
+          prerelease: false
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          files: |
+            ${{ env.PLUGIN_NAME }}.zip
+            main.js
+            manifest.json
+            styles.css
+      - name: Create Release without css
+        if: env.STYLE == 'false'
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          VERSION: "${{ github.ref }}"
+        with:
+          tag_name: "${{ github.ref_name }}"
+          name: "${{ github.ref_name }}"
+          body_path: CHANGELOG-LATEST.md
+          draft: false
+          prerelease: false
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          files: |
+            ${{ env.PLUGIN_NAME }}.zip
+            main.js
+            manifest.json
