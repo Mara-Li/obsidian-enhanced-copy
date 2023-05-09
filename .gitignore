@@ -6,3 +6,4 @@ yarn.lock
 .npmrc
 .env.json
 dist/**
+main.js
