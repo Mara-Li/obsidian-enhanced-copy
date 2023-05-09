@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.5](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.4...0.0.5) (2023-05-09)
+
+
+### Features
+
+* add options for links copying ([d4af6e3](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/d4af6e344f62e78a29ea9035df6835f6f387287a))
+* remove links options & remove highlight mark ([837fe59](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/837fe59938c7712ed11fc1f4cb7b2240ffb3f659))
+* **translation:** adjust french ([1436c76](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/1436c76c9970598880cd8cd252f4b6f17d7916b3))
+
+
+### Bug Fixes
+
+* remove↩︎from converted links ([d296de1](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/d296de1155ed22de3614849300195cffabac7455))
+
 ## [0.0.4](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.3...0.0.4) (2023-05-09)
 
 
