@@ -29,6 +29,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 
 	getSelectionHasHTML() {
 		const range = activeWindow.getSelection().getRangeAt(0);
+		if (!range) return "";
 		const fragment = range.cloneContents();
 		let div = document.createElement("div");
 		div.appendChild(fragment);
@@ -39,8 +40,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 			const type = commonAncestor.nodeName.toLowerCase();
 			div = this.createNumeroteList(div, type);
 		}
-		const md = htmlToMarkdown(div.innerHTML);
-		return md;
+		return htmlToMarkdown(div.innerHTML);
 	}
 
 	getIframeSelectionHasHTML() {
@@ -83,7 +83,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 						selectedText = this.getIframeSelectionHasHTML();
 					}
 				}
-				if (selectedText) {
+				if (selectedText && selectedText.trim().length > 0) {
 					navigator.clipboard.writeText(selectedText);
 				}
 			}

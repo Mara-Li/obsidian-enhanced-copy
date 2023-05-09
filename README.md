@@ -40,7 +40,7 @@ To start building the plugin with what mode enabled run the following command:
 npm run dev
 ```
 
-> **Info**  
+> **info**  
 > If you haven't already installed the hot-reload-plugin you'll be prompted to. You need to enable that plugin in your obsidian vault before hot-reloading will start. You might need to refresh your plugin list for it to show up.
 > To start a release build run the following command:
 
