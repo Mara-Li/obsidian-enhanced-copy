@@ -3,7 +3,10 @@
   "commands": "Copy selected text as Markdown",
   "copyLinksAsText" : {
     "title": "Links format",
-    "desc" : "Copy only the title / alt of the links, not the URL (removing all brackets and parentheses)."
+    "desc" : "Adjust the way links are formatted when copying to the clipboard.",
+    "keep": "Keep all links formatting and contents",
+    "remove": "Remove all links formatting and keep only the alt-text / name",
+    "external" : "Keep the alt for internal links and keep the URL for external links"
   },
   "removeFootnotesLinks" : {
     "title": "Footnotes format",
@@ -11,5 +14,10 @@
     "keep": "Keep all links formatting and contents",
     "remove": "Remove all links formatting and contents",
     "format" : "Remove all links formatting but keep contents as [^1]"
+  },
+  "unconventionalMarkdown": "Unconventional Markdown",
+  "highlight": {
+    "title": "Highlight",
+    "desc": "Remove the markdown Highlight (==) from the copied text, as it is not a standard markdown syntax."
   }
 }

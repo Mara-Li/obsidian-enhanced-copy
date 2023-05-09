@@ -1,6 +1,6 @@
-import {CopyReadingInMarkdownSettings, TypeConversionOfFootnotes} from "../interface";
+import {ConversionOfFootnotes, ConversionOfLinks, CopyReadingInMarkdownSettings} from "../interface";
 
-export function removeEmptyLineInBlockQuote(markdown: string) {
+function removeEmptyLineInBlockQuote(markdown: string) {
 	//remove empty blockquote in markdown
 	//line that start with > and has no text
 	const lines = markdown.split("\n");
@@ -27,17 +27,40 @@ export function removeEmptyLineInBlockQuote(markdown: string) {
 	return newLines.join("\n");
 }
 
-export function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
+function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	const regexFootNotes = /\[\[([^\]]+)\]\]\(([^)]+)\)/g;
-	if (settings.convertLinks) {
-		markdown = markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
-		//also remove footnotes format : [[1]](#text)
-	} if (settings.removeFootNotesLinks === TypeConversionOfFootnotes.remove) {
+	const regexLinks = /\[([^\]]+)\]\(([^)]+)\)/g;
+	if (settings.convertLinks === ConversionOfLinks.remove) {
+		markdown = markdown.replace(regexLinks, "$1");
+	} else if (settings.convertLinks === ConversionOfLinks.external) {
+		//convert links only if they don't have `http` or `https` in them
+		markdown = markdown.replace(regexLinks, (match, p1, p2) => {
+			if (p2.startsWith("http")) {
+				return match;
+			}
+			return p1;
+		});
+	} if (settings.removeFootNotesLinks === ConversionOfFootnotes.remove) {
 		//keep links but remove footnotes format : [[1]](#text)
 		markdown = markdown.replace(regexFootNotes, "");
-	} else if (settings.removeFootNotesLinks === TypeConversionOfFootnotes.format) {
+	} else if (settings.removeFootNotesLinks === ConversionOfFootnotes.format) {
 		//keep links but format footnotes format : [[1]](#text)
 		markdown = markdown.replace(regexFootNotes, "[^$1]");
 	}
 	return markdown;
+}
+
+function removeHighlightMark(markdown: string, settings: CopyReadingInMarkdownSettings): string {
+	if (settings.highlight) {
+		markdown = markdown.replace(/==([^=]+)==/g, "$1");
+	}
+	return markdown;
+}
+
+export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings) {
+	let newMarkdown = markdown;
+	newMarkdown = removeEmptyLineInBlockQuote(newMarkdown);
+	newMarkdown = removeLinksBracketsInMarkdown(newMarkdown, settings);
+	newMarkdown = removeHighlightMark(newMarkdown, settings);
+	return newMarkdown;
 }

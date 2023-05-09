@@ -1,18 +1,25 @@
 
-export enum TypeConversionOfFootnotes {
+export enum ConversionOfFootnotes {
 	keep = "keep",
 	remove = "remove",
 	format = "format",
 }
 
+export enum ConversionOfLinks {
+	keep = "keep",
+	remove = "remove",
+	external = "external",
+}
 
 export interface CopyReadingInMarkdownSettings {
-	convertLinks: boolean
-	removeFootNotesLinks: TypeConversionOfFootnotes;
+	convertLinks: ConversionOfLinks;
+	removeFootNotesLinks: ConversionOfFootnotes;
+	highlight: boolean;
 }
 
 export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
-	convertLinks: false,
-	removeFootNotesLinks: TypeConversionOfFootnotes.keep,
+	convertLinks: ConversionOfLinks.keep,
+	removeFootNotesLinks: ConversionOfFootnotes.keep,
+	highlight: true,
 };
 

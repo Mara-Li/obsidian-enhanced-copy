@@ -1,7 +1,7 @@
 import { ItemView, MarkdownView, Plugin } from "obsidian";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 import {CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
-import {removeLinksBracketsInMarkdown} from "./utils/textConversion";
+import {convertMarkdown} from "./utils/textConversion";
 import {CopyReadingInMarkdownSettingsTab} from "./settings";
 import { resources, translationLanguage } from "./i18n/i18next";
 import i18next from "i18next";
@@ -46,7 +46,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 					}
 				}
 				if (selectedText && selectedText.trim().length > 0) {
-					selectedText = removeLinksBracketsInMarkdown(selectedText, this.settings);
+					selectedText = convertMarkdown(selectedText, this.settings);
 					navigator.clipboard.writeText(selectedText);
 				}
 			}
