@@ -1,4 +1,4 @@
-import { ItemView, MarkdownView, Plugin, htmlToMarkdown } from "obsidian";
+import { Editor, ItemView, MarkdownView, Plugin, editorLivePreviewField, htmlToMarkdown } from "obsidian";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface CopyReadingInMarkdownSettings {}
@@ -43,6 +43,17 @@ export default class CopyReadingInMarkdown extends Plugin {
 		return htmlToMarkdown(div.innerHTML);
 	}
 
+	copySelectionRange(editor: Editor) {
+		let selectedText = "";
+		const selection = editor.listSelections();
+		for (const selected of selection) {
+			const lineSelected = editor.getLine(selected.head.line);
+			const selectedTextInLine = lineSelected.substring(selected.head.ch, selected.anchor.ch);
+			selectedText += selectedTextInLine + "\n";
+		}
+		return selectedText;
+	}
+
 	getIframeSelectionHasHTML() {
 		const activeCanvas = this.app.workspace.getActiveViewOfType(ItemView);
 		const canvasHTML = activeCanvas?.contentEl;
@@ -50,7 +61,12 @@ export default class CopyReadingInMarkdown extends Plugin {
 		const iframeSelection = iframe?.contentWindow || iframe?.contentDocument;
 		const iframeSelectedText = iframeSelection?.getSelection()?.toString();
 		if (iframeSelectedText) {
-			return iframeSelectedText;
+			const editor = this.app.workspace.activeEditor;
+			if (editor) {
+				const editorMode = editor.editor;
+				return this.copySelectionRange(editorMode);
+			}
+			return "";
 		} else {
 			return this.getSelectionHasHTML();
 		}
@@ -76,7 +92,9 @@ export default class CopyReadingInMarkdown extends Plugin {
 					//copy selected text to clipboard
 				} else if (activeView) {
 					//normal copy
-					selectedText = activeWindow.getSelection().toString();
+					const editor = activeView.editor;
+					//get all selection
+					selectedText = this.copySelectionRange(editor);
 				} else {
 					const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 					if (leafType === "canvas") {
