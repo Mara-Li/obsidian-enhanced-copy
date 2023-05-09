@@ -40,7 +40,7 @@ To start building the plugin with what mode enabled run the following command:
 npm run dev
 ```
 
-> **Info**
+> **Info**  
 > If you haven't already installed the hot-reload-plugin you'll be prompted to. You need to enable that plugin in your obsidian vault before hot-reloading will start. You might need to refresh your plugin list for it to show up.
 > To start a release build run the following command:
 
@@ -60,17 +60,6 @@ You can use the `npm run export` command to export your plugin to your Obsidian 
 
 > **Warning**
 > You need to duplicate the `\` on Windows.
-
-### 🎼 Languages
-
-- [x] English
-- [ ] French
-      To add a translation:
-- Fork the repository
-- Add the translation in the `src/i18n/locales` folder with the name of the language (ex: `fr.json`)
-- Copy the content of the [`en.json`](./src/i18n/locales/en.json) file in the new file
-- Translate the content
-- Create a pull request
 
 ---
 
