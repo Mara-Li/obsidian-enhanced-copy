@@ -52,14 +52,11 @@ npm run build
 
 You can use the `npm run export` command to export your plugin to your Obsidian Main Vault. To do that, you need the `.env.json` file with the following content:
 
-```json
-{
-	"VAULT": "path/to/your/obsidian/vault"
-}
+```dotenv
+VAULT=path/to/main/vault
+VAULT_DEV=path/to/dev/vault
 ```
 
-> **Warning**
-> You need to duplicate the `\` on Windows.
 
 ---
 
