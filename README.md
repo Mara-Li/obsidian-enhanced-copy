@@ -18,10 +18,8 @@ Copy a selection in reading view while keeping the markdown formatting
 
 - Callout blocks are not supported (they are copied as blockquote)
 - For a strange reason, the first line of a blockquote (only that is selected) is not copied as a blockquote. If you select the line before, they are... Same if the line is "empty" (or use invisible characters like `$~~$`).
-- Marks are not supported
-- Tables are not supported
 - Footnotes are... Strange. They are copied as links, not the content of the footnote.
-- Not support Mathjax coping (the `$...$` is not copied)
+- Not support Mathjax copying (as you can't select them in reading view).
 
 ## 📥 Installation
 

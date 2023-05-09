@@ -1,0 +1,6 @@
+.setting-item.copy-reading-in-markdown-dp select.dropdown {
+    width: 100%;
+    height: auto;
+    white-space: break-spaces;
+    padding: 1em;
+}

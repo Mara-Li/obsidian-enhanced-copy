@@ -1,0 +1,6 @@
+{
+  "copyLinksAsText" : {
+    "title": "Copy Links as Text",
+    "desc" : "Copy only the title / alt of the links, not the URL (removing all brackets and parentheses)."
+  }
+}

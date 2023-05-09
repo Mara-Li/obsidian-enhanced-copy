@@ -32,7 +32,7 @@
 	"main": "lib/main.js",
 	"name": "copy-reading-in-markdown",
 	"scripts": {
-		"build": "obsidian-plugin build src/main.ts",
+		"build": "obsidian-plugin build src/main.ts -S src/styles.css ",
 		"dev": "node dev.js",
 		"preexport": "npm run build",
 		"export": "node export.js",

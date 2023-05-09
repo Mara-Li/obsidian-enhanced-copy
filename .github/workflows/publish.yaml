@@ -5,7 +5,7 @@ name: Release
       - "*"
 env:
   PLUGIN_NAME: copy-reading-in-markdown
-  STYLE: false
+  STYLE: true
 permissions:
   contents: write
 jobs:
@@ -21,9 +21,8 @@ jobs:
         id: build
         run: |
           npm install
-          npm run build
           mkdir ${{ env.PLUGIN_NAME }}
-          cp main.js ${{ env.PLUGIN_NAME }}
+          npm run build -- --output-dir .
       - name: copy style
         if: env.STYLE == 'true'
         run: "cp styles.css ${{ env.PLUGIN_NAME }}"
@@ -32,9 +31,7 @@ jobs:
       - name: Create zip
         run: >
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
-
           ls
-
           echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >>
           $GITHUB_OUTPUT
       - name: Create changelog

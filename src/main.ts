@@ -1,9 +1,10 @@
 import { ItemView, MarkdownView, Plugin } from "obsidian";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface CopyReadingInMarkdownSettings {}
-const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {};
+import {CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
+import {removeLinksBracketsInMarkdown} from "./utils/textConversion";
+import {CopyReadingInMarkdownSettingsTab} from "./settings";
+import { resources, translationLanguage } from "./i18n/i18next";
+import i18next from "i18next";
 
 export default class CopyReadingInMarkdown extends Plugin {
 	settings: CopyReadingInMarkdownSettings;
@@ -12,8 +13,16 @@ export default class CopyReadingInMarkdown extends Plugin {
 		console.log(
 			`CopyReadingInMarkdown v.${this.manifest.version} loaded.`
 		);
+		
+		i18next.init({
+			lng: translationLanguage,
+			fallbackLng: "en",
+			resources: resources,
+			returnNull: false,
+		});
 
 		await this.loadSettings();
+		this.addSettingTab(new CopyReadingInMarkdownSettingsTab(this.app, this));
 		
 		this.addCommand({
 			id: "copy-reading-in-markdown",
@@ -37,6 +46,8 @@ export default class CopyReadingInMarkdown extends Plugin {
 					}
 				}
 				if (selectedText && selectedText.trim().length > 0) {
+					console.log(selectedText);
+					selectedText = removeLinksBracketsInMarkdown(selectedText, this.settings);
 					navigator.clipboard.writeText(selectedText);
 				}
 			}
