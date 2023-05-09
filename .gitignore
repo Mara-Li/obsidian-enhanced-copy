@@ -7,3 +7,5 @@ yarn.lock
 .env.json
 dist/**
 main.js
+.idea
+.vscode
