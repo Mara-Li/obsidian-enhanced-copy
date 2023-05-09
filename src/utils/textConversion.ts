@@ -28,7 +28,6 @@ function removeEmptyLineInBlockQuote(markdown: string) {
 }
 
 function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
-	const regexFootNotes = /\[\[([^\]]+)\]\]\(([^)]+)\)/g;
 	const regexLinks = /\[([^\]]+)\]\(([^)]+)\)/g;
 	if (settings.convertLinks === ConversionOfLinks.remove) {
 		markdown = markdown.replace(regexLinks, "$1");
@@ -40,7 +39,13 @@ function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingIn
 			}
 			return p1;
 		});
-	} if (settings.removeFootNotesLinks === ConversionOfFootnotes.remove) {
+	}
+	return markdown.replace("↩︎", "");
+}
+
+function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMarkdownSettings) {
+	const regexFootNotes = /\[\[([^\]]+)\]\]\(([^)]+)\)/g;
+	if (settings.removeFootNotesLinks === ConversionOfFootnotes.remove) {
 		//keep links but remove footnotes format : [[1]](#text)
 		markdown = markdown.replace(regexFootNotes, "");
 	} else if (settings.removeFootNotesLinks === ConversionOfFootnotes.format) {
@@ -61,6 +66,7 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 	let newMarkdown = markdown;
 	newMarkdown = removeEmptyLineInBlockQuote(newMarkdown);
 	newMarkdown = removeLinksBracketsInMarkdown(newMarkdown, settings);
+	newMarkdown = removeLinksBracketFootnotes(newMarkdown, settings);
 	newMarkdown = removeHighlightMark(newMarkdown, settings);
 	return newMarkdown;
 }
