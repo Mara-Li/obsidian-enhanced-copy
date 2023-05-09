@@ -45,9 +45,9 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           files: |
             ${{ env.PLUGIN_NAME }}.zip
-            main.js
-            manifest.json
-            styles.css
+            ${{ env.PLUGIN_NAME }}/main.js
+            ${{ env.PLUGIN_NAME }}/manifest.json
+            ${{ env.PLUGIN_NAME }}/styles.css
       - name: Create Release without css
         if: env.STYLE == 'false'
         uses: softprops/action-gh-release@v1
@@ -63,5 +63,5 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           files: |
             ${{ env.PLUGIN_NAME }}.zip
-            main.js
-            manifest.json
+            ${{ env.PLUGIN_NAME }}/main.js
+            ${{ env.PLUGIN_NAME }}/manifest.json
