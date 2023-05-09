@@ -24,7 +24,7 @@
 		"eslint-plugin-jsonc": "^2.6.0",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-promise": "^6.1.1",
-		"obsidian": "latest",
+		"obsidian": "^1.2.8",
 		"obsidian-plugin-cli": "^0.9.0",
 		"typescript": "^5.0.4"
 	},
