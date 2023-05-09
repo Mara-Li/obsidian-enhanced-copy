@@ -8,7 +8,10 @@ Copy a selection in reading view while keeping the markdown formatting
 - Open the command palette
 - Select `Copy Reading In Markdown`
 
-> **Note**  
+> **Info**  
+> The goal is to replace the native copy function of Obsidian. You can set the command on <kbd>CTRL</kbd> + <kbd>C</kbd> (<kbd>⌘</kbd>+<kbd>C</kbd> on MacOS)
+
+> **Warning**  
 > It is possible that the command doesn't work on mobile, as the use of command palette unselects the text.
 
 ## 📝 Limitations
