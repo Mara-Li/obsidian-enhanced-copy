@@ -18,6 +18,7 @@ Copy a selection in reading view while keeping the markdown formatting
 - Marks are not supported
 - Tables are not supported
 - Footnotes are... Strange. They are copied as links, not the content of the footnote.
+- Not support Mathjax coping (the `$...$` is not copied)
 
 ## 📥 Installation
 
@@ -43,7 +44,7 @@ To start building the plugin with what mode enabled run the following command:
 npm run dev
 ```
 
-> **info**  
+> **Note**  
 > If you haven't already installed the hot-reload-plugin you'll be prompted to. You need to enable that plugin in your obsidian vault before hot-reloading will start. You might need to refresh your plugin list for it to show up.
 > To start a release build run the following command:
 
