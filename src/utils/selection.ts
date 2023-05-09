@@ -1,6 +1,5 @@
 import {App, Editor, htmlToMarkdown} from "obsidian";
 import {createNumeroteList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
-import {removeEmptyLineInBlockQuote} from "./textConversion";
 
 export function getSelectionAsHTML() {
 	const range = activeWindow.getSelection().getRangeAt(0);
@@ -16,7 +15,7 @@ export function getSelectionAsHTML() {
 		div = createNumeroteList(div, type);
 	}
 	div = replaceAllDivCalloutToBlockquote(div);
-	return removeEmptyLineInBlockQuote(htmlToMarkdown(div.innerHTML));
+	return htmlToMarkdown(div.innerHTML);
 }
 
 export function copySelectionRange(editor: Editor) {
