@@ -43,6 +43,8 @@ export default class CopyReadingInMarkdown extends Plugin {
 					const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 					if (leafType === "canvas") {
 						selectedText = canvasSelectionText(this.app);
+					} else {
+						selectedText = activeWindow.getSelection()?.toString() ?? "";
 					}
 				}
 				if (selectedText && selectedText.trim().length > 0) {
