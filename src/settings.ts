@@ -16,7 +16,6 @@ export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName(i18next.t("view.title"))
 			.setDesc(i18next.t("view.desc"))
-			.setClass("copy-reading-in-markdown-dp")
 			.addDropdown((dropdown) => {
 				dropdown
 					.addOption("all", i18next.t("view.all"))
