@@ -5,6 +5,7 @@ import {convertMarkdown} from "./utils/textConversion";
 import {CopyReadingInMarkdownSettingsTab} from "./settings";
 import {resources, translationLanguage} from "./i18n/i18next";
 import i18next from "i18next";
+import {removeDataBasePluginRelationShip} from "./utils/NodesEdit";
 
 export default class CopyReadingInMarkdown extends Plugin {
 	settings: CopyReadingInMarkdownSettings;
@@ -51,6 +52,9 @@ export default class CopyReadingInMarkdown extends Plugin {
 						} else {
 							viewIn = ApplyingToView.reading;
 						}
+					} else if (leafType === "database-plugin") {
+						selectedText = removeDataBasePluginRelationShip();
+						viewIn = ApplyingToView.reading;
 					} else {
 						selectedText = activeWindow.getSelection()?.toString() ?? "";
 						viewIn = ApplyingToView.reading;
