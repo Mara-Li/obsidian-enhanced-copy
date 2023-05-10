@@ -43,6 +43,9 @@ export function copySelectionRange(editor: Editor) {
 		}
 	}
 	selectedText = selectedText.substring(0, selectedText.length - 1);
+	if (selectedText.trim().length === 0) {
+		selectedText = editor.getSelection();
+	}
 	return selectedText;
 }
 
