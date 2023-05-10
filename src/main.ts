@@ -1,9 +1,9 @@
-import { ItemView, MarkdownView, Plugin } from "obsidian";
+import {ItemView, MarkdownView, Plugin} from "obsidian";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
-import {CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
+import {ApplyingToView, CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
 import {convertMarkdown} from "./utils/textConversion";
 import {CopyReadingInMarkdownSettingsTab} from "./settings";
-import { resources, translationLanguage } from "./i18n/i18next";
+import {resources, translationLanguage} from "./i18n/i18next";
 import i18next from "i18next";
 
 export default class CopyReadingInMarkdown extends Plugin {
@@ -30,26 +30,37 @@ export default class CopyReadingInMarkdown extends Plugin {
 			callback: () => {
 				//check if in reading mode
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+				let viewIn = ApplyingToView.all;
 				let selectedText = "";
 				if (activeView && activeView.getMode() !== "source") {
 					selectedText = getSelectionAsHTML(this.settings);
+					viewIn = ApplyingToView.reading;
 					//copy selected text to clipboard
 				} else if (activeView) {
 					//normal copy
 					const editor = activeView.editor;
 					//get all selection
 					selectedText = copySelectionRange(editor);
+					viewIn = ApplyingToView.edit;
 				} else {
 					const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 					if (leafType === "canvas") {
 						selectedText = canvasSelectionText(this.app, this.settings);
+						if (app.workspace.activeEditor) {
+							viewIn = ApplyingToView.edit;
+						} else {
+							viewIn = ApplyingToView.reading;
+						}
 					} else {
 						selectedText = activeWindow.getSelection()?.toString() ?? "";
+						viewIn = ApplyingToView.reading;
 					}
 				}
 				if (selectedText && selectedText.trim().length > 0) {
 					if (!this.settings.exportAsHTML) {
-						selectedText = convertMarkdown(selectedText, this.settings);
+						if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn) {
+							selectedText = convertMarkdown(selectedText, this.settings);
+						}
 					}
 					navigator.clipboard.writeText(selectedText);
 				}

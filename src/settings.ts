@@ -1,7 +1,7 @@
 import { PluginSettingTab, App, Setting } from "obsidian";
 import CopyReadingInMarkdown from "./main";
 import i18next from "i18next";
-import {CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks} from "./interface";
+import {ApplyingToView, CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks} from "./interface";
 export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 	plugin: CopyReadingInMarkdown;
 	constructor(app: App, plugin: CopyReadingInMarkdown) {
@@ -12,17 +12,41 @@ export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 		containerEl.createEl("h1", { text: i18next.t("settings") });
+		
 		new Setting(containerEl)
-			.setName(i18next.t("copyAsHTML"))
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.exportAsHTML)
+			.setName(i18next.t("view.title"))
+			.setDesc(i18next.t("view.desc"))
+			.setClass("copy-reading-in-markdown-dp")
+			.addDropdown((dropdown) => {
+				dropdown
+					.addOption("all", i18next.t("view.all"))
+					.addOption("reading", i18next.t("view.reading"))
+					.addOption("edit", i18next.t("view.edit"))
+					.setValue(this.plugin.settings.applyingTo)
 					.onChange(async (value) => {
-						this.plugin.settings.exportAsHTML = value;
+						this.plugin.settings.applyingTo = value as ApplyingToView;
 						await this.plugin.saveSettings();
+						if (this.plugin.settings.applyingTo === ApplyingToView.edit) {
+							this.plugin.settings.exportAsHTML = false;
+							await this.plugin.saveSettings();
+						}
 						this.display();
 					});
 			});
+		
+		if (this.plugin.settings.applyingTo !== ApplyingToView.edit) {
+			new Setting(containerEl)
+				.setName(i18next.t("copyAsHTML"))
+				.addToggle((toggle) => {
+					toggle
+						.setValue(this.plugin.settings.exportAsHTML)
+						.onChange(async (value) => {
+							this.plugin.settings.exportAsHTML = value;
+							await this.plugin.saveSettings();
+							this.display();
+						});
+				});
+		}
 		if (!this.plugin.settings.exportAsHTML) {
 			containerEl.createEl("h2", {text: i18next.t("links")});
 			new Setting(containerEl)

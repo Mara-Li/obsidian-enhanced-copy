@@ -17,6 +17,12 @@ export enum CalloutKeepTitle {
 	remove = "remove",
 }
 
+export enum ApplyingToView {
+	"all" = "all",
+	"reading" = "reading",
+	"edit" = "edit",
+}
+
 export interface CopyReadingInMarkdownSettings {
 	convertLinks: ConversionOfLinks;
 	removeFootNotesLinks: ConversionOfFootnotes;
@@ -24,6 +30,7 @@ export interface CopyReadingInMarkdownSettings {
 	calloutTitle: CalloutKeepTitle;
 	hardBreaks: boolean;
 	exportAsHTML: boolean;
+	applyingTo: ApplyingToView;
 }
 
 export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
@@ -33,5 +40,6 @@ export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
 	calloutTitle: CalloutKeepTitle.obsidian,
 	hardBreaks: false,
 	exportAsHTML: false,
+	applyingTo: ApplyingToView.all,
 };
 
