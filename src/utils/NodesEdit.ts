@@ -22,12 +22,13 @@ export function createNumeroteList(div: HTMLDivElement, type: string) {
 
 export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAncestor: Node, settings: CopyReadingInMarkdownSettings) {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
+	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
 		if (settings.calloutTitle !== CalloutKeepTitle.remove) {
 			if (divCallout.classList[0] === "callout-title") {
 				const ancestor = commonAncestor as HTMLDivElement;
-				const calloutType = ancestor.attributes.getNamedItem("data-callout").value;
-				let calloutTitle = `[!${calloutType}] `;
+				const calloutType = ancestor.attributes.getNamedItem("data-callout")?.value ?? divCallout.parentElement?.attributes.getNamedItem("data-callout")?.value ;
+				calloutTitle = `[!${calloutType}] `;
 				if (settings.calloutTitle === CalloutKeepTitle.strong) {
 					calloutTitle = `<strong>${calloutType}</strong> `;
 				}
@@ -38,7 +39,12 @@ export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAnce
 		}
 		const blockquote = document.createElement("blockquote");
 		blockquote.innerHTML = divCallout.innerHTML;
+		//replace div by blockquote
 		divCallout.replaceWith(blockquote);
+	}
+	const titleInner = div.querySelector("div.callout-title-inner");
+	if (titleInner && !titleInner.innerHTML.contains(calloutTitle) && settings.calloutTitle !== CalloutKeepTitle.remove) {
+		titleInner.innerHTML = calloutTitle + titleInner.innerHTML;
 	}
 	return div;
 }
