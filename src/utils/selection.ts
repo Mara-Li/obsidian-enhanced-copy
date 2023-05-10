@@ -27,7 +27,11 @@ export function copySelectionRange(editor: Editor) {
 	let selectedText = "";
 	const selection = editor.listSelections();
 	for (const selected of selection) {
-		selectedText += editor.getRange(selected.head, selected.anchor) + "\n";
+		if (selected.head.line !== selected.anchor.line) {
+			selectedText += editor.getRange(selected.head, selected.anchor) + "\n";
+		} else {
+			selectedText += editor.getLine(selected.head.line).substring(selected.anchor.ch, selected.head.ch) + "\n";
+		}
 	}
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	return selectedText;
