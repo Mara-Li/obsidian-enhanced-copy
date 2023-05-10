@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.14](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.13...0.0.14) (2023-05-10)
+
+
+### Bug Fixes
+
+* range backward/forward when anchor < head ([2d36eed](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/2d36eed8294b028608b14a1dd5f03edf3c9add43))
+
 ## [0.0.13](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.12...0.0.13) (2023-05-10)
 
 
