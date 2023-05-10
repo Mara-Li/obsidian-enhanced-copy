@@ -19,12 +19,12 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	}
 	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
 	if (!settings.exportAsHTML) {
-		const allNoConvert = div.querySelectorAll("[class*='no-convert']");
+		const allNoConvert = div.querySelectorAll("[data-type='html']");
 		let markdown = htmlToMarkdown(div.innerHTML);
 		//no converting html to markdown the div that contains a class with "no-convert"
 		for (const noConvert of allNoConvert) {
 			const converted = htmlToMarkdown(noConvert.outerHTML);
-			markdown = markdown.replace(converted, noConvert.outerHTML);
+			markdown = markdown.replace(converted, noConvert.outerHTML.replace(/ ?data-type=["']html["']/, ""));
 		}
 		return markdown;
 	} else {

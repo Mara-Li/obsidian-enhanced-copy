@@ -6,13 +6,13 @@
     "strong": "Convert the type to a simple strong text",
     "title": "Callout type"
   },
-  "commands": "Copy selected text as Markdown",
+  "commands": "Copy selected text",
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
     "desc": "Adjust the way links are formatted when copying to the clipboard.",
-    "external": "Remove all formatting for internal links only",
-    "keep": "Keep formatting",
-    "remove": "Remove all formatting for all links",
+    "external": "Remove markup for internal links only",
+    "keep": "Keep markup",
+    "remove": "Remove markup for all links",
     "title": "Links format"
   },
   "hardBreaks": {
@@ -27,9 +27,9 @@
   "other": "Other options",
   "removeFootnotesLinks": {
     "desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
-    "format": "Remove all links formatting but keep contents as [^1]",
-    "keep": "Keep all links formatting and contents",
-    "remove": "Remove all links formatting and contents",
+    "format": "Remove all links markup but keep contents as [^1]",
+    "keep": "Keep all links markup and contents",
+    "remove": "Remove all links markup and contents",
     "title": "Footnotes format"
   },
   "settings": "[ COPY OPTIONS ]",

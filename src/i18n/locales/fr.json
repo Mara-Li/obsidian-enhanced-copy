@@ -6,13 +6,13 @@
     "strong": "Convertir en texte en gras",
     "title": "Type de callout"
   },
-  "commands": "Copier le texte sélectionné en Markdown",
+  "commands": "Copier le texte sélectionné",
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
-    "desc": "Copier les liens en tant que texte brut, sans formatage (suppression des parenthèses et des crochets).",
-    "external": "Supprimer le formatage pour les liens internes seulement",
-    "keep": "Conserver le formatage",
-    "remove": "Supprimer le formatage pour tous les liens",
+    "desc": "Modifier l'aspect des liens lorsqu'ils sont copiés dans le presse-papiers.",
+    "external": "Supprimer les balises pour les liens internes seulement",
+    "keep": "Conserver toutes les balises",
+    "remove": "Supprimer les balises pour tous les liens",
     "title": "Format des liens"
   },
   "hardBreaks": {
@@ -26,11 +26,11 @@
   "links": "Liens",
   "other": "Autres options",
   "removeFootnotesLinks": {
-    "desc": "Modifier le formatage des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
-    "format": "Supprimer la mise en forme de tous les liens, mais conserver le contenu sous forme de [^1]",
-    "keep": "Conserver le formatage et le contenu",
-    "remove": "Supprimer tous les liens, le formatage et le contenu",
-    "title": "Formatage des footnotes"
+    "desc": "Modifier les balises des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
+    "format": "Supprimer les balises tous les liens, mais conserver le contenu sous forme de [^1]",
+    "keep": "Conserver les balises et le contenu",
+    "remove": "Supprimer les balises et le contenu",
+    "title": "Format des footnotes"
   },
   "settings": "[ COPY OPTIONS ]",
   "unconventionalMarkdown": {

@@ -2,7 +2,7 @@
 
 Copy a selection in reading view while keeping the markdown formatting
 
-## ⚙️ Usage
+## 🛠️ Usage
 
 - Select the text you want to copy
 - Open the command palette
@@ -14,13 +14,27 @@ Copy a selection in reading view while keeping the markdown formatting
 > **Warning**  
 > It is possible that the command doesn't work on mobile, as the use of command palette unselects the text.
 
+## ⚙️ Settings
+
+You can adjust the way the content is copied in the settings.
+
+1. Choose which mode/view you want to set up the markup edition 
+    For example, you can apply only on reading mode, so your copy-paste in Obsidian edit are the same.
+2. Choose to copy in HTMl instead of Markdown (a majority of the following settings will be disabled)
+3. Adjust the links markup (keep, delete all or delete for internal links)
+4. Adjust the footnotes markup (keep all, keep the contents as `[^1]` or delete all)
+5. For unconventional markup :
+   - Delete the markup of highlight (`==`)
+   - Choose how the callout type must be formatted. It can be removed, keep as in obsidian or convert in bold ("à la" github callout)
+6. You can also copy with hard break lines (the plugin will add two spaces at the end of each line)
+
 ## 📝 Limitations
 
-- Callout blocks are not supported (they are copied as blockquote)
 - For a strange reason, the first line of a blockquote (only that is selected) is not copied as a blockquote. If you select the line before, they are... Same if the line is "empty" (or use invisible characters like `$~~$`).
-- Footnotes are... Strange. They are copied as links, not the content of the footnote.
+- Footnotes are... Strange. They are copied as links, not the content of the footnote (check settings if you want to adjust this)
 - Not support Mathjax copying (as you can't select them in reading view).
-- In reading view, already "HTML writing" are not copied as HTML (like `<b>…</b>`). They are copied as markdown, or only the text is copied (if not basic html). You can prevent this with adding the class `.no-convert` to the html element, like `<b class="no-convert">…</b>`.
+- In reading view, already "HTML writing" are not copied as HTML (like `<b>…</b>`). They are copied as markdown, or only the text is copied (if not basic html). You can prevent this using the `data-type="html"` attribute on the element. For example, `b data-type="html"` will be copied as `<b>…</b>`.
+
 
 ## 📥 Installation
 
@@ -54,6 +68,11 @@ npm run dev
 npm run build
 ```
 
+
+> **Note**  
+> You can use the `.env` file with adding the key `VAULT_DEV` to specify the path to your Obsidian (development) vault. This will allow you to test your plugin without specify each times the path to the vault.
+
+
 ### 📤 Export
 
 You can use the `npm run export` command to export your plugin to your Obsidian Main Vault. To do that, you need the `.env.json` file with the following content:
@@ -63,6 +82,17 @@ VAULT=path/to/main/vault
 VAULT_DEV=path/to/dev/vault
 ```
 
+### 🎼 Languages
+
+- [x] English
+- [x] French
+
+To add a translation:
+- Fork the repository
+- Add the translation in the `src/i18n/locales` folder with the name of the language (ex: `fr.json`)
+- Copy the content of the [`en.json`](./src/i18n/locales/en.json) file in the new file
+- Translate the content
+- Create a pull request
 
 ---
 
