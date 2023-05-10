@@ -42,7 +42,7 @@
 		"prepublish": "commit-and-tag-version",
 		"publish": "git push --follow-tags origin main",
 		"preupgrade": "npm run publish",
-		"upgrade": "npm run export" 
+		"upgrade": "npm run export"
 	},
-	"version": "0.0.12"
+	"version": "0.0.13"
 }
