@@ -48,7 +48,9 @@ export default class CopyReadingInMarkdown extends Plugin {
 					}
 				}
 				if (selectedText && selectedText.trim().length > 0) {
-					selectedText = convertMarkdown(selectedText, this.settings);
+					if (!this.settings.exportAsHTML) {
+						selectedText = convertMarkdown(selectedText, this.settings);
+					}
 					navigator.clipboard.writeText(selectedText);
 				}
 			}

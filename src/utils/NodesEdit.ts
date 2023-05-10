@@ -29,7 +29,7 @@ export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAnce
 				const calloutType = ancestor.attributes.getNamedItem("data-callout").value;
 				let calloutTitle = `[!${calloutType}] `;
 				if (settings.calloutTitle === CalloutKeepTitle.strong) {
-					calloutTitle = `**${calloutType}** `;
+					calloutTitle = `<strong>${calloutType}</strong> `;
 				}
 				//insert callout title in title-content-inner div as html, before the text
 				const titleInner = divCallout.querySelector(".callout-title-inner");

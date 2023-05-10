@@ -23,6 +23,7 @@ export interface CopyReadingInMarkdownSettings {
 	highlight: boolean;
 	calloutTitle: CalloutKeepTitle;
 	hardBreaks: boolean;
+	exportAsHTML: boolean;
 }
 
 export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
@@ -31,5 +32,6 @@ export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
 	highlight: false,
 	calloutTitle: CalloutKeepTitle.obsidian,
 	hardBreaks: false,
+	exportAsHTML: false,
 };
 

@@ -16,7 +16,11 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 		div = createNumeroteList(div, type);
 	}
 	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
-	return htmlToMarkdown(div.innerHTML);
+	if (!settings.exportAsHTML) {
+		return htmlToMarkdown(div.innerHTML);
+	} else {
+		return div.innerHTML;
+	}
 }
 
 export function copySelectionRange(editor: Editor) {
