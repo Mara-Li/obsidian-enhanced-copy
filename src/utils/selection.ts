@@ -1,7 +1,8 @@
 import {App, Editor, htmlToMarkdown} from "obsidian";
 import {createNumeroteList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
+import {CopyReadingInMarkdownSettings} from "../interface";
 
-export function getSelectionAsHTML() {
+export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	const range = activeWindow.getSelection().getRangeAt(0);
 	if (!range) return "";
 	const fragment = range.cloneContents();
@@ -14,7 +15,7 @@ export function getSelectionAsHTML() {
 		const type = commonAncestor.nodeName.toLowerCase();
 		div = createNumeroteList(div, type);
 	}
-	div = replaceAllDivCalloutToBlockquote(div);
+	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
 	return htmlToMarkdown(div.innerHTML);
 }
 
@@ -29,12 +30,12 @@ export function copySelectionRange(editor: Editor) {
 	return selectedText;
 }
 
-export function canvasSelectionText(app: App): string {
+export function canvasSelectionText(app: App, settings: CopyReadingInMarkdownSettings): string {
 	const editor = app.workspace.activeEditor;
 	if (editor) {
 		const editorMode = editor.editor;
 		return copySelectionRange(editorMode);
 	} else {
-		return getSelectionAsHTML();
+		return getSelectionAsHTML(settings);
 	}
 }

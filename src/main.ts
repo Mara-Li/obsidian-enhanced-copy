@@ -32,7 +32,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 				let selectedText = "";
 				if (activeView && activeView.getMode() !== "source") {
-					selectedText = getSelectionAsHTML();
+					selectedText = getSelectionAsHTML(this.settings);
 					//copy selected text to clipboard
 				} else if (activeView) {
 					//normal copy
@@ -42,7 +42,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 				} else {
 					const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 					if (leafType === "canvas") {
-						selectedText = canvasSelectionText(this.app);
+						selectedText = canvasSelectionText(this.app, this.settings);
 					} else {
 						selectedText = activeWindow.getSelection()?.toString() ?? "";
 					}
