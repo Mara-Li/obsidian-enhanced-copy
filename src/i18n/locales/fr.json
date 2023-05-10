@@ -1,27 +1,40 @@
 {
-  "settings" : "[ COPY OPTIONS ]",
-  "links": "Liens",
-  "commands" : "Copier le texte sélectionné en Markdown",
-  "copyLinksAsText" : {
-    "title": "Format des liens",
-    "desc" : "Copier les liens en tant que texte brut, sans formatage (suppression des parenthèses et des crochets).",
+  "callout": {
+    "desc": "Format du type de callout.",
+    "obsidian": "Utiliser le format de callout d'Obsidian",
+    "remove": "Suppression du type et transformation en simple citation",
+    "strong": "Convertir en texte en gras",
+    "title": "Type de callout"
+  },
+  "commands": "Copier le texte sélectionné en Markdown",
+  "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
+  "copyLinksAsText": {
+    "desc": "Copier les liens en tant que texte brut, sans formatage (suppression des parenthèses et des crochets).",
+    "external": "Supprimer le formatage pour les liens internes seulement",
     "keep": "Conserver le formatage",
     "remove": "Supprimer le formatage pour tous les liens",
-    "external": "Supprimer le formatage pour les liens internes seulement"
+    "title": "Format des liens"
   },
-  "removeFootnotesLinks" : {
-    "title": "Formatage des footnotes",
-    "desc" : "Modifier le formatage des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
-    "keep": "Conserver le formatage et le contenu",
-    "remove": "Supprimer tous les liens, le formatage et le contenu",
-    "format" : "Supprimer la mise en forme de tous les liens, mais conserver le contenu sous forme de [^1]"
-  },
-  "unconventionalMarkdown" : {
-    "title" : "Markdown non conventionnel",
-    "desc": "Suppression des balises Markdown non conventionnelles, qui ne sont pas prise en charge par tous les interpréteurs Markdown."
+  "hardBreaks": {
+    "desc": "Ajouter un saut de ligne strict (deux espaces en fin de ligne) à la fin de chaque ligne.",
+    "title": "Saut de ligne strict"
   },
   "highlight": {
-    "title" : "Surlignage",
-    "desc" : "Suppression de la balise de surlignage (==)"
+    "desc": "Suppression de la balise de surlignage (==)",
+    "title": "Surlignage"
+  },
+  "links": "Liens",
+  "other": "Autres options",
+  "removeFootnotesLinks": {
+    "desc": "Modifier le formatage des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
+    "format": "Supprimer la mise en forme de tous les liens, mais conserver le contenu sous forme de [^1]",
+    "keep": "Conserver le formatage et le contenu",
+    "remove": "Supprimer tous les liens, le formatage et le contenu",
+    "title": "Formatage des footnotes"
+  },
+  "settings": "[ COPY OPTIONS ]",
+  "unconventionalMarkdown": {
+    "desc": "Suppression des balises Markdown non conventionnelles, qui ne sont pas prise en charge par tous les interpréteurs Markdown.",
+    "title": "Markdown non conventionnel"
   }
 }

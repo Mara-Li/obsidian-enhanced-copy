@@ -1,7 +1,7 @@
 import { PluginSettingTab, App, Setting } from "obsidian";
 import CopyReadingInMarkdown from "./main";
 import i18next from "i18next";
-import {ConversionOfFootnotes, ConversionOfLinks} from "./interface";
+import {CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks} from "./interface";
 export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 	plugin: CopyReadingInMarkdown;
 	constructor(app: App, plugin: CopyReadingInMarkdown) {
@@ -54,6 +54,36 @@ export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.highlight)
 					.onChange(async (value) => {
 						this.plugin.settings.highlight = value;
+						await this.plugin.saveSettings();
+					});
+			});
+		
+		new Setting(containerEl)
+			.setName(i18next.t("callout.title"))
+			.setDesc(i18next.t("callout.desc"))
+			.setClass("copy-reading-in-markdown-dp")
+			.addDropdown((dropdown) => {
+				dropdown
+					.addOption("obsidian", i18next.t("callout.obsidian"))
+					.addOption("strong", i18next.t("callout.strong"))
+					.addOption("remove", i18next.t("callout.remove"))
+					.setValue(this.plugin.settings.calloutTitle)
+					.onChange(async (value) => {
+						this.plugin.settings.calloutTitle = value as CalloutKeepTitle;
+						await this.plugin.saveSettings();
+					});
+			});
+		
+		containerEl.createEl("h2", { text: i18next.t("other") });
+		
+		new Setting(containerEl)
+			.setName(i18next.t("hardBreaks.title"))
+			.setDesc(i18next.t("hardBreaks.desc"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.hardBreaks)
+					.onChange(async (value) => {
+						this.plugin.settings.hardBreaks = value;
 						await this.plugin.saveSettings();
 					});
 			});

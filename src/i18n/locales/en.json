@@ -1,27 +1,40 @@
 {
-  "settings" : "[ COPY OPTIONS ]",
+  "callout": {
+    "desc": "Format of the callout type.",
+    "obsidian": "Use Obsidian's default callout format",
+    "remove": "Remove the type and keep a simple blockquote",
+    "strong": "Convert the type to a simple strong text",
+    "title": "Callout type"
+  },
   "commands": "Copy selected text as Markdown",
-  "links": "Links",
-  "copyLinksAsText" : {
-    "title": "Links format",
-    "desc" : "Adjust the way links are formatted when copying to the clipboard.",
+  "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
+  "copyLinksAsText": {
+    "desc": "Adjust the way links are formatted when copying to the clipboard.",
+    "external": "Remove all formatting for internal links only",
     "keep": "Keep formatting",
     "remove": "Remove all formatting for all links",
-    "external" : "Remove all formatting for internal links only"
+    "title": "Links format"
   },
-  "removeFootnotesLinks" : {
-    "title": "Footnotes format",
-    "desc" : "Adjust the way footnotes are formatted when copying them to the clipboard.",
-    "keep": "Keep all links formatting and contents",
-    "remove": "Remove all links formatting and contents",
-    "format" : "Remove all links formatting but keep contents as [^1]"
-  },
-  "unconventionalMarkdown": {
-    "title" : "Unconventional Markdown",
-    "desc" : "Removed unconventional Markdown markup, which is not supported by all Markdown interpreters."
+  "hardBreaks": {
+    "desc": "Add a standard markdown line break (two spaces at the end of the line) at the end of each line.",
+    "title": "Hard breaks"
   },
   "highlight": {
-    "title": "Highlight",
-    "desc": "Remove the highlight markup (==)."
+    "desc": "Remove the highlight markup (==).",
+    "title": "Highlight"
+  },
+  "links": "Links",
+  "other": "Other options",
+  "removeFootnotesLinks": {
+    "desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
+    "format": "Remove all links formatting but keep contents as [^1]",
+    "keep": "Keep all links formatting and contents",
+    "remove": "Remove all links formatting and contents",
+    "title": "Footnotes format"
+  },
+  "settings": "[ COPY OPTIONS ]",
+  "unconventionalMarkdown": {
+    "desc": "Removed unconventional Markdown markup, which is not supported by all Markdown interpreters.",
+    "title": "Unconventional Markdown"
   }
 }

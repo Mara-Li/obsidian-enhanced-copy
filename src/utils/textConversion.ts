@@ -62,11 +62,20 @@ function removeHighlightMark(markdown: string, settings: CopyReadingInMarkdownSe
 	return markdown;
 }
 
+function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings) {
+	if (settings.hardBreaks) {
+		markdown = markdown.replace(/ *\n/g, "  \n");
+		markdown = markdown + "  ";
+	}
+	return markdown;
+}
+
 export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings) {
 	let newMarkdown = markdown;
 	newMarkdown = removeEmptyLineInBlockQuote(newMarkdown);
 	newMarkdown = removeLinksBracketsInMarkdown(newMarkdown, settings);
 	newMarkdown = removeLinksBracketFootnotes(newMarkdown, settings);
 	newMarkdown = removeHighlightMark(newMarkdown, settings);
+	newMarkdown = hardBreak(newMarkdown, settings);
 	return newMarkdown;
 }
