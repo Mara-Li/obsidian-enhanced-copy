@@ -36,5 +36,12 @@
   "unconventionalMarkdown": {
     "desc": "Suppression des balises Markdown non conventionnelles, qui ne sont pas prise en charge par tous les interpréteurs Markdown.",
     "title": "Markdown non conventionnel"
+  },
+  "view": {
+    "all": "Tous les modes",
+    "desc": "Choisissez le mode sur lequel les conversions doivent être appliqués.",
+    "edit": "Mode Édition",
+    "reading": "Mode lecture uniquement",
+    "title": "Appliquer les paramètres"
   }
 }

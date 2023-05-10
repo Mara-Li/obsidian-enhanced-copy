@@ -36,5 +36,12 @@
   "unconventionalMarkdown": {
     "desc": "Removed unconventional Markdown markup, which is not supported by all Markdown interpreters.",
     "title": "Unconventional Markdown"
+  },
+  "view": {
+    "all": "All view",
+    "desc": "Choose on which view the conversion should be applied.",
+    "edit": "Edit view",
+    "reading": "Reading view only",
+    "title": "Apply settings"
   }
 }
