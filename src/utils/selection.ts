@@ -35,16 +35,11 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 export function copySelectionRange(editor: Editor) {
 	let selectedText = "";
 	const selection = editor.listSelections();
-	console.log(selection);
 	for (const selected of selection) {
-		if (selected.head.line !== selected.anchor.line) {
-			if (selected.head.line < selected.anchor.line) {
-				selectedText += editor.getRange(selected.head, selected.anchor) + "\n";
-			} else {
-				selectedText += editor.getRange(selected.anchor, selected.head) + "\n";
-			}
+		if (selected.head.line < selected.anchor.line) {
+			selectedText += editor.getRange(selected.head, selected.anchor) + "\n";
 		} else {
-			selectedText += editor.getLine(selected.head.line).substring(selected.anchor.ch, selected.head.ch) + "\n";
+			selectedText += editor.getRange(selected.anchor, selected.head) + "\n";
 		}
 	}
 	selectedText = selectedText.substring(0, selectedText.length - 1);
