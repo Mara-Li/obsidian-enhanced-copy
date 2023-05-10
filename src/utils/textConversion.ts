@@ -18,6 +18,7 @@ function removeEmptyLineInBlockQuote(markdown: string) {
 		}
 		else if (isInBlockQuote && !line.startsWith(">")) {
 			isInBlockQuote = false;
+			newLines.push("");
 			newLines.push(line);
 		}
 		else if (!isInBlockQuote) {

@@ -8,6 +8,8 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	const fragment = range.cloneContents();
 	let div = document.createElement("div");
 	div.appendChild(fragment);
+	//check if div.innerHTML contains a class with "no-convert"
+	
 	//check if commonAncestor is ol or ul
 	const commonAncestor = range.commonAncestorContainer;
 	if (commonAncestor.nodeName === "OL" || commonAncestor.nodeName === "UL") {
@@ -17,7 +19,14 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	}
 	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
 	if (!settings.exportAsHTML) {
-		return htmlToMarkdown(div.innerHTML);
+		const allNoConvert = div.querySelectorAll("[class*='no-convert']");
+		let markdown = htmlToMarkdown(div.innerHTML);
+		//no converting html to markdown the div that contains a class with "no-convert"
+		for (const noConvert of allNoConvert) {
+			const converted = htmlToMarkdown(noConvert.outerHTML);
+			markdown = markdown.replace(converted, noConvert.outerHTML);
+		}
+		return markdown;
 	} else {
 		return div.innerHTML;
 	}

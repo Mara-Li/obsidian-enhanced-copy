@@ -20,6 +20,7 @@ Copy a selection in reading view while keeping the markdown formatting
 - For a strange reason, the first line of a blockquote (only that is selected) is not copied as a blockquote. If you select the line before, they are... Same if the line is "empty" (or use invisible characters like `$~~$`).
 - Footnotes are... Strange. They are copied as links, not the content of the footnote.
 - Not support Mathjax copying (as you can't select them in reading view).
+- In reading view, already "HTML writing" are not copied as HTML (like `<b>…</b>`). They are copied as markdown, or only the text is copied (if not basic html). You can prevent this with adding the class `.no-convert` to the html element, like `<b class="no-convert">…</b>`.
 
 ## 📥 Installation
 
