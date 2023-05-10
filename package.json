@@ -40,7 +40,7 @@
 		"lint:json": "eslint --ext .json . --fix",
 		"preexport": "npm run build",
 		"prepublish": "commit-and-tag-version",
-		"publish": "git push --follow-tags origin main",
+		"publish": "git push --follow-tags origin master",
 		"preupgrade": "npm run publish",
 		"upgrade": "npm run export"
 	},
