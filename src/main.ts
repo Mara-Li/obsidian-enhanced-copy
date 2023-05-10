@@ -69,7 +69,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		
 	}
 	onunload() {
-		console.log("Unloading CopyReadingInMarkdown");
+		console.log(`CopyReadingInMarkdown v.${this.manifest.version} unloaded.`);
 	}
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
