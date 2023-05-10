@@ -10,6 +10,7 @@ Copy a selection in reading view while keeping the markdown formatting
 
 > **Info**  
 > The goal is to replace the native copy function of Obsidian. You can set the command on <kbd>CTRL</kbd> + <kbd>C</kbd> (<kbd>⌘</kbd>+<kbd>C</kbd> on MacOS)
+> Some selection doesn't work as in the native copy in Obsidian, but I didn't find a way to process the native copy function in the plugin.
 
 > **Warning**  
 > It is possible that the command doesn't work on mobile, as the use of command palette unselects the text.
