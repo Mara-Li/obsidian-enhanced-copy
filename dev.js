@@ -1,9 +1,7 @@
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config(); 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
+require("dotenv").config();
 const c = require("ansi-colors");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { execSync } = require("child_process");
 let vaultDev = process.env.VAULT_DEV || "";
 let msg = "";
