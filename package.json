@@ -34,11 +34,11 @@
 	"scripts": {
 		"build": "obsidian-plugin build src/main.ts -S src/styles.css ",
 		"dev": "node dev.js",
-		"preexport": "npm run build",
 		"export": "node export.js",
-		"lint": "eslint --ext .ts src",
-		"lint:fix": "eslint --ext .ts,.js,.json . --fix --quiet",
+		"lint": "eslint --ext .ts src/",
+		"lint:fix": "eslint --ext .ts,.js,.json src/ --fix",
 		"lint:json": "eslint --ext .json . --fix",
+		"preexport": "npm run build",
 		"publish": "commit-and-tag-version"
 	},
 	"version": "0.0.11"
