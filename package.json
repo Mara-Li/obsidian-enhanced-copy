@@ -39,9 +39,9 @@
 		"lint:fix": "eslint --ext .ts,.js,.json src/ --fix",
 		"lint:json": "eslint --ext .json . --fix",
 		"preexport": "npm run build",
-		"prepublish": "commit-and-tag-version",
-		"publish": "git push --follow-tags origin master",
-		"preupgrade": "npm run publish",
+		"prebump": "commit-and-tag-version",
+		"bump": "git push --follow-tags origin master",
+		"preupgrade": "npm run bump",
 		"upgrade": "npm run export"
 	},
 	"version": "0.0.15"
