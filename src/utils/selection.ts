@@ -42,11 +42,7 @@ export function copySelectionRange(editor: Editor) {
 			selectedText += editor.getRange(selected.anchor, selected.head) + "\n";
 		}
 	}
-	selectedText = selectedText.substring(0, selectedText.length - 1);
-	if (selectedText.trim().length === 0) {
-		selectedText = editor.getSelection(); //fallback
-	}
-	return selectedText;
+	return selectedText.substring(0, selectedText.length - 1);
 }
 
 export function canvasSelectionText(app: App, settings: CopyReadingInMarkdownSettings): string {

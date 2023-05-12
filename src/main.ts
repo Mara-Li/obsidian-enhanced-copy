@@ -67,6 +67,8 @@ export default class CopyReadingInMarkdown extends Plugin {
 						}
 					}
 					navigator.clipboard.writeText(selectedText);
+				} else if (viewIn === ApplyingToView.edit) {
+					navigator.clipboard.writeText(selectedText);
 				}
 			}
 		});
