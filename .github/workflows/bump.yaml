@@ -1,0 +1,25 @@
+name: Bump version
+on: 
+    workflow_dispatch:
+
+env: 
+    PLUGIN_NAME: copy-reading-in-markdown
+    STYLE: true
+permissions: 
+    contents: write
+    packages: write
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+            - name: Install dependencies
+              run: npm install
+            - name: Bump version 
+              run: |
+                git config --global user.name "github-actions[bot]"
+                git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                npm run bump
