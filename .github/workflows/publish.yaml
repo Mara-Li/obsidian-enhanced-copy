@@ -25,14 +25,18 @@ jobs:
           npm run build  -- --output-dir ${{ env.PLUGIN_NAME }}
       - name: Get latest tag
         id: tags
+        uses: actions-ecosystem/action-get-latest-tag@v1
+      - name: Set latest tag as env
         run: |
-          git tag --sort version:refname | tail -n 1
-          echo "VERSION=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_ENV
-          echo "## VERSION $(git tag --sort version:refname | tail -n 1)" >> $GITHUB_STEP_SUMMARY
+          echo "VERSION=${{ steps.tags.outputs.tag }}" >> $GITHUB_ENV
+          echo ${{ steps.tags.outputs.tag }} 
+          echo ${{ env. VERSION }}
+          echo "## Release ${{ steps.tags.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
       - name: Create zip  
         run: |
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
-          ls
+          echo "### Files" >> $GITHUB_STEP_SUMMARY
+          ls >> $GITHUB_STEP_SUMMARY
       - name: Delete release if workflow dispatch
         if: github.event_name == 'workflow_dispatch'
         run: gh release delete ${{ env.VERSION }} -y
