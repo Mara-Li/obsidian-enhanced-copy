@@ -23,23 +23,35 @@ jobs:
         run: |
           npm install
           npm run build  -- --output-dir ${{ env.PLUGIN_NAME }}
-      - name: Create zip
+      - name: Get latest tag
+        id: tags
+        run: |
+          git tag --sort version:refname | tail -n 1
+          echo "VERSION=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_ENV
+          echo "## VERSION $(git tag --sort version:refname | tail -n 1)" >> $GITHUB_STEP_SUMMARY
+      - name: Create zip  
         run: |
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
           ls
-          echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_OUTPUT
+      - name: Delete release if workflow dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: gh release delete ${{ env.VERSION }} -y
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create changelog
         run: |
           npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o "CHANGELOG.md" > CHANGELOG-LATEST.md
+          echo '### Changelog' >> $GITHUB_STEP_SUMMARY
+          cat CHANGELOG-LATEST.md >> $GITHUB_STEP_SUMMARY
       - name: Create Release with css
         if: env.STYLE == 'true'
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          VERSION: "${{ github.ref }}"
+          VERSION: "${{ env.VERSION }}"
         with:
-          tag_name: "${{ github.ref_name }}"
-          name: "${{ github.ref_name }}"
+          tag_name: "${{ env.VERSION }}"
+          name: "${{ env.VERSION }}"
           body_path: CHANGELOG-LATEST.md
           draft: false
           prerelease: false
@@ -54,10 +66,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          VERSION: "${{ github.ref }}"
+          VERSION: "${{ env.VERSION }}"
         with:
-          tag_name: "${{ github.ref_name }}"
-          name: "${{ github.ref_name }}"
+          tag_name: "${{ env.VERSION }}"
+          name: "${{ env.VERSION }}"
           body_path: CHANGELOG-LATEST.md
           draft: false
           prerelease: false
