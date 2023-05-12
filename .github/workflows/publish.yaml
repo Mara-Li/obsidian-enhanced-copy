@@ -27,7 +27,7 @@ jobs:
         id: tags
         run: |
           git fetch --tags
-          echo "VERSION=$(tag --sort version:refname | tail -n 1)" >> $GITHUB_ENV
+          echo "VERSION=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_ENV
       - name: Check tags output
         run: |
           echo ${{ env. VERSION }}
