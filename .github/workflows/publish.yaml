@@ -23,15 +23,15 @@ jobs:
         run: |
           npm install
           npm run build  -- --output-dir ${{ env.PLUGIN_NAME }}
-      - name: Get latest tag
+      - name: Set version
         id: tags
-        uses: actions-ecosystem/action-get-latest-tag@v1
-      - name: Set latest tag as env
         run: |
-          echo "VERSION=${{ steps.tags.outputs.tag }}" >> $GITHUB_ENV
-          echo ${{ steps.tags.outputs.tag }} 
+          git fetch --tags
+          echo "VERSION=$(tag --sort version:refname | tail -n 1)" >> $GITHUB_ENV
+      - name: Check tags output
+        run: |
           echo ${{ env. VERSION }}
-          echo "## Release ${{ steps.tags.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "## Release ${{ env. VERSION }}" >> $GITHUB_STEP_SUMMARY
       - name: Create zip  
         run: |
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
@@ -45,7 +45,6 @@ jobs:
       - name: Create changelog
         run: |
           npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o "CHANGELOG.md" > CHANGELOG-LATEST.md
-          echo '### Changelog' >> $GITHUB_STEP_SUMMARY
           cat CHANGELOG-LATEST.md >> $GITHUB_STEP_SUMMARY
       - name: Create Release with css
         if: env.STYLE == 'true'
