@@ -38,9 +38,12 @@ jobs:
           ls >> $GITHUB_STEP_SUMMARY
       - name: Delete release if workflow dispatch
         if: github.event_name == 'workflow_dispatch'
-        run: gh release delete ${{ env.VERSION }} -y
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag_name={{ env.VERSION }}
+          release_info=$(gh release view $tag_name -R ${{ github.repository }} --json id --jq '.id')
+          if [[ -n "$release_info" ]]; then
+            gh release delete $release_id -R ${{ github.repository }} --yes
+          fi
       - name: Create changelog
         run: |
           npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o "CHANGELOG.md" > CHANGELOG-LATEST.md
