@@ -36,15 +36,10 @@ jobs:
           ls >> $GITHUB_STEP_SUMMARY
       - name: Delete release if workflow dispatch
         if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: |
           tag_name=${{ env.VERSION }}
-          release_info=$(gh release view $tag_name -R ${{ github.repository }} --json id --jq '.id' 2>&1)
-          if [[ "$release_info" != "release not found" ]]; then
-            echo "Deleting release $tag_name"
-            gh release delete $tag_name -R ${{ github.repository }} -y || true
-          else
-            echo "No release found"
-          fi
+          gh release delete $tag_name -R ${{ github.repository }} -y || true
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Create changelog
