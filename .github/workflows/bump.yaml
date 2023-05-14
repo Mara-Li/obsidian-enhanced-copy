@@ -22,7 +22,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          npm run bump
+          npm run bump --ignore-scripts
       - name: Get version number
         run: |
           echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
