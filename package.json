@@ -36,7 +36,7 @@
 		"lint:fix": "eslint --ext .ts,.js,.json src/ --fix",
 		"lint:json": "eslint --ext .json . --fix",
 		"build": "obsidian-plugin build src/main.ts -S src/styles.css ",
-		"devprod" : "node dev.js --prod",
+		"devprod": "node dev.js --prod",
 		"dev": "node dev.js",
 		"preexport": "npm run build",
 		"export": "node export.js",
@@ -45,5 +45,5 @@
 		"preupgrade": "npm run bump",
 		"upgrade": "npm run export"
 	},
-	"version": "0.0.18"
+	"version": "0.0.19"
 }

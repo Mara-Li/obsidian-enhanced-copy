@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.19](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.18...0.0.19) (2023-05-14)
+
+
+### Bug Fixes
+
+* whitespace in editor doesn't be copied ([d2700c7](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/d2700c73c1bd05254571db9a092ea2c21cf78984))
+
 ## [0.0.18](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.17...0.0.18) (2023-05-14)
 
 
