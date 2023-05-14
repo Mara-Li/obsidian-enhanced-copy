@@ -1,4 +1,4 @@
-import {App, Editor, htmlToMarkdown} from "obsidian";
+import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
 import {createNumeroteList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 import {CopyReadingInMarkdownSettings} from "../interface";
 
@@ -32,15 +32,50 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	}
 }
 
+/** Return the real "head" of the selection
+ * The head will be ALWAYS the littlest line number or the littlest character number if the line number is the same
+ * @param {EditorPosition} head Original head from EditorSelection
+ * @param {EditorPosition} anchor Original anchor from EditorSelection
+ */
+
+function getHead(head: EditorPosition, anchor: EditorPosition) {
+	if (head.line === anchor.line) {
+		if (head.ch < anchor.ch) {
+			return head;
+		}
+		return anchor;
+	} else if (head.line < anchor.line) {
+		return head;
+	}
+	return anchor;
+}
+
+/**
+ * Return the real "anchor" of the selection
+ * The anchor will be ALWAYS the biggest line number or the biggest character number if the line number is the same
+ * @param {EditorPosition} head Original head from EditorSelection
+ * @param {EditorPosition} anchor Original anchor from EditorSelection
+ */
+
+function getAnchor(head: EditorPosition, anchor: EditorPosition) {
+	if (head.line === anchor.line) {
+		if (head.ch < anchor.ch) {
+			return anchor;
+		}
+		return head;
+	} else if (head.line < anchor.line) {
+		return anchor;
+	}
+	return head;
+}
+
 export function copySelectionRange(editor: Editor) {
 	let selectedText = "";
 	const selection = editor.listSelections();
 	for (const selected of selection) {
-		if (selected.head.line < selected.anchor.line) {
-			selectedText += editor.getRange(selected.head, selected.anchor) + "\n";
-		} else {
-			selectedText += editor.getRange(selected.anchor, selected.head) + "\n";
-		}
+		const head = getHead(selected.head, selected.anchor);
+		const anchor = getAnchor(selected.head, selected.anchor);
+		selectedText += editor.getRange(head, anchor) + "\n";
 	}
 	return selectedText.substring(0, selectedText.length - 1);
 }
