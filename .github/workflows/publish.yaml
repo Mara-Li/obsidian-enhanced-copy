@@ -44,6 +44,8 @@ jobs:
           if [[ -n "$release_info" ]]; then
             gh release delete $release_id -R ${{ github.repository }} --yes
           fi
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Create changelog
         run: |
           npx rexreplace "^.*?#+\s\[.*?\n.*?(?=\s*#+\s\[)" "_" -s -M -G -m -o "CHANGELOG.md" > CHANGELOG-LATEST.md
