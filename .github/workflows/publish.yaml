@@ -39,7 +39,7 @@ jobs:
       - name: Delete release if workflow dispatch
         if: github.event_name == 'workflow_dispatch'
         run: |
-          tag_name={{ env.VERSION }}
+          tag_name=${{ env.VERSION }}
           release_info=$(gh release view $tag_name -R ${{ github.repository }} --json id --jq '.id')
           if [[ -n "$release_info" ]]; then
             gh release delete $release_id -R ${{ github.repository }} --yes
