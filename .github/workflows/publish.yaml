@@ -27,8 +27,6 @@ jobs:
         id: tags
         run: |
           echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-      - name: Check tags output
-        run: |
           echo ${{ env. VERSION }}
           echo "## Release ${{ env. VERSION }}" >> $GITHUB_STEP_SUMMARY
       - name: Create zip  
@@ -40,9 +38,9 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: |
           tag_name=${{ env.VERSION }}
-          release_info=$(gh release view $tag_name -R ${{ github.repository }} --json id --jq '.id')
-          if [[ -n "$release_info" ]]; then
-            gh release delete $release_id -R ${{ github.repository }} --yes
+          release_info=$(gh release view $tag_name -R ${{ github.repository }} --json id --jq '.id' 2>&1)
+          if [[ "$release_info" != "release not found" ]]; then
+            gh release delete $release_id -R ${{ github.repository }} --yes || true
           else
             echo "No release found"
           fi
