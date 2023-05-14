@@ -43,6 +43,8 @@ jobs:
           release_info=$(gh release view $tag_name -R ${{ github.repository }} --json id --jq '.id')
           if [[ -n "$release_info" ]]; then
             gh release delete $release_id -R ${{ github.repository }} --yes
+          else
+            echo "No release found"
           fi
         env:
           GH_TOKEN: ${{ github.token }}
