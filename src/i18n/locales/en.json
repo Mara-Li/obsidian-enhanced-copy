@@ -27,14 +27,14 @@
   "other": "Other options",
   "removeFootnotesLinks": {
     "desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
-    "format": "Remove all links markup but keep contents as [^1]",
+    "format": "Remove all links but keep contents as [^1]",
     "keep": "Keep all links markup and contents",
     "remove": "Remove all links markup and contents",
     "title": "Footnotes format"
   },
   "settings": "[ COPY OPTIONS ]",
   "unconventionalMarkdown": {
-    "desc": "Removed unconventional Markdown markup, which is not supported by all Markdown interpreters.",
+    "desc": "Removed unconventional Markdown markup because they are not supported by all Markdown interpreters.",
     "title": "Unconventional Markdown"
   },
   "view": {

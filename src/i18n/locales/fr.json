@@ -27,14 +27,14 @@
   "other": "Autres options",
   "removeFootnotesLinks": {
     "desc": "Modifier les balises des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
-    "format": "Supprimer les balises tous les liens, mais conserver le contenu sous forme de [^1]",
-    "keep": "Conserver les balises et le contenu",
-    "remove": "Supprimer les balises et le contenu",
+    "format": "Supprimer les liens, mais conserver le contenu sous forme de [^1]",
+    "keep": "Conserver balises et contenu",
+    "remove": "Supprimer balises et contenu",
     "title": "Format des footnotes"
   },
   "settings": "[ COPY OPTIONS ]",
   "unconventionalMarkdown": {
-    "desc": "Suppression des balises Markdown non conventionnelles, qui ne sont pas prise en charge par tous les interpréteurs Markdown.",
+    "desc": "Suppression des balises Markdown non conventionnelles car elles ne sont pas prise en charge par tous les interpréteurs Markdown.",
     "title": "Markdown non conventionnel"
   },
   "view": {

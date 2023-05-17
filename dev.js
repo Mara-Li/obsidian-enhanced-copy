@@ -37,8 +37,8 @@ if (vaultDev.trim().length > 0) {
 				console.error(err);
 			}
 		});
-		setTimeout(function () {
-		}, 1000);
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		setTimeout(function () {}, 1000);
 		console.log(`✔️ ${c.success(".hotreload file created.")}`);
 		console.log();
 	}
