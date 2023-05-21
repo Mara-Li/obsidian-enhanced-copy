@@ -72,7 +72,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 				}
 			}
 		});
-		
+
 	}
 	onunload() {
 		console.log(`CopyReadingInMarkdown v.${this.manifest.version} unloaded.`);

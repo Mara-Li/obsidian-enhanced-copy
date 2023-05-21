@@ -75,4 +75,6 @@ jobs:
             ${{ env.PLUGIN_NAME }}/main.js
             ${{ env.PLUGIN_NAME }}/manifest.json
       - name: Push updated changes
-        run: git push --follow-tags origin master
+        run: |
+          git commit -am "chore: release ${{ env.VERSION }}"
+          git push --follow-tags origin master
