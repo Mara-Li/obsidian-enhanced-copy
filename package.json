@@ -34,7 +34,6 @@
 	"scripts": {
 		"lint": "eslint --ext .ts src/",
 		"lint:fix": "eslint --ext .ts,.js,.json src/ --fix",
-		"lint:json": "eslint --ext .json . --fix",
 		"build": "obsidian-plugin build src/main.ts -S src/styles.css ",
 		"dev:prod": "node dev.js --prod",
 		"dev": "node dev.js",
