@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.20](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.19...0.0.20) (2023-05-21)
+
+
+### Bug Fixes
+
+* remove ! when copying image links ([31446fc](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/31446fcdd84ff90a131cc0bafe83990acf07a4ff))
+* use replaceAll for replacing all links ([f002d3d](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f002d3dc3c2ee2f884901cb3bf2d43be8bf1b200))
+
 ## [0.0.19](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.18...0.0.19) (2023-05-14)
 
 

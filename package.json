@@ -45,5 +45,5 @@
 		"preupgrade": "npm run bump",
 		"upgrade": "npm run export"
 	},
-	"version": "0.0.19"
+	"version": "0.0.20"
 }
