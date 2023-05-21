@@ -29,7 +29,7 @@ function removeEmptyLineInBlockQuote(markdown: string) {
 }
 
 function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
-	const regexLinks = /\[([^\]]+)\]\(([^)]+)\)/g;
+	const regexLinks = /!?\[([^\]]+)\]\(([^)]+)\)/g;
 	if (settings.convertLinks === ConversionOfLinks.remove) {
 		markdown = markdown.replace(regexLinks, "$1");
 	} else if (settings.convertLinks === ConversionOfLinks.external) {
