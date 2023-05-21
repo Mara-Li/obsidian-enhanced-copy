@@ -31,17 +31,17 @@ function removeEmptyLineInBlockQuote(markdown: string) {
 function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	const regexLinks = /!?\[([^\]]+)\]\(([^)]+)\)/g;
 	if (settings.convertLinks === ConversionOfLinks.remove) {
-		markdown = markdown.replace(regexLinks, "$1");
+		markdown = markdown.replaceAll(regexLinks, "$1");
 	} else if (settings.convertLinks === ConversionOfLinks.external) {
 		//convert links only if they don't have `http` or `https` in them
-		markdown = markdown.replace(regexLinks, (match, p1, p2) => {
+		markdown = markdown.replaceAll(regexLinks, (match, p1, p2) => {
 			if (p2.startsWith("http")) {
 				return match;
 			}
 			return p1;
 		});
 	}
-	return markdown.replace("↩︎", "");
+	return markdown.replaceAll("↩︎", "");
 }
 
 function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMarkdownSettings) {
