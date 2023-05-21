@@ -1,14 +1,14 @@
-name: "Bug report"
-description: Fill a bug report 
-title: "[Bug]: "
-labels: ["bug"]
+name: "Feature request"
+description: "Suggest an idea for this project"
+title: "[FR]: "
+labels: ["enhancement"]
 assignees:
   - lisandra-dev
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report.
+        Thanks for taking the time to fill out this Feature request!
         Some limitation of the plugin:
         - The text selected in reading-view is a little different from the original selection, because `windows.getSelection()` doesn't give the exact same selection as the one in the editor.
         - The plugin can't copy "un-selectable" (for example text between in `$`)
@@ -24,47 +24,22 @@ body:
         - label: "I checked my configurations files and the documentation"
           required: true
   - type: textarea
-    id: describe-bug
+    id: describe-request
     attributes:
-      label: Describe the bug
-      description: A clear and concise description of what the bug is.
-      placeholder: "Tell us what you see! And don't forget the error"
+      label: Is your feature related to a problem ?
+      description: If you found a solution with the inherent limit I had with Obsidian, please, add it here!
+      placeholder: "Tell me the original problem"
+  - type: textarea
+    id: describe-solution
+    attributes:
+      label: What solution do you want to see ?
+      description: Describe your idea here!
     validations:
       required: true
   - type: textarea
-    id: repro-bug
+    id: alternative
     attributes:
-      label: How to reproduce ?
-      description: Step to reproduce the behavior
-      placeholder: |
-        1. Go to '...'
-        2. Click on '....'
-        3. Scroll down to '....'
-        4. See error
-    validations:
-      required: false
-  - type: textarea
-    id: minimal-repro
-    attributes:
-      label: Minimal Reproducible Example
-      description: Please provide a minimal reproducible example. 
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Configuration
-      description: |
-        Open the configuration settings with any text editor. The settings are located in `.obsidian/plugins/copy-reading-in-markdown`
-      render: JSON
-    validations:
-      required: true
-  - type: textarea
-    id: logs
-    attributes:
-      label: Relevant log output
-      description: |
-        Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks. You can open the Obsidian's console with "CTRL+MAJ+I."
-      render: bash session
+      label: Describe the alternative you've considered
   - type: textarea
     attributes:
       label: Anything else?
