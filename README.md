@@ -35,7 +35,7 @@ You can adjust the way the content is copied in the settings.
 - Footnotes are... Strange. They are copied as links, not the content of the footnote (check settings if you want to adjust this)
 - Not support Mathjax copying (as you can't select them in reading view).
 - In reading view, already "HTML writing" are not copied as HTML (like `<b>…</b>`). They are copied as markdown, or only the text is copied (if not basic html). You can prevent this using the `data-type="html"` attribute on the element. For example, `b data-type="html"` will be copied as `<b>…</b>`.
-
+- Selecting text with image will copy the name of the image. If you want to copy the image, you need to select the image itself (not the text).
 
 ## 📥 Installation
 
