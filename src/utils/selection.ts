@@ -1,7 +1,14 @@
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
-import {createNumeroteList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
+import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 import {CopyReadingInMarkdownSettings} from "../interface";
 
+/**
+ * Get the selection of the activeWindows and transform it as HTML
+ * if the will apply all transformation needed and return the markdown or the HTML
+ * @note HTML with data-type = "html" will not be converted to markdown
+ * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @returns {string}
+ */
 export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	const range = activeWindow.getSelection().getRangeAt(0);
 	if (!range) return "";
@@ -15,7 +22,7 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 	if (commonAncestor.nodeName === "OL" || commonAncestor.nodeName === "UL") {
 		//if so, create ol or ul and append all li to it
 		const type = commonAncestor.nodeName.toLowerCase();
-		div = createNumeroteList(div, type);
+		div = reNumerateList(div, type);
 	}
 	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
 	if (!settings.exportAsHTML) {
@@ -26,6 +33,7 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 			const converted = htmlToMarkdown(noConvert.outerHTML);
 			markdown = markdown.replace(converted, noConvert.outerHTML.replace(/ ?data-type=["']html["']/, ""));
 		}
+		
 		return markdown;
 	} else {
 		return div.innerHTML;
@@ -69,7 +77,12 @@ function getAnchor(head: EditorPosition, anchor: EditorPosition) {
 	return head;
 }
 
-export function copySelectionRange(editor: Editor) {
+/**
+ * In Editor, get the selected text for all selection
+ * @param editor {Editor} Editor of the activeView
+ * @returns {string} The selected text (copying behavior of Obsidian)
+ */
+export function copySelectionRange(editor: Editor):string {
 	let selectedText = "";
 	const selection = editor.listSelections();
 	for (const selected of selection) {
@@ -80,6 +93,13 @@ export function copySelectionRange(editor: Editor) {
 	return selectedText.substring(0, selectedText.length - 1);
 }
 
+/**
+ * In Canvas only, check if the selection is in editor or not
+ * If in editor, return the text as in Obsidian. If not, run getSelectionAsHTML and return the output
+ * @param app {App}} 
+ * @param settings {CopyReadingInMarkdownSettings}
+ * @returns {string} 
+ */
 export function canvasSelectionText(app: App, settings: CopyReadingInMarkdownSettings): string {
 	const editor = app.workspace.activeEditor;
 	if (editor) {
@@ -89,3 +109,4 @@ export function canvasSelectionText(app: App, settings: CopyReadingInMarkdownSet
 		return getSelectionAsHTML(settings);
 	}
 }
+

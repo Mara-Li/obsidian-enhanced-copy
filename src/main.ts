@@ -5,7 +5,7 @@ import {convertMarkdown} from "./utils/textConversion";
 import {CopyReadingInMarkdownSettingsTab} from "./settings";
 import {resources, translationLanguage} from "./i18n/i18next";
 import i18next from "i18next";
-import {removeDataBasePluginRelationShip} from "./utils/NodesEdit";
+import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 
 export default class CopyReadingInMarkdown extends Plugin {
 	settings: CopyReadingInMarkdownSettings;
@@ -25,6 +25,9 @@ export default class CopyReadingInMarkdown extends Plugin {
 		await this.loadSettings();
 		this.addSettingTab(new CopyReadingInMarkdownSettingsTab(this.app, this));
 		
+		/**
+		 * Copy the selected text in markdown format
+		 */
 		this.addCommand({
 			id: "copy-reading-in-markdown",
 			name: i18next.t("commands"),

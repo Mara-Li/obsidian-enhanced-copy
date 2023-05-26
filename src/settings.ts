@@ -2,6 +2,12 @@ import { PluginSettingTab, App, Setting } from "obsidian";
 import CopyReadingInMarkdown from "./main";
 import i18next from "i18next";
 import {ApplyingToView, CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks} from "./interface";
+/**
+ * Settings tab for the plugin
+ * @extends PluginSettingTab
+ * @param {App} app - The Obsidian App
+ * @param {CopyReadingInMarkdown} plugin - The CopyReadingInMarkdown plugin
+ */
 export class CopyReadingInMarkdownSettingsTab extends PluginSettingTab {
 	plugin: CopyReadingInMarkdown;
 	constructor(app: App, plugin: CopyReadingInMarkdown) {

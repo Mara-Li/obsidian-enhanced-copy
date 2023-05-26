@@ -1,6 +1,11 @@
 import {ConversionOfFootnotes, ConversionOfLinks, CopyReadingInMarkdownSettings} from "../interface";
 
-function removeEmptyLineInBlockQuote(markdown: string) {
+/**
+ * Remove empty line in blockquote in the markdown
+ * @param markdown {string} Markdown to convert
+ * @returns {string} Markdown with empty line removed in blockquote
+ */
+function removeEmptyLineInBlockQuote(markdown: string):string {
 	//remove empty blockquote in markdown
 	//line that start with > and has no text
 	const lines = markdown.split("\n");
@@ -45,7 +50,23 @@ function removeEmptyLineBeforeList(markdown: string): string {
 	return newLines.join("\n");
 }
 
-
+/**
+ * Allow to remove the links in the markdown if the settings are set to remove it.
+ * Also remove the `!` in front of the link if it's an image/embed link
+ * Remove `↩︎` for footnotes
+ * @example `external` : Keep only external links in markdown (links that don't start with `http` or `https`)
+ * - `[link](https://example.com)` -> `[link](https://example.com)`
+ * - `[link](example.md) -> link`
+ * @example `remove` : Remove all links in markdown (including external links)
+ * - `[link](https://example.com)` -> `link`
+ * - `[link](example.md) -> link`
+ * @example `keep` : Keep all links in markdown
+ * - `[link](https://example.com)` -> `[link](https://example.com)`
+ * - `[link](example.md) -> [link](example.md)`
+ * @param markdown {string} Markdown to convert
+ * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @returns {string} Markdown with links removed if needed
+ */
 function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	const regexLinks = /!?\[([^\]]+)\]\(([^)]+)\)/g;
 	if (settings.convertLinks === ConversionOfLinks.remove) {
@@ -62,6 +83,18 @@ function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingIn
 	return markdown.replaceAll("↩︎", "");
 }
 
+/**
+ * Depending of the settings, will removing completely footnote or keeping content but removing the footnote format
+ * @example `remove` : Remove all footnotes in markdown
+ * 	`[[1]](#text)` -> ``
+ * @example `format` : Keep the content of the footnote but remove the footnote format
+ * 	`[[1]](#text)` -> `[^1]`
+ * @example `keep` : Keep all footnotes in markdown
+ * 	`[[1]](#text)` -> `[[1]](#text)`
+ * @param markdown {string} Markdown to convert
+ * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @returns {string} Markdown with footnotes removed if needed
+ */
 function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMarkdownSettings) {
 	const regexFootNotes = /\[\[([^\]]+)\]\]\(([^)]+)\)/g;
 	if (settings.removeFootNotesLinks === ConversionOfFootnotes.remove) {
@@ -74,6 +107,12 @@ function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMa
 	return markdown;
 }
 
+/**
+ * As the highlight is not supported in all markdown editor, we can remove it if needed (depending of the settings)
+ * @param markdown {string} Markdown to convert
+ * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @returns {string} Markdown with highlight removed if needed
+ */
 function removeHighlightMark(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	if (settings.highlight) {
 		markdown = markdown.replace(/==([^=]+)==/g, "$1");
@@ -81,7 +120,15 @@ function removeHighlightMark(markdown: string, settings: CopyReadingInMarkdownSe
 	return markdown;
 }
 
-function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings) {
+/**
+ * If the settings are set to add hard breaks, add "two spaces and a new line" at the end of each line
+ * @example
+ * `line1\nline2` -> `line1  \nline2  \n`
+ * @param markdown {string} Markdown to convert
+ * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @returns {string} Markdown with hard breaks added if needed
+ */
+function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	if (settings.hardBreaks) {
 		markdown = markdown.replace(/ *\n/g, "  \n");
 		markdown = markdown + "  ";
@@ -89,7 +136,13 @@ function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings) {
 	return markdown;
 }
 
-export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings) {
+/**
+ * Main function of the plugin, will convert the markdown depending of the settings
+ * @param markdown {string} Markdown to convert
+ * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @returns {string} converted markdown
+ */
+export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings):string {
 	let newMarkdown = markdown;
 	newMarkdown = removeEmptyLineInBlockQuote(newMarkdown);
 	newMarkdown = removeLinksBracketsInMarkdown(newMarkdown, settings);

@@ -1,6 +1,12 @@
 import {CalloutKeepTitle, CopyReadingInMarkdownSettings} from "../interface";
 
-export function createNumeroteList(div: HTMLDivElement, type: string) {
+/**
+ * Fix list that are not correctly converted to markdown
+ * @param div {HTMLDivElement} : The div to transform
+ * @param type {string} : The type of list to create (ol or ul)
+ * @returns div {HTMLDivElement} : The div transformed
+ */
+export function reNumerateList(div: HTMLDivElement, type: string) {
 	const allLi = div.querySelectorAll("li");
 	let allHaveDataLine = true;
 	for (const li of allLi) {
@@ -20,7 +26,18 @@ export function createNumeroteList(div: HTMLDivElement, type: string) {
 	return div;
 }
 
-export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAncestor: Node, settings: CopyReadingInMarkdownSettings) {
+/**
+ * Replace all div with class "callout" to blockquote with the same content
+ * The title will be added differently in function of the settings:
+ * - `remove`: The title will be removed ;
+ * - `strong`: The title will be added as a strong text (ie GitHub Admonition flavored)
+ * - `obsidian`: Will have the same behavior as the callout formatting in Obsidian
+ * @param div {HTMLDivElement} The selected contents as HTML
+ * @param commonAncestor {Node} The common ancestor of the selection
+ * @param settings {CopyReadingInMarkdownSettings} 
+ * @returns {HTMLDivElement} The div transformed
+ */
+export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAncestor: Node, settings: CopyReadingInMarkdownSettings): HTMLDivElement {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
 	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
@@ -49,23 +66,4 @@ export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAnce
 	return div;
 }
 
-export function removeDataBasePluginRelationShip() {
-	if (activeDocument.querySelector("div.database-plugin__container")) {
-		const div = document.createElement("div");
-		const selection = activeWindow.getSelection().getRangeAt(0);
-		const fragment = selection.cloneContents();
-		div.appendChild(fragment);
-		const allSpan = div.querySelectorAll("span");
-		for (const span of allSpan) {
-			//remove database-plugin__relationship class
-			if (span.classList[0] === "database-plugin__relationship") {
-				//remove entire span
-				//replace by br
-				span.innerHTML = "\n";
-			}
-		}
-		return div.innerText;
-	} else {
-		return activeWindow.getSelection().toString();
-	}
-}
+
