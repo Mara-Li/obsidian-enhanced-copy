@@ -28,6 +28,24 @@ function removeEmptyLineInBlockQuote(markdown: string) {
 	return newLines.join("\n");
 }
 
+/**
+ * If a list is preceded by an empty line, remove the empty line
+ * @param {string} markdown Markdown to convert
+ * @returns {string} Markdown with empty line removed before list
+ */
+function removeEmptyLineBeforeList(markdown: string): string {
+	const lines = markdown.split("\n");
+	const newLines = [];
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
+		if (!(line.trim().length === 0 && i + 1 < lines.length && lines[i + 1].startsWith("-"))) {
+			newLines.push(line);
+		}
+	}
+	return newLines.join("\n");
+}
+
+
 function removeLinksBracketsInMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	const regexLinks = /!?\[([^\]]+)\]\(([^)]+)\)/g;
 	if (settings.convertLinks === ConversionOfLinks.remove) {
@@ -78,5 +96,6 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 	newMarkdown = removeLinksBracketFootnotes(newMarkdown, settings);
 	newMarkdown = removeHighlightMark(newMarkdown, settings);
 	newMarkdown = hardBreak(newMarkdown, settings);
+	newMarkdown = removeEmptyLineBeforeList(newMarkdown);
 	return newMarkdown;
 }
