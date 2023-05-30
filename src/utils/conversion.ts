@@ -1,39 +1,6 @@
 import {ConversionOfFootnotes, ConversionOfLinks, CopyReadingInMarkdownSettings} from "../interface";
 
 /**
- * Remove empty line in blockquote in the markdown
- * @param markdown {string} Markdown to convert
- * @returns {string} Markdown with empty line removed in blockquote
- */
-function removeEmptyLineInBlockQuote(markdown: string):string {
-	//remove empty blockquote in markdown
-	//line that start with > and has no text
-	const lines = markdown.split("\n");
-	const newLines = [];
-	let isInBlockQuote = false;
-	for (const line of lines) {
-		if (line.startsWith(">")) {
-			isInBlockQuote = true;
-			if (line.trim().length > 1) {
-				newLines.push(line);
-			}
-		}
-		else if (isInBlockQuote && line.trim().length === 0) {
-			//do nothing
-		}
-		else if (isInBlockQuote && !line.startsWith(">")) {
-			isInBlockQuote = false;
-			newLines.push("");
-			newLines.push(line);
-		}
-		else if (!isInBlockQuote) {
-			newLines.push(line);
-		}
-	}
-	return newLines.join("\n");
-}
-
-/**
  * If a list is preceded by an empty line, remove the empty line
  * @param {string} markdown Markdown to convert
  * @returns {string} Markdown with empty line removed before list

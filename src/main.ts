@@ -1,7 +1,7 @@
 import {ItemView, MarkdownView, Plugin} from "obsidian";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 import {ApplyingToView, CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
-import {convertMarkdown} from "./utils/textConversion";
+import {convertMarkdown} from "./utils/conversion";
 import {CopyReadingInMarkdownSettingsTab} from "./settings";
 import {resources, translationLanguage} from "./i18n/i18next";
 import i18next from "i18next";
