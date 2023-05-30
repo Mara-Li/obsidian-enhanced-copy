@@ -34,8 +34,8 @@ export default class CopyReadingInMarkdown extends Plugin {
 			callback: () => {
 				//check if in reading mode
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				let viewIn = ApplyingToView.all;
-				let selectedText = "";
+				let viewIn : ApplyingToView;
+				let selectedText:string;
 				if (activeView && activeView.getMode() !== "source") {
 					selectedText = getSelectionAsHTML(this.settings);
 					viewIn = ApplyingToView.reading;
