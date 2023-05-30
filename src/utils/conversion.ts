@@ -110,12 +110,16 @@ function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings): s
  * @returns {string} converted markdown
  */
 export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings):string {
-	let newMarkdown = markdown;
-	newMarkdown = removeEmptyLineInBlockQuote(newMarkdown);
-	newMarkdown = removeLinksBracketsInMarkdown(newMarkdown, settings);
-	newMarkdown = removeLinksBracketFootnotes(newMarkdown, settings);
-	newMarkdown = removeHighlightMark(newMarkdown, settings);
-	newMarkdown = hardBreak(newMarkdown, settings);
-	newMarkdown = removeEmptyLineBeforeList(newMarkdown);
-	return newMarkdown;
+	return removeEmptyLineBeforeList(
+		hardBreak(
+			removeHighlightMark(
+				removeLinksBracketFootnotes(
+					removeLinksBracketsInMarkdown(markdown, settings),
+					settings
+				),
+				settings
+			),
+			settings
+		)
+	);
 }
