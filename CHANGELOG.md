@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.22](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.21...0.0.22) (2023-05-30)
+
+
+### Bug Fixes
+
+* an empty line is added before list ([fb6c226](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/fb6c2260ddf9e2f33e91ce438afe08103881a3c7))
+* you want to keep empty line in markdown ([1de1466](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/1de14666a923a992c3dc5f7c8ea3b580c8390eca))
+
 ## 0.0.21 (2023-05-21)
 
 ## [0.0.20](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.19...0.0.20) (2023-05-21)
