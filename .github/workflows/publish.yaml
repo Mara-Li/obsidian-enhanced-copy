@@ -40,7 +40,7 @@ jobs:
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
         STYLE: true
-        BETA: ${{ github.event.inputs.beta }}
+        BETA: ${{ inputs.beta }}
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
