@@ -9,7 +9,7 @@ on:
         required: false
       beta:
         default: false
-        description: "Made a beta release"
+        description: "Make a beta release"
         type: boolean
         required: false
   push:
@@ -21,12 +21,12 @@ jobs:
   echo:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo inputs
+      - name: Echo
         run: |
           echo "Bump: ${{ github.event.inputs.bump }}"
           echo "Beta: ${{ github.event.inputs.beta }}"
-  release-version:
-    if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && inputs.bump == false)
+  release:
+    if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && github.event.inputs.bump == false)
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
@@ -34,7 +34,7 @@ jobs:
         BETA: ${{ github.event.inputs.beta }}
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  bump-and-release-version:
+  bump-version:
     if: ${{ github.event.inputs.bump == true }}
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
     with:
