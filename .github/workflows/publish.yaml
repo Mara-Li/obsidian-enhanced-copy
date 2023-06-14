@@ -1,6 +1,12 @@
 name: Release obsidian plugin
-"on":
+on:
   workflow_dispatch:
+    inputs:
+      bump:
+        default: false
+        description: "Bump version"
+        type: boolean
+        required: false
   push:
     tags:
       - "*"
