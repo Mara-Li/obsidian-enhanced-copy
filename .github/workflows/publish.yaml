@@ -26,7 +26,7 @@ jobs:
           echo "Bump: ${{ github.event.inputs.bump }}"
           echo "Beta: ${{ github.event.inputs.beta }}"
   release:
-    if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && github.event.inputs.bump == false)
+    if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && github.event.inputs.bump == 'false')
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
@@ -35,12 +35,12 @@ jobs:
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   bump-version:
-    if: ${{ github.event.inputs.bump == true }}
+    if: ${{ github.event.inputs.bump == 'true' }}
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
         STYLE: true
         BETA: ${{ github.event.inputs.beta }}
     secrets: 
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
