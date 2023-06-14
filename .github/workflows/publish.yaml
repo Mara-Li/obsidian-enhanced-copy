@@ -18,7 +18,14 @@ on:
 permissions:
   contents: write
 jobs:
-  release:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo inputs
+        run: |
+          echo "Bump: ${{ github.event.inputs.bump }}"
+          echo "Beta: ${{ github.event.inputs.beta }}"
+  release-version:
     if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && inputs.bump == false)
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
@@ -27,7 +34,7 @@ jobs:
         BETA: ${{ github.event.inputs.beta }}
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  bump-version:
+  bump-and-release-version:
     if: ${{ github.event.inputs.bump == true }}
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
     with:
