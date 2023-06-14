@@ -4,7 +4,12 @@ on:
     inputs:
       bump:
         default: false
-        description: "Bump version"
+        description: "Bump version based on semantic release"
+        type: boolean
+        required: false
+      beta:
+        default: false
+        description: "Made a beta release"
         type: boolean
         required: false
   push:
@@ -19,6 +24,7 @@ jobs:
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
         STYLE: true
+        BETA: ${{ github.event.inputs.beta }}
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   bump-version:
@@ -27,6 +33,7 @@ jobs:
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
         STYLE: true
+        BETA: ${{ github.event.inputs.beta }}
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
   
