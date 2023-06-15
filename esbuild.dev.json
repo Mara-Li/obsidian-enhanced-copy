@@ -1,0 +1,5 @@
+{
+    "define" : {
+        "process.env.BUILD_ENV" : true
+    }
+}

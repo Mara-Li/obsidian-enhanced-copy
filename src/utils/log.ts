@@ -3,7 +3,7 @@
  * @source https://github.com/trganda/obsidian-attachment-management/blob/main/src/log.ts
  */
 
-export const DEBUG = !(process.env.BUILD_ENV === "production");
+export const DEBUG = process.env.BUILD_ENV;
 
 export function devLog(...args: unknown[]) {
 	if (DEBUG) {

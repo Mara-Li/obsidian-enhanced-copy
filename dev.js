@@ -45,7 +45,7 @@ if (vaultDev.trim().length > 0) {
 let msg = vaultDev.trim().length > 0 ? `-v ${c.underline.bold.blue(vaultDev)}` : "";
 const cmd = vaultDev.trim().length > 0 ? `-v ${vaultDev}` : "";
 
-const command = `obsidian-plugin dev --with-stylesheet src/styles.css src/main.ts ${cmd}`;
+const command = `obsidian-plugin dev --with-stylesheet src/styles.css src/main.ts ${cmd} -e esbuild.dev.json`;
 console.log(c.info.italic(`${c.bold(">")} obsidian-plugin dev ${c.dark.underline("--with-stylesheet src/styles.css")} src/main.ts ${msg}`));
 execSync(command, { stdio: "inherit" });
 
