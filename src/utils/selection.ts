@@ -1,6 +1,7 @@
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
 import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 import {CopyReadingInMarkdownSettings} from "../interface";
+import { devLog } from "./log";
 
 /**
  * Get the selection of the activeWindows and transform it as HTML
@@ -90,7 +91,12 @@ export function copySelectionRange(editor: Editor):string {
 		const anchor = getAnchor(selected.head, selected.anchor);
 		selectedText += editor.getRange(head, anchor) + "\n";
 	}
-	return selectedText.substring(0, selectedText.length - 1);
+	selectedText = selectedText.substring(0, selectedText.length - 1);
+	if (selectedText === "") {
+		devLog("selectedText is empty // Fallback on activeWindow.getSelection().toString()");
+		selectedText = activeWindow.getSelection().toString();
+	}
+	return selectedText;
 }
 
 /**
