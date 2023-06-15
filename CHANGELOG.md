@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.27](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.26...0.0.27) (2023-06-15)
+
 ## [0.0.26](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.25...0.0.26) (2023-06-15)
 
 
