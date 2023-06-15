@@ -4,7 +4,8 @@
         "src/i18n/locales"
     ],
     "cSpell.words": [
-        "preexport"
+        "preexport",
+        "Trganda"
     ],
     "files.exclude": {
         "**/.git": true,

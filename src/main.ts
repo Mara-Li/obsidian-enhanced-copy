@@ -6,10 +6,11 @@ import {CopyReadingInMarkdownSettingsTab} from "./settings";
 import {resources, translationLanguage} from "./i18n/i18next";
 import i18next from "i18next";
 import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
+import { devLog } from "./utils/log";
 
 export default class CopyReadingInMarkdown extends Plugin {
 	settings: CopyReadingInMarkdownSettings;
-	
+
 	async onload() {
 		console.log(
 			`CopyReadingInMarkdown v.${this.manifest.version} loaded.`
@@ -36,7 +37,9 @@ export default class CopyReadingInMarkdown extends Plugin {
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 				let viewIn : ApplyingToView;
 				let selectedText:string;
+				devLog("activeView=", activeView ? activeView.getMode() : "null");
 				if (activeView && activeView.getMode() !== "source") {
+					devLog("activeView.getMode(): ", activeView.getMode());
 					selectedText = getSelectionAsHTML(this.settings);
 					viewIn = ApplyingToView.reading;
 					//copy selected text to clipboard
