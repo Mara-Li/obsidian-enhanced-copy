@@ -102,7 +102,7 @@ function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings): s
 		markdown = markdown + "  ";
 	} else {
 		devLog("No hard breaks - Remove extra spaces at the end of each line");
-		markdown = markdown.replace(/\s*\n/g, "\n");
+		markdown = markdown.replace(/ *\n/g, "\n");
 	}
 	return markdown;
 }
