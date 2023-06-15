@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.26](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.25...0.0.26) (2023-06-15)
+
+
+### Bug Fixes
+
+* **conversion:** strict space regex ([34317a9](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/34317a910ee5c9277680935fc14edff1fdffbe72))
+
 ## [0.0.25](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.24...0.0.25) (2023-06-15)
 
 ## [0.0.24](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.23...0.0.24) (2023-06-15)
