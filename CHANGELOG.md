@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.24](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.23...0.0.24) (2023-06-15)
+
+
+### Bug Fixes
+
+* can't copy frontmatter (Make.MD) ([c7b290b](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/c7b290b90d9ff07e1d8fb3ebe5949b1259688893))
+* extra space at the end of line ([cc7779b](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/cc7779bea30881471ff541593eadc1377ae0c322))
+
 ## 0.0.23 (2023-06-14)
 
 ## [0.0.22](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.21...0.0.22) (2023-05-30)
