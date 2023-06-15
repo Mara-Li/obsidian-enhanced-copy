@@ -1,4 +1,5 @@
 import {ConversionOfFootnotes, ConversionOfLinks, CopyReadingInMarkdownSettings} from "../interface";
+import { devLog } from "./log";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -100,8 +101,8 @@ function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings): s
 		markdown = markdown.replace(/ *\n/g, "  \n");
 		markdown = markdown + "  ";
 	} else {
-		//remove extra spaces at the end of each line
-		markdown = markdown.replace(/ *\n/g, "\n");
+		devLog("No hard breaks - Remove extra spaces at the end of each line");
+		markdown = markdown.replace(/\s*\n/g, "\n");
 	}
 	return markdown;
 }
@@ -113,6 +114,7 @@ function hardBreak(markdown: string, settings: CopyReadingInMarkdownSettings): s
  * @returns {string} converted markdown
  */
 export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings):string {
+	devLog(markdown);
 	return removeEmptyLineBeforeList(
 		hardBreak(
 			removeHighlightMark(
