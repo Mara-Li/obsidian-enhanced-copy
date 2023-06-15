@@ -5,7 +5,6 @@ const c = require("ansi-colors");
 const dotenv = require("dotenv");
 
 const env = dotenv.config();
-
 const VAULT = env.parsed.VAULT;
 if (!VAULT || VAULT.trim().length === 0) {
 	console.error("Please set VAULT in .env.json");

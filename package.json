@@ -38,9 +38,9 @@
 	"scripts": {
 		"lint": "eslint --ext .ts src/",
 		"lint:fix": "eslint --ext .ts,.js,.json src/ --fix",
-		"build": "obsidian-plugin build src/main.ts -S src/styles.css ",
-		"dev:prod": "env-cmd node dev.js --prod",
-		"dev": "env-cmd node dev.js",
+		"build": "cross-env BUILD_ENV=production obsidian-plugin build src/main.ts -S src/styles.css ",
+		"dev:prod": "cross-env BUILD_ENV=development node dev.js --prod",
+		"dev": "cross-env BUILD_ENV=development node dev.js",
 		"preexport": "npm run build",
 		"export": "node export.js",
 		"bump": "node commit-and-tag-version.js",
