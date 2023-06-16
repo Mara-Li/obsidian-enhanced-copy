@@ -24,7 +24,7 @@ jobs:
     with:
         PLUGIN_NAME: "copy-reading-in-markdown"
         STYLE: true
-        BETA: ${{ inputs.beta }}
+        BETA: ${{ inputs.beta || false }}
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   bump-version:
