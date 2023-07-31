@@ -77,13 +77,13 @@ export enum ApplyingToView {
  * @property {ApplyingToView} applyingTo - Where to apply the markdown conversion (reading, edit or both)
 */
 export interface CopyReadingInMarkdownSettings {
-	convertLinks: ConversionOfLinks;
-	removeFootNotesLinks: ConversionOfFootnotes;
-	highlight: boolean;
-	calloutTitle: CalloutKeepTitle;
-	hardBreaks: boolean;
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
+	wikiToMarkdown: boolean;
+	tabToSpace: boolean;
+	tabSpaceSize: number;
+	overrides: GlobalSettings;
+	global: GlobalSettings;
 }
 
 /**
@@ -94,12 +94,31 @@ export interface CopyReadingInMarkdownSettings {
  * @readonly
  */
 export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
-	convertLinks: ConversionOfLinks.keep,
-	removeFootNotesLinks: ConversionOfFootnotes.keep,
-	highlight: false,
-	calloutTitle: CalloutKeepTitle.obsidian,
-	hardBreaks: false,
 	exportAsHTML: false,
 	applyingTo: ApplyingToView.all,
+	wikiToMarkdown: false,
+	tabToSpace: false,
+	tabSpaceSize: 4,
+	overrides: {
+		footnotes: ConversionOfFootnotes.keep,
+		links: ConversionOfLinks.keep,
+		callout: CalloutKeepTitle.obsidian,
+		highlight: false,
+		hardBreak: false,
+	},
+	global: {
+		footnotes: ConversionOfFootnotes.keep,
+		links: ConversionOfLinks.keep,
+		callout: CalloutKeepTitle.obsidian,
+		highlight: false,
+		hardBreak: false,
+	}
 };
 
+export interface GlobalSettings {
+	footnotes: ConversionOfFootnotes,
+	links: ConversionOfLinks,
+	callout: CalloutKeepTitle,
+	highlight: boolean,
+	hardBreak: boolean,
+}

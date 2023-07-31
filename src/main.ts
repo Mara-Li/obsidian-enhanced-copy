@@ -1,12 +1,15 @@
 import {ItemView, MarkdownView, Plugin} from "obsidian";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 import {ApplyingToView, CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
-import {convertMarkdown} from "./utils/conversion";
-import {CopyReadingInMarkdownSettingsTab} from "./settings";
+import {
+	convertEditMarkdown,
+	convertMarkdown,
+} from "./utils/conversion";
 import {resources, translationLanguage} from "./i18n/i18next";
 import i18next from "i18next";
 import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import { devLog } from "./utils/log";
+import {CopyReadingMarkdownSettingsTab} from "./settings";
 
 export default class CopyReadingInMarkdown extends Plugin {
 	settings: CopyReadingInMarkdownSettings;
@@ -16,7 +19,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 			`CopyReadingInMarkdown v.${this.manifest.version} loaded.`
 		);
 		
-		i18next.init({
+		await i18next.init({
 			lng: translationLanguage,
 			fallbackLng: "en",
 			resources: resources,
@@ -24,7 +27,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		});
 
 		await this.loadSettings();
-		this.addSettingTab(new CopyReadingInMarkdownSettingsTab(this.app, this));
+		this.addSettingTab(new CopyReadingMarkdownSettingsTab(this.app, this));
 		
 		/**
 		 * Copy the selected text in markdown format
@@ -67,10 +70,12 @@ export default class CopyReadingInMarkdown extends Plugin {
 						viewIn = ApplyingToView.reading;
 					}
 				}
+				devLog("applyTo=", this.settings.applyingTo, "viewIn=", viewIn);
 				if (selectedText && selectedText.trim().length > 0) {
 					if (!this.settings.exportAsHTML) {
 						if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn) {
-							selectedText = convertMarkdown(selectedText, this.settings);
+							if (viewIn === ApplyingToView.edit) selectedText = convertEditMarkdown(selectedText, this.settings.overrides, this.settings);
+							else selectedText = convertMarkdown(selectedText, this.settings, this.settings.global);
 						}
 					}
 					navigator.clipboard.writeText(selectedText);

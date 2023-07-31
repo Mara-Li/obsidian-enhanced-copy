@@ -6,6 +6,10 @@
     "strong": "Convert the type to a simple strong text",
     "title": "Callout type"
   },
+  "wikiToMarkdown" : {
+    "title" : "Convert wiki links to Markdown links (only in edit mode)",
+    "desc" : "The converted links will also take the previous settings for links"
+  },
   "commands": "Copy selected text",
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
@@ -43,5 +47,16 @@
     "edit": "Edit view",
     "reading": "Reading view only",
     "title": "Apply settings"
+  },
+  "edit" : {
+    "title" : "Edit",
+    "desc" : "Edit view settings"
+  },
+  "tabToSpace": "Convert tabs to spaces",
+  "tabSpaceSize" : "Number of spaces to be used for indentation",
+  "overrides": "Overrides previous settings",
+  "reading" : {
+    "title" : "Reading",
+    "desc": "Reading view settings"
   }
 }

@@ -3,8 +3,12 @@
     "desc": "Format du type de callout.",
     "obsidian": "Utiliser le format de callout d'Obsidian",
     "remove": "Suppression du type et transformation en simple citation",
-    "strong": "Convertir en texte en gras",
+    "strong": "Convertir le type en gras",
     "title": "Type de callout"
+  },
+  "wikiToMarkdown" : {
+    "title" : "Convertir les liens Wiki en liens Markdown (uniquement en mode édition)",
+    "desc": "La conversion prend en compte les paramètres précédents pour les liens"
   },
   "commands": "Copier le texte sélectionné",
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
@@ -43,5 +47,15 @@
     "edit": "Mode Édition",
     "reading": "Mode lecture uniquement",
     "title": "Appliquer les paramètres"
+  },
+  "edit" : {
+    "title" : "Édition",
+    "desc": "Paramètre pour la vue d'édition"
+  },
+  "tabToSpace": "Convertir les tabulations en espace",
+  "tabSpaceSize" : "Nombre d'espaces à utiliser pour la mise en retrait",
+  "reading" : {
+    "title" : "Lecture",
+    "desc": "Paramètre pour la vue de lecture"
   }
 }

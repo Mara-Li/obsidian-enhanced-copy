@@ -4,3 +4,88 @@
     white-space: break-spaces;
     padding: 1em;
 }
+
+.settings-tab-bar {
+	display: flex;
+	flex-direction: row;
+}
+
+.settings-tab {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: 10px;
+	border: 1px solid var(--background-modifier-border)
+}
+
+.settings-tab-active {
+	background-color: var(--color-accent);
+	color: var(--text-on-accent);
+}
+
+.settings-copy-reading-md {
+	font-weight: bold;
+}
+
+.settings-tab-icon {
+	display: flex;
+}
+
+
+@media screen and (max-width: 600px) {
+	.settings-tab-bar,
+	.setting-item > .setting-item-control {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.settings-tab {
+		border-bottom: 1px solid var(--background-modifier-border) !important;
+		border-radius: 5px !important;
+		margin-bottom: 5px;
+	}
+
+	.settings-tab-bar {
+		border-bottom: transparent !important;
+	}
+
+
+
+}
+
+
+.settings-tab {
+	padding: 10px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 5px 5px 0 0;
+}
+.settings-tab:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.settings-tab-active {
+	background-color: var(--color-accent);
+	color: var(--text-on-accent);
+	border: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.settings-tab-name {
+	font-weight: bold;
+	text-align: center;
+}
+.settings-tab-icon {
+	text-align: center;
+}
+.settings-tab-page > .setting-item:first-child {
+	margin-top: 15px;
+}
+
+nav.settings-tab-bar {
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.settings-tab {
+	border-bottom: transparent;
+}
