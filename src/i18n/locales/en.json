@@ -6,10 +6,6 @@
     "strong": "Convert the type to a simple strong text",
     "title": "Callout type"
   },
-  "wikiToMarkdown" : {
-    "title" : "Convert wiki links to Markdown links (only in edit mode)",
-    "desc" : "The converted links will also take the previous settings for links"
-  },
   "commands": "Copy selected text",
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
@@ -18,6 +14,10 @@
     "keep": "Keep markup",
     "remove": "Remove markup for all links",
     "title": "Links format"
+  },
+  "edit" : {
+    "desc" : "Edit view settings",
+    "title" : "Edit"
   },
   "hardBreaks": {
     "desc": "Add a standard markdown line break (two spaces at the end of the line) at the end of each line.",
@@ -29,6 +29,11 @@
   },
   "links": "Links",
   "other": "Other options",
+  "overrides": "Overrides previous settings",
+  "reading" : {
+    "desc": "Reading view settings",
+    "title" : "Reading"
+  },
   "removeFootnotesLinks": {
     "desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
     "format": "Remove all links but keep contents as [^1]",
@@ -37,6 +42,8 @@
     "title": "Footnotes format"
   },
   "settings": "[ COPY OPTIONS ]",
+  "tabSpaceSize" : "Number of spaces to be used for indentation",
+  "tabToSpace": "Convert tabs to spaces",
   "unconventionalMarkdown": {
     "desc": "Removed unconventional Markdown markup because they are not supported by all Markdown interpreters.",
     "title": "Unconventional Markdown"
@@ -48,15 +55,8 @@
     "reading": "Reading view only",
     "title": "Apply settings"
   },
-  "edit" : {
-    "title" : "Edit",
-    "desc" : "Edit view settings"
-  },
-  "tabToSpace": "Convert tabs to spaces",
-  "tabSpaceSize" : "Number of spaces to be used for indentation",
-  "overrides": "Overrides previous settings",
-  "reading" : {
-    "title" : "Reading",
-    "desc": "Reading view settings"
+  "wikiToMarkdown" : {
+    "desc" : "The converted links will also take the previous settings for links",
+    "title" : "Convert wiki links to Markdown links (only in edit mode)"
   }
 }

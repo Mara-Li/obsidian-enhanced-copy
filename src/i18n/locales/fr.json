@@ -6,10 +6,6 @@
     "strong": "Convertir le type en gras",
     "title": "Type de callout"
   },
-  "wikiToMarkdown" : {
-    "title" : "Convertir les liens Wiki en liens Markdown (uniquement en mode édition)",
-    "desc": "La conversion prend en compte les paramètres précédents pour les liens"
-  },
   "commands": "Copier le texte sélectionné",
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
@@ -18,6 +14,10 @@
     "keep": "Conserver toutes les balises",
     "remove": "Supprimer les balises pour tous les liens",
     "title": "Format des liens"
+  },
+  "edit" : {
+    "desc": "Paramètre pour la vue d'édition",
+    "title" : "Édition"
   },
   "hardBreaks": {
     "desc": "Ajouter un saut de ligne strict (deux espaces en fin de ligne) à la fin de chaque ligne.",
@@ -29,6 +29,10 @@
   },
   "links": "Liens",
   "other": "Autres options",
+  "reading" : {
+    "desc": "Paramètre pour la vue de lecture",
+    "title" : "Lecture"
+  },
   "removeFootnotesLinks": {
     "desc": "Modifier les balises des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
     "format": "Supprimer les liens, mais conserver le contenu sous forme de [^1]",
@@ -37,6 +41,8 @@
     "title": "Format des footnotes"
   },
   "settings": "[ COPY OPTIONS ]",
+  "tabSpaceSize" : "Nombre d'espaces à utiliser pour la mise en retrait",
+  "tabToSpace": "Convertir les tabulations en espace",
   "unconventionalMarkdown": {
     "desc": "Suppression des balises Markdown non conventionnelles car elles ne sont pas prise en charge par tous les interpréteurs Markdown.",
     "title": "Markdown non conventionnel"
@@ -48,14 +54,8 @@
     "reading": "Mode lecture uniquement",
     "title": "Appliquer les paramètres"
   },
-  "edit" : {
-    "title" : "Édition",
-    "desc": "Paramètre pour la vue d'édition"
-  },
-  "tabToSpace": "Convertir les tabulations en espace",
-  "tabSpaceSize" : "Nombre d'espaces à utiliser pour la mise en retrait",
-  "reading" : {
-    "title" : "Lecture",
-    "desc": "Paramètre pour la vue de lecture"
+  "wikiToMarkdown" : {
+    "desc": "La conversion prend en compte les paramètres précédents pour les liens",
+    "title" : "Convertir les liens Wiki en liens Markdown (uniquement en mode édition)"
   }
 }

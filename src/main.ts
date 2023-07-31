@@ -1,15 +1,16 @@
+import i18next from "i18next";
 import {ItemView, MarkdownView, Plugin} from "obsidian";
-import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
+
+import {resources, translationLanguage} from "./i18n/i18next";
 import {ApplyingToView, CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
+import {CopyReadingMarkdownSettingsTab} from "./settings";
 import {
 	convertEditMarkdown,
 	convertMarkdown,
 } from "./utils/conversion";
-import {resources, translationLanguage} from "./i18n/i18next";
-import i18next from "i18next";
-import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import { devLog } from "./utils/log";
-import {CopyReadingMarkdownSettingsTab} from "./settings";
+import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
+import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 
 export default class CopyReadingInMarkdown extends Plugin {
 	settings: CopyReadingInMarkdownSettings;

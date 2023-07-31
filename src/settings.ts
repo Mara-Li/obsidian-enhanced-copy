@@ -1,7 +1,8 @@
-import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
-import CopyReadingInMarkdown from "./main";
 import i18next from "i18next";
+import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
+
 import {ApplyingToView, CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks, GlobalSettings} from "./interface";
+import CopyReadingInMarkdown from "./main";
 
 interface Tab {
 	name: string;

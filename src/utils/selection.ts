@@ -1,7 +1,8 @@
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
-import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
+
 import {CopyReadingInMarkdownSettings} from "../interface";
 import { devLog } from "./log";
+import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 
 /**
  * Get the selection of the activeWindows and transform it as HTML
