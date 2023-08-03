@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.28](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.27...0.0.28) (2023-08-03)
+
+
+### Features
+
+* **settings:** refactor all settings & separate global & reading ([a14fb30](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/a14fb30727a58c24fb9d799cf887ed605d8956eb))
+
+
+### Bug Fixes
+
+* **callout:** fix some callout and forgot links ([d537ba9](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/d537ba9daf628945c4719d951c7aac6a113df538))
+* **editView:** add condition for links ([14477b5](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/14477b56deaf1a6e7626165a4557b4a144f587c2))
+* **links:** some info about links to markdown mandatory settings ([bf198aa](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/bf198aac0e4f83aa82ac959a3f761138b3b9f2df))
+
 ## [0.0.27](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.26...0.0.27) (2023-06-15)
 
 ## [0.0.26](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.25...0.0.26) (2023-06-15)
