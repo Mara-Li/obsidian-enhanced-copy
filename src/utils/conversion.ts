@@ -68,16 +68,14 @@ function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSetting
  * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
  */
 function convertWikiToMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
-	if (settings.wikiToMarkdown) {
-		const regexWikiLinks = /\[\[([^\]]+)\]\]/g;
-		markdown = markdown.replaceAll(regexWikiLinks, (match, p1) => {
-			const parts = p1.split("|");
-			if (parts.length === 1) {
-				return `[${p1}](${p1})`;
-			}
-			return `[${parts[1]}](${parts[0]})`;
-		});
-	}
+	const regexWikiLinks = /\[\[([^\]]+)\]\]/g;
+	markdown = markdown.replaceAll(regexWikiLinks, (match, p1) => {
+		const parts = p1.split("|");
+		if (parts.length === 1) {
+			return `[${p1}](${p1})`;
+		}
+		return `[${parts[1]}](${parts[0]})`;
+	});
 	return markdown;
 }
 
@@ -206,8 +204,10 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 }
 
 export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, settings: CopyReadingInMarkdownSettings) {
-	markdown = convertWikiToMarkdown(markdown, settings);
-	markdown = removeLinksBracketsInMarkdown(markdown, overrides);
+	if (settings.wikiToMarkdown) {
+		markdown = convertWikiToMarkdown(markdown, settings);
+		markdown = removeLinksBracketsInMarkdown(markdown, overrides);
+	}
 	markdown = convertTabToSpace(markdown, settings);
 	markdown = removeMarkdownFootNotes(markdown, overrides);
 	markdown = convertCallout(markdown, overrides);
