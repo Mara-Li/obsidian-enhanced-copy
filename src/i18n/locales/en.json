@@ -56,7 +56,7 @@
     "title": "Apply settings"
   },
   "wikiToMarkdown" : {
-    "desc" : "The converted links will also take the previous settings for links",
-    "title" : "Convert wiki links to Markdown links (only in edit mode)"
+    "desc" : "Mandatory to edit the links when copying them to the clipboard. If disabled, the settings for links format will be ignored.",
+    "title" : "Convert wiki links to Markdown link"
   }
 }

@@ -55,7 +55,7 @@
     "title": "Appliquer les paramètres"
   },
   "wikiToMarkdown" : {
-    "desc": "La conversion prend en compte les paramètres précédents pour les liens",
-    "title" : "Convertir les liens Wiki en liens Markdown (uniquement en mode édition)"
+    "desc": "Obligatoire pour éditer les liens lors de leur copie dans le presse-papiers. Si cette option est désactivée, les paramètres pour le format des liens sera ignoré.",
+    "title" : "Convertir les liens Wiki en liens Markdown"
   }
 }

@@ -197,12 +197,11 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 						});
 				});
 		}
-		
+		this.settingsPage.createEl("h2", {text: i18next.t("links")});
 		if (this.plugin.settings.wikiToMarkdown) {
-			this.settingsPage.createEl("h2", {text: i18next.t("links")});
 			this.links(this.plugin.settings.overrides);
-			this.footnotes(this.plugin.settings.overrides);
 		}
+		this.footnotes(this.plugin.settings.overrides);
 		this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
 		this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
 		this.calloutTitle(this.plugin.settings.overrides);
