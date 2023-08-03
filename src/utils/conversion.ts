@@ -152,14 +152,23 @@ function hardBreak(markdown: string, settings: GlobalSettings): string {
 }
 
 function convertCallout(markdown: string, overrides: GlobalSettings): string {
-	const calloutRegex = /^>+ +\[!(.*)\] * (.*)/gm;
+	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
 	if (overrides.callout === CalloutKeepTitle.remove) {
 		devLog("Remove callout title");
-		//delete > [!type] title
-		markdown = markdown.replace(calloutRegex, "> $2");
+		//delete the type of the callout
+		markdown = markdown.replace(calloutRegex, (match, p1, p2, p3) => {
+			if (p3 === "") {
+				//remove the line without adding a new line / space
+				return undefined;
+			}
+			return "> $3";
+		});
+		//remove line prepended by undefined
+		markdown = markdown.replace("undefined\n>", ">");
 	} else if (overrides.callout === CalloutKeepTitle.strong) {
-		markdown = markdown.replace(calloutRegex, "> **$1** $2");
+		markdown = markdown.replace(calloutRegex, "> **$1** $3");
 	}
+	
 	return markdown;
 }
 
@@ -198,6 +207,7 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 
 export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, settings: CopyReadingInMarkdownSettings) {
 	markdown = convertWikiToMarkdown(markdown, settings);
+	markdown = removeLinksBracketsInMarkdown(markdown, overrides);
 	markdown = convertTabToSpace(markdown, settings);
 	markdown = removeMarkdownFootNotes(markdown, overrides);
 	markdown = convertCallout(markdown, overrides);

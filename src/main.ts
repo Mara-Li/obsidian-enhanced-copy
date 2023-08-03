@@ -35,7 +35,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		 */
 		this.addCommand({
 			id: "copy-reading-in-markdown",
-			name: i18next.t("commands"),
+			name: i18next.t("translation:commands"),
 			callback: () => {
 				//check if in reading mode
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
