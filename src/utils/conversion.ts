@@ -38,7 +38,6 @@ function removeEmptyLineBeforeList(markdown: string): string {
  * - `[link](example.md) -> [link](example.md)`
  * @param markdown {string} Markdown to convert
  * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
- * @param view
  * @returns {string} Markdown with links removed if needed
  */
 function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSettings): string {
@@ -62,12 +61,10 @@ function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSetting
  * Convert wikilinks to markdown links
  * Only for edit view
  * @example `[[link]]` -> `[link](link)`
- * @example `[[link|text]]` -> `[text](link)`
  * @example `[[link#anchor|text]]` -> `[text](link#anchor)`
  * @param markdown {string} Markdown to convert
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
  */
-function convertWikiToMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings): string {
+function convertWikiToMarkdown(markdown: string): string {
 	const regexWikiLinks = /\[\[([^\]]+)\]\]/g;
 	markdown = markdown.replaceAll(regexWikiLinks, (match, p1) => {
 		const parts = p1.split("|");
@@ -205,7 +202,7 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 
 export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, settings: CopyReadingInMarkdownSettings) {
 	if (settings.wikiToMarkdown) {
-		markdown = convertWikiToMarkdown(markdown, settings);
+		markdown = convertWikiToMarkdown(markdown);
 		markdown = removeLinksBracketsInMarkdown(markdown, overrides);
 	}
 	markdown = convertTabToSpace(markdown, settings);
