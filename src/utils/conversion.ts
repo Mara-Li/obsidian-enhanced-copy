@@ -154,7 +154,7 @@ function convertCallout(markdown: string, overrides: GlobalSettings): string {
 		markdown = markdown.replace(calloutRegex, (match, p1, p2, p3) => {
 			if (p3 === "") {
 				//remove the line without adding a new line / space
-				return undefined;
+				return "undefined";
 			}
 			return "> $3";
 		});

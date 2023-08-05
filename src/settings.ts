@@ -12,7 +12,7 @@ interface Tab {
 
 export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 	plugin: CopyReadingInMarkdown;
-	settingsPage: HTMLElement;
+	settingsPage!: HTMLElement;
 	
 	READING: Tab = {
 		name: i18next.t("reading.title"),

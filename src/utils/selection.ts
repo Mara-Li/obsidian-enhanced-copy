@@ -12,7 +12,9 @@ import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
  * @returns {string}
  */
 export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
-	const range = activeWindow.getSelection().getRangeAt(0);
+	const getSelection = activeWindow.getSelection();
+	if (getSelection === null) return "";
+	const range = getSelection.getRangeAt(0);
 	if (!range) return "";
 	const fragment = range.cloneContents();
 	let div = document.createElement("div");
@@ -26,7 +28,7 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 		const type = commonAncestor.nodeName.toLowerCase();
 		div = reNumerateList(div, type);
 	}
-	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
+	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings.global);
 	if (!settings.exportAsHTML) {
 		const allNoConvert = div.querySelectorAll("[data-type='html']");
 		let markdown = htmlToMarkdown(div.innerHTML);
@@ -94,8 +96,9 @@ export function copySelectionRange(editor: Editor):string {
 	}
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	if (selectedText === "") {
-		devLog("selectedText is empty // Fallback on activeWindow.getSelection().toString()");
-		selectedText = activeWindow.getSelection().toString();
+		const getSelection = activeWindow.getSelection();
+		devLog(	"selectedText is empty // Fallback on activeWindow.getSelection().toString()");
+		return getSelection === null ? "" : getSelection.toString();
 	}
 	return selectedText;
 }
@@ -110,7 +113,7 @@ export function copySelectionRange(editor: Editor):string {
 export function canvasSelectionText(app: App, settings: CopyReadingInMarkdownSettings): string {
 	const editor = app.workspace.activeEditor;
 	if (editor) {
-		const editorMode = editor.editor;
+		const editorMode = editor.editor as Editor;
 		return copySelectionRange(editorMode);
 	} else {
 		return getSelectionAsHTML(settings);

@@ -6,10 +6,12 @@
  * @returns {string} The selected text (copying behavior of Obsidian)
  */
 
-export function removeDataBasePluginRelationShip() {
+export function removeDataBasePluginRelationShip(): string {
 	if (activeDocument.querySelector("div.database-plugin__container")) {
 		const div = document.createElement("div");
-		const selection = activeWindow.getSelection().getRangeAt(0);
+		const getSelection = activeWindow.getSelection();
+		if (!getSelection) return "";
+		const selection = getSelection.getRangeAt(0);
 		const fragment = selection.cloneContents();
 		div.appendChild(fragment);
 		const allSpan = div.querySelectorAll("span");
@@ -23,6 +25,8 @@ export function removeDataBasePluginRelationShip() {
 		}
 		return div.innerText;
 	} else {
-		return activeWindow.getSelection().toString();
+		const getSelection = activeWindow.getSelection();
+		if (!getSelection) return "";
+		return getSelection.toString();
 	}
 }

@@ -13,8 +13,8 @@ import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 
 export default class CopyReadingInMarkdown extends Plugin {
-	settings: CopyReadingInMarkdownSettings;
-
+	settings: CopyReadingInMarkdownSettings = DEFAULT_SETTINGS;
+	
 	async onload() {
 		console.log(
 			`CopyReadingInMarkdown v.${this.manifest.version} loaded.`
@@ -35,7 +35,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		 */
 		this.addCommand({
 			id: "copy-reading-in-markdown",
-			name: i18next.t("translation:commands"),
+			name: i18next.t("commands"),
 			callback: () => {
 				//check if in reading mode
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
