@@ -11,7 +11,7 @@ import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
  * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
  * @returns {string}
  */
-export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
+export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings): string {
 	const getSelection = activeWindow.getSelection();
 	if (getSelection === null) return "";
 	const range = getSelection.getRangeAt(0);
@@ -29,19 +29,17 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings) {
 		div = reNumerateList(div, type);
 	}
 	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings.global);
-	if (!settings.exportAsHTML) {
-		const allNoConvert = div.querySelectorAll("[data-type='html']");
-		let markdown = htmlToMarkdown(div.innerHTML);
-		//no converting html to markdown the div that contains a class with "no-convert"
-		for (const noConvert of allNoConvert) {
-			const converted = htmlToMarkdown(noConvert.outerHTML);
-			markdown = markdown.replace(converted, noConvert.outerHTML.replace(/ ?data-type=["']html["']/, ""));
-		}
-		
-		return markdown;
-	} else {
+	if (settings.exportAsHTML) {
 		return div.innerHTML;
 	}
+	const allNoConvert = div.querySelectorAll("[data-type='html']");
+	let markdown = htmlToMarkdown(div.innerHTML);
+	//no converting html to markdown the div that contains a class with "no-convert"
+	for (const noConvert of allNoConvert) {
+		const converted = htmlToMarkdown(noConvert.outerHTML);
+		markdown = markdown.replace(converted, noConvert.outerHTML.replace(/ ?data-type=["']html["']/, ""));
+	}
+	return markdown;
 }
 
 /** Return the real "head" of the selection
@@ -92,7 +90,7 @@ export function copySelectionRange(editor: Editor):string {
 	for (const selected of selection) {
 		const head = getHead(selected.head, selected.anchor);
 		const anchor = getAnchor(selected.head, selected.anchor);
-		selectedText += editor.getRange(head, anchor) + "\n";
+		selectedText += `${editor.getRange(head, anchor)}\n`;
 	}
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	if (selectedText === "") {
