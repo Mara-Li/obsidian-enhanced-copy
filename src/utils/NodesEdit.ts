@@ -1,4 +1,5 @@
-import {CalloutKeepTitle, GlobalSettings} from "../interface";
+
+import { CalloutKeepTitle, GlobalSettings } from "../interface";
 
 /**
  * Fix list that are not correctly converted to markdown
@@ -34,36 +35,95 @@ export function reNumerateList(div: HTMLDivElement, type: string) {
  * - `obsidian`: Will have the same behavior as the callout formatting in Obsidian
  * @param div {HTMLDivElement} The selected contents as HTML
  * @param commonAncestor {Node} The common ancestor of the selection
- * @param settings {GlobalSettings} 
+ * @param settings {GlobalSettings}
  * @returns {HTMLDivElement} The div transformed
  */
-export function replaceAllDivCalloutToBlockquote(div: HTMLDivElement, commonAncestor: Node, settings: GlobalSettings): HTMLDivElement {
+export function replaceAllDivCalloutToBlockquote(
+	div: HTMLDivElement,
+	commonAncestor: Node,
+	settings: GlobalSettings
+): HTMLDivElement {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
 	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
-		if (settings.callout !== CalloutKeepTitle.remove) {
-			if (divCallout.classList[0] === "callout-title") {
-				const ancestor = commonAncestor as HTMLDivElement;
-				const calloutType = ancestor.attributes.getNamedItem("data-callout")?.value ?? divCallout.parentElement?.attributes.getNamedItem("data-callout")?.value ;
-				calloutTitle = `[!${calloutType}] `;
-				if (settings.callout === CalloutKeepTitle.strong) {
-					calloutTitle = `<strong>${calloutType}</strong> `;
-				}
-				//insert callout title in title-content-inner div as html, before the text
-				const titleInner = divCallout.querySelector(".callout-title-inner");
-				titleInner!.innerHTML = calloutTitle + titleInner!.innerHTML;
+		if (
+			settings.callout !== CalloutKeepTitle.remove &&
+			divCallout.classList[0] === "callout-title"
+		) {
+			const ancestor = commonAncestor as HTMLDivElement;
+			const calloutType =
+				ancestor.attributes.getNamedItem("data-callout")?.value ??
+				divCallout.parentElement?.attributes.getNamedItem("data-callout")
+					?.value;
+			calloutTitle = `[!${calloutType}] `;
+			if (settings.callout === CalloutKeepTitle.strong) {
+				calloutTitle = `<strong>${capitalize(calloutType)}</strong> `;
 			}
+			//insert callout title in title-content-inner div as html, before the text
+			const titleInner = divCallout.querySelector(".callout-title-inner");
+			titleInner!.innerHTML = calloutTitle + titleInner!.innerHTML;
 		}
 		const blockquote = document.createElement("blockquote");
 		blockquote.innerHTML = divCallout.innerHTML;
 		//replace div by blockquote
 		divCallout.replaceWith(blockquote);
 	}
-	const titleInner = div.querySelector("div.callout-title-inner");
-	if (titleInner && !titleInner.innerHTML.contains(calloutTitle) && settings.callout !== CalloutKeepTitle.remove) {
-		titleInner.innerHTML = calloutTitle + titleInner.innerHTML;
+	const allTitleInner = div.querySelectorAll("div.callout-title-inner");
+	for (const titleInner of allTitleInner) {
+		if (titleInner && settings.callout !== CalloutKeepTitle.remove) {
+			titleInner.innerHTML = calloutTitle.toLowerCase().contains(
+				titleInner.innerHTML.toLowerCase()
+			)
+				? calloutTitle
+				: calloutTitle + titleInner.innerHTML;
+		} else if (titleInner && settings.callout === CalloutKeepTitle.remove) {
+			titleInner.remove();
+		}
 	}
-	return div;
+	return simplifyBlockquote(div);
 }
 
+/**
+ * This function will convert:
+ * ```html
+ * 	<blockquote>
+ * 	<div class="callout-title">
+ * 		<div class="callout-icon">...</div>
+ * 			<div class="callout-title-inner"><strong>info</strong></div>
+ * 		</div>
+ * 	<div class="callout-content"><p>coucou</p></div>
+ * </blockquote>
+ * ```
+ * to:
+ * ```html
+ * 	<blockquote>
+ * 		<strong>info</strong>
+ * 		<p>coucou</p>
+ * 	</blockquote>
+ * ```
+ * @param div {HTMLDivElement} The selected contents as HTML
+ * @returns {HTMLDivElement} The div transformed
+ */
+function simplifyBlockquote(div: HTMLDivElement): HTMLDivElement {
+	const blockquotes = div.querySelectorAll("blockquote");
+	const modifiedDivElement = document.createElement("div");
+	blockquotes.forEach((blockquote) => {
+		const calloutTitleInner = blockquote.querySelector(".callout-title-inner");
+		const calloutContent = blockquote.querySelector(".callout-content");
+		const calloutTitleInnerText = calloutTitleInner?.innerHTML ? `${calloutTitleInner!.innerHTML}<br>` : "";
+		const calloutContentHTML = calloutContent?.innerHTML ?? "";
+		const blockquoteHTML = `
+      <blockquote>
+        ${calloutTitleInnerText}
+        ${calloutContentHTML.replace("<p>", "<span>").replace("</p>", "</span>")}
+      </blockquote>
+    `;
+		modifiedDivElement.innerHTML += blockquoteHTML;
+	});
+	return modifiedDivElement;
+}
 
+function capitalize(string: string | undefined) {
+	if (string === undefined) return "";
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
