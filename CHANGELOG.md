@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.29](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.28...0.0.29) (2023-08-05)
+
+
+### Bug Fixes
+
+* following update of settings, fix callout and issue in reading mode ([e9a9690](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/e9a9690a300056cfb1d917044ba81103e683ec26))
+* **logs:** fix process not exist on mobile ([0e32e9e](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/0e32e9e514907a74a225fadd6ea5ea96df2518e0))
+* **readingMode: callout:** problem with callout indent ([0332ce8](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/0332ce88757505d59033287f2c71afba99a83e60))
+
 ## [0.0.28](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.27...0.0.28) (2023-08-03)
 
 
