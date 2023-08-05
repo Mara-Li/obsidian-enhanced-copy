@@ -66,14 +66,13 @@ function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSetting
  */
 function convertWikiToMarkdown(markdown: string): string {
 	const regexWikiLinks = /\[\[([^\]]+)\]\]/g;
-	markdown = markdown.replaceAll(regexWikiLinks, (match, p1) => {
+	return markdown.replaceAll(regexWikiLinks, (match, p1) => {
 		const parts = p1.split("|");
 		if (parts.length === 1) {
 			return `[${p1}](${p1})`;
 		}
 		return `[${parts[1]}](${parts[0]})`;
 	});
-	return markdown;
 }
 
 /**
@@ -92,10 +91,10 @@ function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMa
 	const regexFootNotes = /\[([^\]]*)\]\(([^)]*)\)\[(\d+)]/g;
 	if (settings.global.footnotes === ConversionOfFootnotes.remove) {
 		//keep links but remove footnotes format : [1](#text)[1]
-		markdown = markdown.replace(regexFootNotes, "");
+		return markdown.replace(regexFootNotes, "");
 	} else if (settings.global.footnotes === ConversionOfFootnotes.format) {
 		//keep links but format footnotes format : [[1]](#text)
-		markdown = markdown.replace(regexFootNotes, "[^$3]");
+		return markdown.replace(regexFootNotes, "[^$3]");
 	}
 	return markdown;
 }
@@ -109,7 +108,7 @@ function removeMarkdownFootNotes(markdown: string, overrides: GlobalSettings): s
 		 */
 		const regexFootNotes = /^\[\^(\w+)\]:/gm;
 		markdown = markdown.replace(regexFootNotes, "$1:");
-		markdown = markdown.replace(/\[\^\w+]/g, "");
+		return markdown.replace(/\[\^\w+]/g, "");
 	}
 	return markdown;
 }
@@ -122,7 +121,7 @@ function removeMarkdownFootNotes(markdown: string, overrides: GlobalSettings): s
  */
 function removeHighlightMark(markdown: string, settings: GlobalSettings): string {
 	if (settings.highlight ) {
-		markdown = markdown.replace(/==([^=]+)==/g, "$1");
+		return markdown.replace(/==([^=]+)==/g, "$1");
 	}
 	return markdown;
 }
@@ -147,6 +146,7 @@ function hardBreak(markdown: string, settings: GlobalSettings): string {
 }
 
 function convertCallout(markdown: string, overrides: GlobalSettings): string {
+	devLog("Convert callout", overrides.callout);
 	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
 	if (overrides.callout === CalloutKeepTitle.remove) {
 		devLog("Remove callout title");
@@ -159,9 +159,9 @@ function convertCallout(markdown: string, overrides: GlobalSettings): string {
 			return "> $3";
 		});
 		//remove line prepended by undefined
-		markdown = markdown.replace("undefined\n>", ">");
+		return markdown.replace("undefined\n>", ">");
 	} else if (overrides.callout === CalloutKeepTitle.strong) {
-		markdown = markdown.replace(calloutRegex, "> **$1** $3");
+		return markdown.replace(calloutRegex, "> **$1** $3");
 	}
 	
 	return markdown;
@@ -169,10 +169,11 @@ function convertCallout(markdown: string, overrides: GlobalSettings): string {
 
 
 
+
 function convertTabToSpace(markdown: string, settings: CopyReadingInMarkdownSettings) {
 	if (settings.tabToSpace) {
 		const spaces = " ".repeat(settings.tabSpaceSize);
-		markdown = markdown.replace(/\t/g, spaces);
+		return markdown.replace(/\t/g, spaces);
 	}
 	return markdown;
 }
@@ -187,7 +188,7 @@ function convertTabToSpace(markdown: string, settings: CopyReadingInMarkdownSett
  */
 export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings, overrides: GlobalSettings):string {
 	return removeEmptyLineBeforeList(
-		hardBreak(
+		convertCallout(hardBreak(
 			removeHighlightMark(
 				removeLinksBracketFootnotes(
 					removeLinksBracketsInMarkdown(markdown, overrides),
@@ -196,7 +197,8 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 				overrides
 			),
 			overrides
-		)
+		), 
+		overrides)
 	);
 }
 
