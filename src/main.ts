@@ -8,7 +8,6 @@ import {
 	convertEditMarkdown,
 	convertMarkdown,
 } from "./utils/conversion";
-import { devLog } from "./utils/log";
 import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 
@@ -41,9 +40,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 				const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 				let viewIn : ApplyingToView;
 				let selectedText:string;
-				devLog("activeView=", activeView ? activeView.getMode() : "null");
 				if (activeView && activeView.getMode() !== "source") {
-					devLog("activeView.getMode(): ", activeView.getMode());
 					selectedText = getSelectionAsHTML(this.settings);
 					viewIn = ApplyingToView.reading;
 					//copy selected text to clipboard
@@ -55,29 +52,17 @@ export default class CopyReadingInMarkdown extends Plugin {
 					viewIn = ApplyingToView.edit;
 				} else {
 					const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
-					devLog("leafType=", leafType);
 					if (leafType === "canvas") {
 						selectedText = canvasSelectionText(this.app, this.settings);
-						if (app.workspace.activeEditor) {
-							viewIn = ApplyingToView.edit;
-						} else {
-							viewIn = ApplyingToView.reading;
-						}
-					} else if (leafType === "database-plugin") {
-						selectedText = removeDataBasePluginRelationShip();
-						viewIn = ApplyingToView.reading;
+						viewIn = this.app.workspace.activeEditor ? ApplyingToView.edit : ApplyingToView.reading;
 					} else {
-						selectedText = activeWindow.getSelection()?.toString() ?? "";
+						selectedText = leafType === "database-plugin" ? removeDataBasePluginRelationShip() : activeWindow.getSelection()?.toString() ?? "";
 						viewIn = ApplyingToView.reading;
 					}
 				}
-				devLog("applyTo=", this.settings.applyingTo, "viewIn=", viewIn);
 				if (selectedText && selectedText.trim().length > 0) {
-					if (!this.settings.exportAsHTML) {
-						if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn) {
-							if (viewIn === ApplyingToView.edit) selectedText = convertEditMarkdown(selectedText, this.settings.overrides, this.settings);
-							else selectedText = convertMarkdown(selectedText, this.settings, this.settings.global);
-						}
+					if (!this.settings.exportAsHTML && (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn)) {
+						selectedText = viewIn === ApplyingToView.edit ? convertEditMarkdown(selectedText, this.settings.overrides, this.settings) : convertMarkdown(selectedText, this.settings, this.settings.global);
 					}
 					navigator.clipboard.writeText(selectedText);
 				} else if (viewIn === ApplyingToView.edit) {
