@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file. See [commit
 
 ### Features
 
-* **settings:** refactor all settings & separate global & reading ([a14fb30](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/a14fb30727a58c24fb9d799cf887ed605d8956eb))
+* **settings:** refactor all settings & separate editing & reading ([a14fb30](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/a14fb30727a58c24fb9d799cf887ed605d8956eb))
 
 
 ### Bug Fixes
