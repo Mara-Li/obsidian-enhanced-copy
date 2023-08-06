@@ -19,20 +19,54 @@ Copy a selection in reading view while keeping the markdown formatting
 
 You can adjust the way the content is copied in the settings.
 
-1. Choose which mode/view you want to set up the markup edition 
-    For example, you can apply only on reading mode, so your copy-paste in Obsidian edit are the same.
-2. Choose to copy in HTMl instead of Markdown (a majority of the following settings will be disabled)
-3. Adjust the links markup (keep, delete all or delete for internal links)
-4. Adjust the footnotes markup (keep all, keep the contents as `[^1]` or delete all)
-5. For unconventional markup :
-   - Delete the markup of highlight (`==`)
-   - Choose how the callout type must be formatted. It can be removed, keep as in obsidian or convert in bold ("à la" github callout)
-6. You can also copy with hard break lines (the plugin will add two spaces at the end of each line)
+First, you need to set the view mode to use. You can choose between:
+- `reading`: Only the selected text in reading view will be edited
+- `editing` : Only the selected text in editing view will be edited
+- `all` : The selected text will be edited in both views
+
+You can also choose to add a command for each copy-mode. It will create a command for :
+- Reading view (with checkCallback)
+- Editing view
+- Non markdown view (canvas, database-plugin...)
+
+The reading view and editing view have ~ the same settings, but you need to set them separately. It will allow having different copy settings for each view.
+
+### Reading view
+
+You can copy to HTML but it will disable all the other options
+
+- You can change the aspect of the links:
+    - `Keep` : Don't change the link (so they will be in `[link](url)` format)
+    - `Remove all` : Remove all the links, and keep only the alias (so `[link](url)` will be `link`)
+    - `Remove only for internal links` : Remove only the internal links (so `[link](url)` will be `link` but `[link](https://example.com)` will be `[link](https://example.com)`)
+- Same, you can change the footnote settings: 
+    - `Keep` : Don't change the footnote (so they will be in the strange format of Obsidian turndown: `footnote[[1]](#fn-1-xxx)`)
+    - `Remove all` : Remove all the footnotes, and keep only the alias (so `footnote[[1]](#fn-1-xxx)` will be `footnote`)
+    - `Format as [^1]`: Convert `footnote[[1]](#fn-1-xxx)` to `footnote[^1]` 
+  These settings will also fix the "markdown contents," aka the footnote at the end of the documents. 
+  > **Info**  
+  > With the **format** option, if you copy multiple footnote, they will be `[^1]:` `[^2]:` etc..., not a numbered list!
+- Unconventional markdown: 
+  - Highlight: Remove `==` around the highlighted text
+  - Fix callout:
+    - `Obsidian format` : Keep the same format 
+    - `Type to strong` : Convert all in blockquote and transform the type to bold: `> [!info]` will become `> **Info**` (à la GitHub Callout)
+    - `Simple blockquote` : Remove type, keep title and convert to blockquote.
+- Other:
+  - Strict line breaks: Add two spaces at the end of each line
+  - Space number: By default, turndown convert the tabulation to 4 spaces. You can change this number here.
+
+### Editing view
+
+Note: The Majority of the options are the same of the reading view, so I will only explain the differences.
+
+- Convert wikilinks to Markdown links: Convert `[[link]]` to `[link](link)`. Needed to convert the links (as in reading view).
+- Convert tabulation to space and choose the size 
+
 
 ## 📝 Limitations
 
-- For a strange reason, the first line of a blockquote (only that is selected) is not copied as a blockquote. If you select the line before, they are... Same if the line is "empty" (or use invisible characters like `$~~$`).
-- Footnotes are... Strange. They are copied as links, not the content of the footnote (check settings if you want to adjust this)
+- For a strange reason, the first line of a blockquote / list / callout is not selected totally properly as HTML. If you want to format only a part of this, you need to select the line before (or after). You can use "invisible" characters, `$~~$` for example. 
 - Not support Mathjax copying (as you can't select them in reading view).
 - In reading view, already "HTML writing" are not copied as HTML (like `<b>…</b>`). They are copied as markdown, or only the text is copied (if not basic html). You can prevent this using the `data-type="html"` attribute on the element. For example, `b data-type="html"` will be copied as `<b>…</b>`.
 - Selecting text with image will copy the name of the image. If you want to copy the image, you need to select the image itself (not the text).
@@ -76,7 +110,7 @@ npm run build
 
 ### 📤 Export
 
-You can use the `npm run export` command to export your plugin to your Obsidian Main Vault. To do that, you need the `.env.json` file with the following content:
+You can use the `npm run export` command to export your plugin to your Obsidian Main Vault. To do that, you need the `.env` file with the following content:
 
 ```dotenv
 VAULT=path/to/main/vault
