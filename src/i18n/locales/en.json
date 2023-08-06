@@ -65,8 +65,8 @@
     "title" : "Convert wiki links to Markdown link"
   },
   "hotkey": {
-    "title": "Separate hotkey",
-    "desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode."
+    "title": "Separate commands",
+    "desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode. ⚠️️ You need to reload the plugin to apply the changes."
   },
   "spaceSize" : {
     "title" : "Space size",

@@ -64,8 +64,8 @@
     "title" : "Convertir les liens Wiki en liens Markdown"
   },
   "hotkey": {
-    "title" : "Séparer les raccourcis claviers",
-    "desc": "Créez une commande distincte pour chaque mode. Cela vous permet d'attribuer un raccourci clavier différent pour chaque mode."
+    "title" : "Séparer les commandes",
+    "desc": "Créez une commande distincte pour chaque mode. Cela vous permet d'attribuer un raccourci clavier différent pour chaque mode. ⚠ Nécessite le rechargement du plugin pour prendre effet."
   },
   "spaceSize" : {
     "title" : "Nombre d'espace",
