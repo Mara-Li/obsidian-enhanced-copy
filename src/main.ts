@@ -75,7 +75,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 					}
 				}
 			});
-		} else {
+		} else if (this.settings.separateHotkey && this.settings.applyingTo === ApplyingToView.all) {
 			this.addCommand({
 				id: "copy-editor-in-markdown",
 				name: i18next.t("commands.editor"),
