@@ -2192,7 +2192,7 @@ packages:
       path-is-absolute: 1.0.1
     dev: true
 
-  /global-dirs@3.0.1:
+  /reading-dirs@3.0.1:
     resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
     engines: {node: '>=10'}
     dependencies:
@@ -2486,7 +2486,7 @@ packages:
     resolution: {integrity: sha512-iwGqO3J21aaSkC7jWnHP/difazwS7SFeIqxv6wEtLU8Y5KlzFTjyqcSIT0d8s4+dDhKytsk9PJZ2BkS5eZwQRQ==}
     engines: {node: '>=10'}
     dependencies:
-      global-dirs: 3.0.1
+      reading-dirs: 3.0.1
       is-path-inside: 3.0.3
     dev: true
 
@@ -2590,7 +2590,7 @@ packages:
       is-docker: 2.2.1
     dev: true
 
-  /is-yarn-global@0.3.0:
+  /is-yarn-reading@0.3.0:
     resolution: {integrity: sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw==}
     dev: true
 
@@ -3809,7 +3809,7 @@ packages:
       is-ci: 2.0.0
       is-installed-globally: 0.4.0
       is-npm: 5.0.0
-      is-yarn-global: 0.3.0
+      is-yarn-reading: 0.3.0
       latest-version: 5.1.0
       pupa: 2.1.1
       semver: 7.5.4
