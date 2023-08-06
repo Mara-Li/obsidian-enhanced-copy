@@ -116,9 +116,20 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 						this.display();
 					});
 			});
+		if (this.plugin.settings.applyingTo === ApplyingToView.all) {
+			new Setting(this.settingsPage)
+				.setName(i18next.t("hotkey.title"))
+				.setDesc(i18next.t("hotkey.desc"))
+				.addToggle((toggle) => {
+					toggle
+						.setValue(this.plugin.settings.separateHotkey)
+						.onChange(async (value) => {
+							this.plugin.settings.separateHotkey = value;
+							await this.plugin.saveSettings();
+						});
+				});
+		}
 	}
-	
-
 	
 	renderReading() {
 		this.settingsPage.createEl("h1", {text: i18next.t("reading.desc")});
@@ -135,19 +146,31 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 			});
 		if (!this.plugin.settings.exportAsHTML) {
 			this.settingsPage.createEl("h2", {text: i18next.t("links")});
-			this.links(this.plugin.settings.global);
-			this.footnotes(this.plugin.settings.global);
+			this.links(this.plugin.settings.reading);
+			this.footnotes(this.plugin.settings.reading);
 				
 			this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
 			this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
-			this.highlight(this.plugin.settings.global);
+			this.highlight(this.plugin.settings.reading);
 		}
 			
-		this.calloutTitle(this.plugin.settings.global);
+		this.calloutTitle(this.plugin.settings.reading);
 			
 		if (!this.plugin.settings.exportAsHTML) {
 			this.settingsPage.createEl("h2", {text: i18next.t("other")});
-			this.hardBreak(this.plugin.settings.global);
+			this.hardBreak(this.plugin.settings.reading);
+			new Setting(this.settingsPage)
+				.setName(i18next.t("spaceSize.title"))
+				.setDesc(i18next.t("spaceSize.desc"))
+				.addText((text) => {
+					text
+						.setPlaceholder("-1")
+						.setValue(String(this.plugin.settings.spaceReadingSize))
+						.onChange(async (value) => {
+							this.plugin.settings.spaceReadingSize = Number(value);
+							await this.plugin.saveSettings();
+						});
+				});
 		}
 	}
 	
@@ -199,15 +222,15 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 		}
 		this.settingsPage.createEl("h2", {text: i18next.t("links")});
 		if (this.plugin.settings.wikiToMarkdown) {
-			this.links(this.plugin.settings.overrides);
+			this.links(this.plugin.settings.editing);
 		}
-		this.footnotes(this.plugin.settings.overrides);
+		this.footnotes(this.plugin.settings.editing);
 		this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
 		this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
-		this.calloutTitle(this.plugin.settings.overrides);
-		this.highlight(this.plugin.settings.overrides);
+		this.calloutTitle(this.plugin.settings.editing);
+		this.highlight(this.plugin.settings.editing);
 		this.settingsPage.createEl("h2", {text: i18next.t("other")});
-		this.hardBreak(this.plugin.settings.overrides);
+		this.hardBreak(this.plugin.settings.editing);
 	}
 	
 	highlight(settings: GlobalSettings) {

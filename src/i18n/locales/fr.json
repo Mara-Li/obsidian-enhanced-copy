@@ -6,7 +6,12 @@
     "strong": "Convertir le type en gras",
     "title": "Type de callout"
   },
-  "commands": "Copier le texte sélectionné",
+  "commands": {
+    "all" : "Copier le texte sélectionné",
+    "editor" : "Copier le texte sélectionné depuis l'éditeur",
+    "reading": "Copier le texte sélectionné depuis la vue de lecture",
+    "other" : "Copier le texte sélectionné depuis la vue non markdown"
+  },
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
     "desc": "Modifier l'aspect des liens lorsqu'ils sont copiés dans le presse-papiers.",
@@ -57,5 +62,13 @@
   "wikiToMarkdown" : {
     "desc": "Obligatoire pour éditer les liens lors de leur copie dans le presse-papiers. Si cette option est désactivée, les paramètres pour le format des liens sera ignoré.",
     "title" : "Convertir les liens Wiki en liens Markdown"
+  },
+  "hotkey": {
+    "title" : "Séparer les raccourcis claviers",
+    "desc": "Créez une commande distincte pour chaque mode. Cela vous permet d'attribuer un raccourci clavier différent pour chaque mode."
+  },
+  "spaceSize" : {
+    "title" : "Nombre d'espace",
+    "desc" : "Modification du nombre d'espace pour la mise en retrait. Utiliser -1 pour désactiver la fonction de conversion."
   }
 }

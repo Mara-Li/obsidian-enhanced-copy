@@ -6,7 +6,12 @@
     "strong": "Convert the type to a simple strong text",
     "title": "Callout type"
   },
-  "commands": "Copy selected text",
+  "commands": {
+    "all" : "Copy selected text",
+    "editor" : "Copy selected text from edit view",
+    "reading" : "Copy selected text from reading view",
+    "other": "Copy selected text from opened view"
+  },
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
     "desc": "Adjust the way links are formatted when copying to the clipboard.",
@@ -58,5 +63,13 @@
   "wikiToMarkdown" : {
     "desc" : "Mandatory to edit the links when copying them to the clipboard. If disabled, the settings for links format will be ignored.",
     "title" : "Convert wiki links to Markdown link"
+  },
+  "hotkey": {
+    "title": "Separate hotkey",
+    "desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode."
+  },
+  "spaceSize" : {
+    "title" : "Space size",
+    "desc" : "Number of spaces to be used for indentation. Use -1 to disable the conversion."
   }
 }

@@ -65,25 +65,17 @@ export enum ApplyingToView {
 	"edit" = "edit",
 }
 
-/** 
- * Settings of the plugin
- * @typedef {Object} CopyReadingInMarkdownSettings
- * @property {ConversionOfLinks} convertLinks - How to convert the links
- * @property {ConversionOfFootnotes} removeFootNotesLinks - How to convert the footnotes
- * @property {boolean} highlight - Highlight the text when copying
- * @property {CalloutKeepTitle} calloutTitle - How to keep the title of the callout
- * @property {boolean} hardBreaks - Keep the hard breaks when copying
- * @property {boolean} exportAsHTML - Export the text as HTML when copying
- * @property {ApplyingToView} applyingTo - Where to apply the markdown conversion (reading, edit or both)
-*/
+
 export interface CopyReadingInMarkdownSettings {
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
+	separateHotkey: boolean;
 	wikiToMarkdown: boolean;
 	tabToSpace: boolean;
 	tabSpaceSize: number;
-	overrides: GlobalSettings;
-	global: GlobalSettings;
+	spaceReadingSize: number;
+	editing: GlobalSettings;
+	reading: GlobalSettings;
 }
 
 /**
@@ -96,17 +88,19 @@ export interface CopyReadingInMarkdownSettings {
 export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
 	exportAsHTML: false,
 	applyingTo: ApplyingToView.all,
+	separateHotkey: false,
 	wikiToMarkdown: false,
 	tabToSpace: false,
 	tabSpaceSize: 4,
-	overrides: {
+	spaceReadingSize: -1, //disabled
+	editing: {
 		footnotes: ConversionOfFootnotes.keep,
 		links: ConversionOfLinks.keep,
 		callout: CalloutKeepTitle.obsidian,
 		highlight: false,
 		hardBreak: false,
 	},
-	global: {
+	reading: {
 		footnotes: ConversionOfFootnotes.keep,
 		links: ConversionOfLinks.keep,
 		callout: CalloutKeepTitle.obsidian,
