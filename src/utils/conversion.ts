@@ -89,10 +89,10 @@ function convertWikiToMarkdown(markdown: string): string {
  */
 function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMarkdownSettings): string {
 	const regexFootNotes = /\[([^\]]*)\]\(([^)]*)\)\[(\d+)]/g;
-	if (settings.global.footnotes === ConversionOfFootnotes.remove) {
+	if (settings.reading.footnotes === ConversionOfFootnotes.remove) {
 		//keep links but remove footnotes format : [1](#text)[1]
 		return markdown.replace(regexFootNotes, "");
-	} else if (settings.global.footnotes === ConversionOfFootnotes.format) {
+	} else if (settings.reading.footnotes === ConversionOfFootnotes.format) {
 		//keep links but format footnotes format : [[1]](#text)
 		return markdown.replace(regexFootNotes, "[^$3]");
 	}
@@ -178,6 +178,21 @@ function convertTabToSpace(markdown: string, settings: CopyReadingInMarkdownSett
 	return markdown;
 }
 
+function convertSpaceSize(markdown: string, settings: CopyReadingInMarkdownSettings) {
+	/** Note:
+		 * Turndown will always convert \t to 4 space
+		 * So if we want to reduce the space size, we need to count each 4 space as 1 space for each line
+	 */
+	const countSpace = markdown.match(/^ +/gm);
+	
+	if (settings.spaceReadingSize >= 0 && countSpace) {
+		countSpace.forEach((space) => {
+			const newSpace = " ".repeat(space.length / 4 * settings.spaceReadingSize);
+			markdown = markdown.replace(space, newSpace);
+		});
+	}
+	return markdown;
+}
 
 /**
  * Main function of the plugin, will convert the markdown depending of the settings
@@ -188,17 +203,19 @@ function convertTabToSpace(markdown: string, settings: CopyReadingInMarkdownSett
  */
 export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings, overrides: GlobalSettings):string {
 	return removeEmptyLineBeforeList(
-		convertCallout(hardBreak(
-			removeHighlightMark(
-				removeLinksBracketFootnotes(
-					removeLinksBracketsInMarkdown(markdown, overrides),
-					settings
+		convertSpaceSize(convertCallout(
+			hardBreak(
+				removeHighlightMark(
+					removeLinksBracketFootnotes(
+						removeLinksBracketsInMarkdown(markdown, overrides),
+						settings
+					),
+					overrides
 				),
 				overrides
 			),
-			overrides
-		), 
-		overrides)
+			overrides),
+		settings)
 	);
 }
 
