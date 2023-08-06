@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.31](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.30...0.0.31) (2023-08-06)
+
+
+### Bug Fixes
+
+* **callout:** prevent duplicate ([f1590ce](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f1590ced22cda34f5bb97da077d0bd14d9e42149))
+* **commands:** the separated commands appear same if disabled ([b7e8974](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/b7e8974e8427387de080522bdb595629ae9739c1))
+* **footnote:** fix footnote contents ([bd2bd52](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/bd2bd5238ca5ed4057e35f6e024150dfa080c876))
+
 ## [0.0.30](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.29...0.0.30) (2023-08-06)
 
 
