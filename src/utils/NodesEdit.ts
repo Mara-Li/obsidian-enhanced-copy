@@ -1,6 +1,5 @@
 
 import { CalloutKeepTitle, GlobalSettings } from "../interface";
-import {devLog} from "./log";
 
 /**
  * Fix list that are not correctly converted to markdown
@@ -45,7 +44,6 @@ export function replaceAllDivCalloutToBlockquote(
 	settings: GlobalSettings
 ): HTMLDivElement {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
-	devLog("allDivCallout", allDivCallout);
 	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
 		if (
@@ -70,12 +68,11 @@ export function replaceAllDivCalloutToBlockquote(
 		}
 		const blockquote = document.createElement("blockquote");
 		blockquote.innerHTML = divCallout.innerHTML;
-		//replace div by blockquote
+		//replace div by blockquote<
 		divCallout.replaceWith(blockquote);
 	}
 	const allTitleInner = div.querySelectorAll("div.callout-title-inner");
 	for (const titleInner of allTitleInner) {
-		devLog("titleInner in all", titleInner);
 		if (titleInner && settings.callout !== CalloutKeepTitle.remove) {
 			titleInner.innerHTML = calloutTitle.toLowerCase().contains(
 				titleInner.innerHTML.toLowerCase()
@@ -86,7 +83,6 @@ export function replaceAllDivCalloutToBlockquote(
 			titleInner.remove();
 		}
 	}
-	devLog(div);
 	return simplifyBlockquote(div);
 }
 
