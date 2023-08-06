@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.30](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.29...0.0.30) (2023-08-06)
+
+
+### Features
+
+* **hotkey:** allow to separate hotkeys for each view type ([6bc11e2](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/6bc11e2449b24d8c2b48095b6cb2c9ae7f66e566))
+* **reading:** allow to change space size in reading view ([1366113](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/13661135efcbbac5d453202ac0fc33dd52d2c6bb))
+
+
+### Bug Fixes
+
+* **callout:** fix callout malconvert/blockquote ignored ([73c8472](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/73c8472ee8a6e68c5eae682fdda433409029358c))
+
 ## [0.0.29](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.28...0.0.29) (2023-08-05)
 
 
