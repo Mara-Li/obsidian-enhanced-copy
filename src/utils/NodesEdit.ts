@@ -45,6 +45,7 @@ export function replaceAllDivCalloutToBlockquote(
 	settings: GlobalSettings
 ): HTMLDivElement {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
+	devLog("allDivCallout", allDivCallout);
 	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
 		if (
@@ -62,7 +63,10 @@ export function replaceAllDivCalloutToBlockquote(
 			}
 			//insert callout title in title-content-inner div as html, before the text
 			const titleInner = divCallout.querySelector(".callout-title-inner");
-			titleInner!.innerHTML = calloutTitle + titleInner!.innerHTML;
+			if (titleInner && !calloutTitle.contains(titleInner.innerHTML.toLowerCase()))
+				titleInner?.replaceWith(calloutTitle + titleInner?.innerHTML);
+			else
+				titleInner?.replaceWith(calloutTitle);
 		}
 		const blockquote = document.createElement("blockquote");
 		blockquote.innerHTML = divCallout.innerHTML;
@@ -71,6 +75,7 @@ export function replaceAllDivCalloutToBlockquote(
 	}
 	const allTitleInner = div.querySelectorAll("div.callout-title-inner");
 	for (const titleInner of allTitleInner) {
+		devLog("titleInner in all", titleInner);
 		if (titleInner && settings.callout !== CalloutKeepTitle.remove) {
 			titleInner.innerHTML = calloutTitle.toLowerCase().contains(
 				titleInner.innerHTML.toLowerCase()
@@ -81,6 +86,7 @@ export function replaceAllDivCalloutToBlockquote(
 			titleInner.remove();
 		}
 	}
+	devLog(div);
 	return simplifyBlockquote(div);
 }
 
