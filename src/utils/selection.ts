@@ -19,16 +19,13 @@ export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings): str
 	const fragment = range.cloneContents();
 	let div = document.createElement("div");
 	div.appendChild(fragment);
-	//check if div.innerHTML contains a class with "no-convert"
-	
-	//check if commonAncestor is ol or ul
 	const commonAncestor = range.commonAncestorContainer;
 	if (commonAncestor.nodeName === "OL" || commonAncestor.nodeName === "UL") {
 		//if so, create ol or ul and append all li to it
 		const type = commonAncestor.nodeName.toLowerCase();
 		div = reNumerateList(div, type);
 	}
-	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings.global);
+	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings.reading);
 	if (settings.exportAsHTML) {
 		return div.innerHTML;
 	}

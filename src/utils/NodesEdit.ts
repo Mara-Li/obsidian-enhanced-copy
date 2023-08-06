@@ -1,5 +1,6 @@
 
 import { CalloutKeepTitle, GlobalSettings } from "../interface";
+import {devLog} from "./log";
 
 /**
  * Fix list that are not correctly converted to markdown
@@ -106,21 +107,23 @@ export function replaceAllDivCalloutToBlockquote(
  */
 function simplifyBlockquote(div: HTMLDivElement): HTMLDivElement {
 	const blockquotes = div.querySelectorAll("blockquote");
-	const modifiedDivElement = document.createElement("div");
 	blockquotes.forEach((blockquote) => {
+		const modifiedDivElement = document.createElement("div");
 		const calloutTitleInner = blockquote.querySelector(".callout-title-inner");
 		const calloutContent = blockquote.querySelector(".callout-content");
+		if (!calloutTitleInner && !calloutContent) return;
 		const calloutTitleInnerText = calloutTitleInner?.innerHTML ? `${calloutTitleInner!.innerHTML}<br>` : "";
 		const calloutContentHTML = calloutContent?.innerHTML ?? "";
-		const blockquoteHTML = `
+		modifiedDivElement.innerHTML = `
       <blockquote>
         ${calloutTitleInnerText}
         ${calloutContentHTML.replace("<p>", "<span>").replace("</p>", "</span>")}
       </blockquote>
     `;
-		modifiedDivElement.innerHTML += blockquoteHTML;
+		//we need to replace the the blockquote by the new simplified blockquote
+		blockquote.replaceWith(modifiedDivElement);
 	});
-	return modifiedDivElement;
+	return div;
 }
 
 function capitalize(string: string | undefined) {
