@@ -78,23 +78,41 @@ function convertWikiToMarkdown(markdown: string): string {
 /**
  * Depending of the settings, will removing completely footnote or keeping content but removing the footnote format
  * @example `remove` : Remove all footnotes in markdown
- * 	`[](#text)[1]` -> ``
+ * 	`footnote[[1]](#fn-1-632b5699b7da7a44)` -> `footnote`
  * @example `format` : Keep the content of the footnote but remove the footnote format
- * 	`[](#text)[1]` -> `[^1]`
+ * 	`footnote[[1]](#fn-1-632b5699b7da7a44)` -> `footnote[^1]`
  * @example `keep` : Keep all footnotes in markdown
- * 	`[](#text)` -> `[](#text)`
+ * 	`footnote[[1]](#fn-1-632b5699b7da7a44)` -> `footnote[[1]](#fn-1-632b5699b7da7a44)`
  * @param markdown {string} Markdown to convert
  * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
  * @returns {string} Markdown with footnotes removed if needed
  */
-function removeLinksBracketFootnotes(markdown: string, settings: CopyReadingInMarkdownSettings): string {
-	const regexFootNotes = /\[([^\]]*)\]\(([^)]*)\)\[(\d+)]/g;
-	if (settings.reading.footnotes === ConversionOfFootnotes.remove) {
+function fixFootNotes(markdown: string, settings: GlobalSettings): string {
+	const regexFootNotes = /\[{2}(\w+)\]{2}\((.*)\)/g;
+	if (settings.footnotes === ConversionOfFootnotes.remove) {
 		//keep links but remove footnotes format : [1](#text)[1]
-		return markdown.replace(regexFootNotes, "");
-	} else if (settings.reading.footnotes === ConversionOfFootnotes.format) {
+		markdown = markdown.replace(regexFootNotes, "");
+	} else if (settings.footnotes === ConversionOfFootnotes.format) {
 		//keep links but format footnotes format : [[1]](#text)
-		return markdown.replace(regexFootNotes, "[^$3]");
+		markdown = markdown.replace(regexFootNotes, "[^$1]");
+	}
+	return fixFootnoteContents(markdown, settings);
+}
+
+/**
+ * Convert the turndown format to proper reading markdown
+ * @example Remove: `coucou[](#fnref-1-632b5699b7da7a44)` -> coucou
+ * @example Format: `coucou[](#fnref-1-632b5699b7da7a44)` -> [^1]: coucou`
+ * @param markdown
+ * @param overrides
+ */
+function fixFootnoteContents(markdown: string, overrides: GlobalSettings): string {
+	const regexFootNotes = /(.*)\[\]\(#fnref-(\d)-\w+\)/g;
+	if (overrides.footnotes === ConversionOfFootnotes.remove) {
+		markdown = markdown.replace(regexFootNotes, "$1");
+	} else if (overrides.footnotes === ConversionOfFootnotes.format) {
+		markdown= markdown.replace(regexFootNotes, "[^$2]: $1");
+		markdown = markdown.replace(/(\[\^\w+\]): (\d+)\./gm, "$1:");
 	}
 	return markdown;
 }
@@ -206,9 +224,9 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 		convertSpaceSize(convertCallout(
 			hardBreak(
 				removeHighlightMark(
-					removeLinksBracketFootnotes(
+					fixFootNotes(
 						removeLinksBracketsInMarkdown(markdown, overrides),
-						settings
+						overrides
 					),
 					overrides
 				),
