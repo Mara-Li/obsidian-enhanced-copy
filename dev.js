@@ -4,6 +4,7 @@ const fs = require("fs");
 const c = require("ansi-colors");
 const { execSync } = require("child_process");
 const path = require("path");
+
 let vaultDev = process.env.VAULT_DEV || "";
 //get args "--prod" or "--dev"
 const args = process.argv.slice(2);
@@ -27,7 +28,7 @@ if (args.length > 0 && args[0] === "--prod") {
 }
 
 if (vaultDev.trim().length > 0) {
-	const filePath = path.join(vaultDev, ".obsidian", "plugins", "copy-reading-in-markdown", ".hotreload");
+	const filePath = path.join(vaultDev, ".obsidian", "plugins", "advanced-copy", ".hotreload");
 	if (!fs.existsSync(filePath)) {
 		console.log(`${c.danger.bold("❌")} ${c.danger(".hotreload file not found. Creating it...")}`);
 		fs.writeFile(filePath, "", (err) => {

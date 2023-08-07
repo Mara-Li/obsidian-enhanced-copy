@@ -3,6 +3,7 @@ const { Command, Option } = require("commander");
 const commitAndTagVersion = require("commit-and-tag-version");
 const dedent = require("dedent");
 const c = require("ansi-colors");
+
 const program = new Command();
 
 c.theme({

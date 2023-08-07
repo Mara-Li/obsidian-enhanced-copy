@@ -28,7 +28,7 @@
 	},
 	"license": "GPL-3.0-only",
 	"main": "lib/main.js",
-	"name": "copy-reading-in-markdown",
+	"name": "advanced-copy",
 	"scripts": {
 		"lint": "eslint --ext .ts src/",
 		"lint:fix": "eslint --ext .ts,.js,.json src/ --fix",
