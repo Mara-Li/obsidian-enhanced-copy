@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.0](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.31...0.1.0) (2023-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **manifest:** As the id was edited, you need to save your settings (if any) before upgrading.
+  As the old plugin won't be deleted, you need to do it yourself.
+
+* **manifest:** rename ([8e1ff87](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/8e1ff8759c90a20877329114c597f50dd01477fd))
+
 ## [0.0.31](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.30...0.0.31) (2023-08-06)
 
 
