@@ -7,10 +7,19 @@
     "title": "Callout type"
   },
   "commands": {
-    "all" : "Copy selected text",
-    "editor" : "Copy selected text from edit view",
-    "reading" : "Copy selected text from reading view",
-    "other": "Copy selected text from opened view"
+    "all": "Copy selected text",
+    "editor": "Copy selected text from edit view",
+    "other": "Copy selected text from opened view",
+    "reading": "Copy selected text from reading view"
+  },
+  "common": {
+    "add": "Add",
+    "delete": "Delete",
+    "from": "from",
+    "pattern": "pattern",
+    "replacement": "replacement",
+    "save": "Save",
+    "to": "to"
   },
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
@@ -20,9 +29,13 @@
     "remove": "Remove markup for all links",
     "title": "Links format"
   },
-  "edit" : {
-    "desc" : "Edit view settings",
-    "title" : "Edit"
+  "edit": {
+    "desc": "Edit view settings",
+    "title": "Edit"
+  },
+  "global": {
+    "copy": "Copy settings between view",
+    "title": "Global"
   },
   "hardBreaks": {
     "desc": "Add a standard markdown line break (two spaces at the end of the line) at the end of each line.",
@@ -32,12 +45,40 @@
     "desc": "Remove the highlight markup (==).",
     "title": "Highlight"
   },
+  "hotkey": {
+    "desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode. ⚠️️ You need to reload the plugin to apply the changes.",
+    "title": "Separate commands"
+  },
   "links": "Links",
+  "log": {
+    "callout": {
+      "remove": "Remove callout title",
+      "title": "Convert callout"
+    },
+    "editMode": "Edit mode",
+    "empty": "selectedText is empty // Fallback on activeWindow.getSelection().toString()",
+    "noHardBreaks": "No hard breaks - Remove extra spaces at the end of each line",
+    "readingMode": "Reading mode"
+  },
+  "modal": {
+    "copyView": {
+      "copy": "Copy",
+      "editing": "Editing view",
+      "from": "from",
+      "reading": "Reading View"
+    },
+    "replaceText": {
+      "down": "Move down",
+      "title": "Replace Text",
+      "up": "Move up"
+    }
+  },
+  "openTextReplacer": "Open Text replacer",
   "other": "Other options",
   "overrides": "Overrides previous settings",
-  "reading" : {
+  "reading": {
     "desc": "Reading view settings",
-    "title" : "Reading"
+    "title": "Reading"
   },
   "removeFootnotesLinks": {
     "desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
@@ -47,7 +88,11 @@
     "title": "Footnotes format"
   },
   "settings": "[ COPY OPTIONS ]",
-  "tabSpaceSize" : "Number of spaces to be used for indentation",
+  "spaceSize": {
+    "desc": "Number of spaces to be used for indentation. Use -1 to disable the conversion.",
+    "title": "Space size"
+  },
+  "tabSpaceSize": "Number of spaces to be used for indentation",
   "tabToSpace": "Convert tabs to spaces",
   "unconventionalMarkdown": {
     "desc": "Removed unconventional Markdown markup because they are not supported by all Markdown interpreters.",
@@ -60,16 +105,8 @@
     "reading": "Reading view only",
     "title": "Apply settings"
   },
-  "wikiToMarkdown" : {
-    "desc" : "Mandatory to edit the links when copying them to the clipboard. If disabled, the settings for links format will be ignored.",
-    "title" : "Convert wiki links to Markdown link"
-  },
-  "hotkey": {
-    "title": "Separate commands",
-    "desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode. ⚠️️ You need to reload the plugin to apply the changes."
-  },
-  "spaceSize" : {
-    "title" : "Space size",
-    "desc" : "Number of spaces to be used for indentation. Use -1 to disable the conversion."
+  "wikiToMarkdown": {
+    "desc": "Mandatory to edit the links when copying them to the clipboard. If disabled, the settings for links format will be ignored.",
+    "title": "Convert wiki links to Markdown link"
   }
 }

@@ -89,3 +89,7 @@ nav.settings-tab-bar {
 .settings-tab {
 	border-bottom: transparent;
 }
+
+.advanced-copy > .text-area .setting-item-info {
+	display: none;
+}

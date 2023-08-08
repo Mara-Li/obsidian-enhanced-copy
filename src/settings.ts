@@ -2,7 +2,8 @@ import i18next from "i18next";
 import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
 
 import {ApplyingToView, CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks, GlobalSettings} from "./interface";
-import CopyReadingInMarkdown from "./main";
+import AdvancedCopy from "./main";
+import {AdvancedCopyViewModal, AllReplaceTextModal} from "./modal";
 
 interface Tab {
 	name: string;
@@ -10,8 +11,8 @@ interface Tab {
 	icon: string;
 }
 
-export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
-	plugin: CopyReadingInMarkdown;
+export class AdvancedCopySettingTab extends PluginSettingTab {
+	plugin: AdvancedCopy;
 	settingsPage!: HTMLElement;
 	
 	READING: Tab = {
@@ -28,13 +29,13 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 	
 	TABS: Tab[] = [
 		{
-			name: "Global",
+			name: i18next.t("global.title"),
 			id: "global",
 			icon: "globe"
 		},
 	];
 	
-	constructor(app: App, plugin: CopyReadingInMarkdown) {
+	constructor(app: App, plugin: AdvancedCopy) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -96,7 +97,7 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 	}
 	
 	renderGlobal() {
-		this.settingsPage.createEl("h1", {text: "Global"});
+		this.settingsPage.createEl("h1", {text: i18next.t("global.title")});
 		new Setting(this.settingsPage)
 			.setName(i18next.t("view.title"))
 			.setDesc(i18next.t("view.desc"))
@@ -126,6 +127,18 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 						.onChange(async (value) => {
 							this.plugin.settings.separateHotkey = value;
 							await this.plugin.saveSettings();
+						});
+				});
+			new Setting(this.settingsPage)
+				.addButton((button) => {
+					button
+						.setButtonText(i18next.t("global.copy"))
+						.onClick(async () => {
+							new AdvancedCopyViewModal(this.app, this.plugin.settings, (result) => {
+								this.plugin.settings = result;
+								this.plugin.saveSettings();
+								this.display();
+							}).open();
 						});
 				});
 		}
@@ -172,6 +185,8 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 						});
 				});
 		}
+		
+		this.regexReplacementButton(this.plugin.settings.reading);
 	}
 	
 	renderEdit() {
@@ -231,6 +246,8 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 		this.highlight(this.plugin.settings.editing);
 		this.settingsPage.createEl("h2", {text: i18next.t("other")});
 		this.hardBreak(this.plugin.settings.editing);
+		
+		this.regexReplacementButton(this.plugin.settings.editing);
 	}
 	
 	highlight(settings: GlobalSettings) {
@@ -313,5 +330,23 @@ export class CopyReadingMarkdownSettingsTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					});
 			});
+	}
+	
+	regexReplacementButton(settings: GlobalSettings) {
+		return new Setting(this.settingsPage)
+			.addButton((button) => {
+				button
+					.setButtonText(i18next.t("openTextReplacer"))
+					.onClick(async () => {
+						if (!settings.replaceText)
+							settings.replaceText = [];
+						new AllReplaceTextModal(this.app, settings.replaceText, (async result => {
+							settings.replaceText = result;
+						})).open();
+						await this.plugin.saveSettings();
+					})
+					.buttonEl.style.width = "100%";
+			})
+			.infoEl.style.display = "none";
 	}
 }

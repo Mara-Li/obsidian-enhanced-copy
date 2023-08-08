@@ -66,7 +66,7 @@ export enum ApplyingToView {
 }
 
 
-export interface CopyReadingInMarkdownSettings {
+export interface AdvancedCopySettings {
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
 	separateHotkey: boolean;
@@ -80,12 +80,12 @@ export interface CopyReadingInMarkdownSettings {
 
 /**
  * Default settings of the plugin
- * @type {CopyReadingInMarkdownSettings}
+ * @type {AdvancedCopySettings}
  * @constant
  * @default
  * @readonly
  */
-export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
+export const DEFAULT_SETTINGS: AdvancedCopySettings = {
 	exportAsHTML: false,
 	applyingTo: ApplyingToView.all,
 	separateHotkey: false,
@@ -99,6 +99,7 @@ export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
 		callout: CalloutKeepTitle.obsidian,
 		highlight: false,
 		hardBreak: false,
+		replaceText: []
 	},
 	reading: {
 		footnotes: ConversionOfFootnotes.keep,
@@ -106,6 +107,7 @@ export const DEFAULT_SETTINGS: CopyReadingInMarkdownSettings = {
 		callout: CalloutKeepTitle.obsidian,
 		highlight: false,
 		hardBreak: false,
+		replaceText: []
 	}
 };
 
@@ -115,4 +117,15 @@ export interface GlobalSettings {
 	callout: CalloutKeepTitle,
 	highlight: boolean,
 	hardBreak: boolean,
+	replaceText: ReplaceText[]
+}
+
+export interface ReplaceText {
+	pattern: string,
+	replacement: string
+}
+
+export enum CopySettingsView {
+	reading = "reading",
+	editing = "editing"
 }

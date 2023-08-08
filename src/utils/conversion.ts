@@ -1,8 +1,10 @@
+import i18next from "i18next";
+
 import {
-	CalloutKeepTitle,
+	AdvancedCopySettings, 	CalloutKeepTitle,
 	ConversionOfFootnotes,
 	ConversionOfLinks,
-	CopyReadingInMarkdownSettings, GlobalSettings
+	GlobalSettings
 } from "../interface";
 import {devLog} from "./log";
 
@@ -37,7 +39,7 @@ function removeEmptyLineBeforeList(markdown: string): string {
  * - `[link](https://example.com)` -> `[link](https://example.com)`
  * - `[link](example.md) -> [link](example.md)`
  * @param markdown {string} Markdown to convert
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @param settings {AdvancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with links removed if needed
  */
 function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSettings): string {
@@ -84,7 +86,7 @@ function convertWikiToMarkdown(markdown: string): string {
  * @example `keep` : Keep all footnotes in markdown
  * 	`footnote[[1]](#fn-1-632b5699b7da7a44)` -> `footnote[[1]](#fn-1-632b5699b7da7a44)`
  * @param markdown {string} Markdown to convert
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @param settings {AdvancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with footnotes removed if needed
  */
 function fixFootNotes(markdown: string, settings: GlobalSettings): string {
@@ -134,7 +136,7 @@ function removeMarkdownFootNotes(markdown: string, overrides: GlobalSettings): s
 /**
  * As the highlight is not supported in all markdown editor, we can remove it if needed (depending of the settings)
  * @param markdown {string} Markdown to convert
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @param settings {AdvancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with highlight removed if needed
  */
 function removeHighlightMark(markdown: string, settings: GlobalSettings): string {
@@ -149,25 +151,25 @@ function removeHighlightMark(markdown: string, settings: GlobalSettings): string
  * @example
  * `line1\nline2` -> `line1  \nline2  \n`
  * @param markdown {string} Markdown to convert
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @param settings {AdvancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with hard breaks added if needed
  */
 function hardBreak(markdown: string, settings: GlobalSettings): string {
 	if (settings.hardBreak) {
 		markdown = markdown.replace(/ *\n/g, "  \n");
-		markdown = markdown + "  ";
+		markdown += "  ";
 	} else {
-		devLog("No hard breaks - Remove extra spaces at the end of each line");
+		devLog(i18next.t("log.noHardBreaks"));
 		markdown = markdown.replace(/ *\n/g, "\n");
 	}
 	return markdown;
 }
 
 function convertCallout(markdown: string, overrides: GlobalSettings): string {
-	devLog("Convert callout", overrides.callout);
+	devLog(i18next.t("log.callout.title"), overrides.callout);
 	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
 	if (overrides.callout === CalloutKeepTitle.remove) {
-		devLog("Remove callout title");
+		devLog(i18next.t("log.callout.remove"));
 		//delete the type of the callout
 		markdown = markdown.replace(calloutRegex, (match, p1, p2, p3) => {
 			if (p3 === "") {
@@ -188,7 +190,7 @@ function convertCallout(markdown: string, overrides: GlobalSettings): string {
 
 
 
-function convertTabToSpace(markdown: string, settings: CopyReadingInMarkdownSettings) {
+function convertTabToSpace(markdown: string, settings: AdvancedCopySettings) {
 	if (settings.tabToSpace) {
 		const spaces = " ".repeat(settings.tabSpaceSize);
 		return markdown.replace(/\t/g, spaces);
@@ -196,7 +198,7 @@ function convertTabToSpace(markdown: string, settings: CopyReadingInMarkdownSett
 	return markdown;
 }
 
-function convertSpaceSize(markdown: string, settings: CopyReadingInMarkdownSettings) {
+function convertSpaceSize(markdown: string, settings: AdvancedCopySettings) {
 	/** Note:
 		 * Turndown will always convert \t to 4 space
 		 * So if we want to reduce the space size, we need to count each 4 space as 1 space for each line
@@ -212,20 +214,36 @@ function convertSpaceSize(markdown: string, settings: CopyReadingInMarkdownSetti
 	return markdown;
 }
 
+function textReplacement(markdown: string, settings: GlobalSettings) {
+	const replacement = settings.replaceText;
+	for (const replace of replacement) {
+		let pattern : string | RegExp = replace.pattern;
+		if (pattern.match(/^\/.*\/([gmiyu]+)$/)) {
+			const flags = pattern.replace(/^\/.*\/([gmiyu]+)$/, "$1");
+			const regex = pattern.replace(/^\/(.*)\/(.*)$/, "$1");
+			pattern = new RegExp(regex, flags);
+		}
+		markdown = markdown.replace(pattern, replace.replacement);
+	}
+	return markdown;
+}
+
 /**
  * Main function of the plugin, will convert the markdown depending of the settings
  * @param markdown {string} Markdown to convert
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @param settings {AdvancedCopySettings} Settings of the plugin
  * @param overrides
  * @returns {string} converted markdown
  */
-export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdownSettings, overrides: GlobalSettings):string {
+export function convertMarkdown(markdown: string, settings: AdvancedCopySettings, overrides: GlobalSettings):string {
 	return removeEmptyLineBeforeList(
 		convertSpaceSize(convertCallout(
 			hardBreak(
 				removeHighlightMark(
 					fixFootNotes(
-						removeLinksBracketsInMarkdown(markdown, overrides),
+						removeLinksBracketsInMarkdown(
+							(textReplacement(markdown, overrides))
+							, overrides),
 						overrides
 					),
 					overrides
@@ -237,7 +255,7 @@ export function convertMarkdown(markdown: string, settings: CopyReadingInMarkdow
 	);
 }
 
-export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, settings: CopyReadingInMarkdownSettings) {
+export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, settings: AdvancedCopySettings) {
 	if (settings.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
 		markdown = removeLinksBracketsInMarkdown(markdown, overrides);
@@ -247,5 +265,6 @@ export function convertEditMarkdown(markdown: string, overrides: GlobalSettings,
 	markdown = convertCallout(markdown, overrides);
 	markdown = removeHighlightMark(markdown, overrides);
 	markdown = hardBreak(markdown, overrides);
+	markdown = textReplacement(markdown, overrides);
 	return markdown;
 }

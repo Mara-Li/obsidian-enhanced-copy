@@ -1,6 +1,7 @@
+import i18next from "i18next";
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
 
-import {CopyReadingInMarkdownSettings} from "../interface";
+import {AdvancedCopySettings} from "../interface";
 import { devLog } from "./log";
 import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 
@@ -8,10 +9,10 @@ import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
  * Get the selection of the activeWindows and transform it as HTML
  * if the will apply all transformation needed and return the markdown or the HTML
  * @note HTML with data-type = "html" will not be converted to markdown
- * @param settings {CopyReadingInMarkdownSettings} Settings of the plugin
+ * @param settings {AdvancedCopySettings} Settings of the plugin
  * @returns {string}
  */
-export function getSelectionAsHTML(settings: CopyReadingInMarkdownSettings): string {
+export function getSelectionAsHTML(settings: AdvancedCopySettings): string {
 	const getSelection = activeWindow.getSelection();
 	if (getSelection === null) return "";
 	const range = getSelection.getRangeAt(0);
@@ -92,7 +93,7 @@ export function copySelectionRange(editor: Editor):string {
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	if (selectedText === "") {
 		const getSelection = activeWindow.getSelection();
-		devLog(	"selectedText is empty // Fallback on activeWindow.getSelection().toString()");
+		devLog(	i18next.t("log.empty"));
 		return getSelection === null ? "" : getSelection.toString();
 	}
 	return selectedText;
@@ -102,10 +103,10 @@ export function copySelectionRange(editor: Editor):string {
  * In Canvas only, check if the selection is in editor or not
  * If in editor, return the text as in Obsidian. If not, run getSelectionAsHTML and return the output
  * @param app {App}} 
- * @param settings {CopyReadingInMarkdownSettings}
+ * @param settings {AdvancedCopySettings}
  * @returns {string} 
  */
-export function canvasSelectionText(app: App, settings: CopyReadingInMarkdownSettings): string {
+export function canvasSelectionText(app: App, settings: AdvancedCopySettings): string {
 	const editor = app.workspace.activeEditor;
 	if (editor) {
 		const editorMode = editor.editor as Editor;

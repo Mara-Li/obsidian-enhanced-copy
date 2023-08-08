@@ -31,9 +31,13 @@ You can also choose to add a command for each copy-mode. It will create a comman
 
 The reading view and editing view have ~ the same settings, but you need to set them separately. It will allow having different copy settings for each view.
 
-### Reading view
+### Common settings
 
-You can copy to HTML but it will disable all the other options
+These settings are the same for both views. As they are separate for each view, if you want some edit in the two views, you need to set them twice.
+It is done on purpose to prevent surprise when you use the plugin on editing view but don't want some changes.
+
+> **Info**
+> The button in the first tab "copy" will allow you to copy the settings for one view to the other. 
 
 - You can change the aspect of the links:
     - `Keep` : Don't change the link (so they will be in `[link](url)` format)
@@ -54,11 +58,15 @@ You can copy to HTML but it will disable all the other options
     - `Simple blockquote` : Remove type, keep title and convert to blockquote.
 - Other:
   - Strict line breaks: Add two spaces at the end of each line
-  - Space number: By default, turndown convert the tabulation to 4 spaces. You can change this number here.
+- Regex replacement: You can add more replacement to the copy with the button that will open a modal. Note that the replacement will be done **after all other changes**. 
 
-### Editing view
+### Not common settings
+#### Reading view
 
-Note: The Majority of the options are the same of the reading view, so I will only explain the differences.
+- You can copy to HTML but it will disable all the other options.
+- Space number : By default, turndown will convert tabulation to 4 spaces. You can change this size here.
+
+#### Editing view
 
 - Convert wikilinks to Markdown links: Convert `[[link]]` to `[link](link)`. Needed to convert the links (as in reading view).
 - Convert tabulation to space and choose the size 

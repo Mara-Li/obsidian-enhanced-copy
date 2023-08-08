@@ -7,10 +7,15 @@
     "title": "Type de callout"
   },
   "commands": {
-    "all" : "Copier le texte sélectionné",
-    "editor" : "Copier le texte sélectionné depuis l'éditeur",
-    "reading": "Copier le texte sélectionné depuis la vue de lecture",
-    "other" : "Copier le texte sélectionné depuis la vue non markdown"
+    "all": "Copier le texte sélectionné",
+    "editor": "Copier le texte sélectionné depuis l'éditeur",
+    "other": "Copier le texte sélectionné depuis la vue non markdown",
+    "reading": "Copier le texte sélectionné depuis la vue de lecture"
+  },
+  "common": {
+    "add": "Ajouter",
+    "pattern": "pattern",
+    "replacement": "remplacement"
   },
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
@@ -20,9 +25,9 @@
     "remove": "Supprimer les balises pour tous les liens",
     "title": "Format des liens"
   },
-  "edit" : {
+  "edit": {
     "desc": "Paramètre pour la vue d'édition",
-    "title" : "Édition"
+    "title": "Édition"
   },
   "hardBreaks": {
     "desc": "Ajouter un saut de ligne strict (deux espaces en fin de ligne) à la fin de chaque ligne.",
@@ -32,11 +37,22 @@
     "desc": "Suppression de la balise de surlignage (==)",
     "title": "Surlignage"
   },
+  "hotkey": {
+    "desc": "Créez une commande distincte pour chaque mode. Cela vous permet d'attribuer un raccourci clavier différent pour chaque mode. ⚠ Nécessite le rechargement du plugin pour prendre effet.",
+    "title": "Séparer les commandes"
+  },
   "links": "Liens",
+  "modal": {
+    "replaceText": {
+      "title": "Remplacer du texte",
+      "up": "Monter"
+    }
+  },
   "other": "Autres options",
-  "reading" : {
+  "overrides": "Remplace les paramètres précédents",
+  "reading": {
     "desc": "Paramètre pour la vue de lecture",
-    "title" : "Lecture"
+    "title": "Lecture"
   },
   "removeFootnotesLinks": {
     "desc": "Modifier les balises des notes de bas de page lorsqu'elles sont copiées dans le presse-papiers.",
@@ -46,7 +62,11 @@
     "title": "Format des footnotes"
   },
   "settings": "[ COPY OPTIONS ]",
-  "tabSpaceSize" : "Nombre d'espaces à utiliser pour la mise en retrait",
+  "spaceSize": {
+    "desc": "Modification du nombre d'espace pour la mise en retrait. Utiliser -1 pour désactiver la fonction de conversion.",
+    "title": "Nombre d'espace"
+  },
+  "tabSpaceSize": "Nombre d'espaces à utiliser pour la mise en retrait",
   "tabToSpace": "Convertir les tabulations en espace",
   "unconventionalMarkdown": {
     "desc": "Suppression des balises Markdown non conventionnelles car elles ne sont pas prise en charge par tous les interpréteurs Markdown.",
@@ -59,16 +79,8 @@
     "reading": "Mode lecture uniquement",
     "title": "Appliquer les paramètres"
   },
-  "wikiToMarkdown" : {
+  "wikiToMarkdown": {
     "desc": "Obligatoire pour éditer les liens lors de leur copie dans le presse-papiers. Si cette option est désactivée, les paramètres pour le format des liens sera ignoré.",
-    "title" : "Convertir les liens Wiki en liens Markdown"
-  },
-  "hotkey": {
-    "title" : "Séparer les commandes",
-    "desc": "Créez une commande distincte pour chaque mode. Cela vous permet d'attribuer un raccourci clavier différent pour chaque mode. ⚠ Nécessite le rechargement du plugin pour prendre effet."
-  },
-  "spaceSize" : {
-    "title" : "Nombre d'espace",
-    "desc" : "Modification du nombre d'espace pour la mise en retrait. Utiliser -1 pour désactiver la fonction de conversion."
+    "title": "Convertir les liens Wiki en liens Markdown"
   }
 }

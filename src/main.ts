@@ -2,19 +2,19 @@ import i18next from "i18next";
 import {ItemView, MarkdownView, Plugin} from "obsidian";
 
 import {resources, translationLanguage} from "./i18n/i18next";
-import {ApplyingToView, CopyReadingInMarkdownSettings, DEFAULT_SETTINGS} from "./interface";
-import {CopyReadingMarkdownSettingsTab} from "./settings";
+import {AdvancedCopySettings, ApplyingToView, DEFAULT_SETTINGS} from "./interface";
+import {AdvancedCopySettingTab} from "./settings";
 import {convertEditMarkdown, convertMarkdown,} from "./utils/conversion";
 import {devLog} from "./utils/log";
 import {removeDataBasePluginRelationShip} from "./utils/pluginFix";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 
-export default class CopyReadingInMarkdown extends Plugin {
-	settings: CopyReadingInMarkdownSettings = DEFAULT_SETTINGS;
+export default class AdvancedCopy extends Plugin {
+	settings: AdvancedCopySettings = DEFAULT_SETTINGS;
 	
 	async onload() {
 		console.log(
-			`CopyReadingInMarkdown v.${this.manifest.version} loaded.`
+			`Advanced copy v.${this.manifest.version} loaded.`
 		);
 		
 		await i18next.init({
@@ -25,7 +25,7 @@ export default class CopyReadingInMarkdown extends Plugin {
 		});
 
 		await this.loadSettings();
-		this.addSettingTab(new CopyReadingMarkdownSettingsTab(this.app, this));
+		this.addSettingTab(new AdvancedCopySettingTab(this.app, this));
 		
 		/**
 		 * Copy the selected text in markdown format
@@ -40,11 +40,11 @@ export default class CopyReadingInMarkdown extends Plugin {
 					let viewIn: ApplyingToView;
 					let selectedText: string;
 					if (activeView && activeView.getMode() !== "source") {
-						devLog("Reading mode");
+						devLog(i18next.t("log.readingMode"));
 						selectedText = getSelectionAsHTML(this.settings);
 						viewIn = ApplyingToView.reading;
 					} else if (activeView) {
-						devLog("Edit mode");
+						devLog(i18next.t("log.editMode"));
 						//normal copy
 						const editor = activeView.editor;
 						//get all selection
