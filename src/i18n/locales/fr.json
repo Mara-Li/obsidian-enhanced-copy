@@ -19,7 +19,7 @@
     "pattern": "pattern",
     "replacement": "remplacement",
     "save": "Sauvegarder",
-    "to": "À"
+    "to": "Vers"
   },
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
@@ -62,7 +62,7 @@
   },
   "modal": {
     "copyView": {
-      "copy": "Copie",
+      "copy": "Copier",
       "editing": "Édition",
       "reading": "Lecture"
     },
