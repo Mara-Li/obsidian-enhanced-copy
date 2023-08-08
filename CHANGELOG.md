@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.1](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.0...0.1.1) (2023-08-08)
+
+
+### Features
+
+* **settings:** allow to copy settings between view ([9a625cf](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/9a625cfc1b9a0147ca5008f0d125127a9d3dc5ac))
+
 ## [0.1.0](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.0.31...0.1.0) (2023-08-07)
 
 
