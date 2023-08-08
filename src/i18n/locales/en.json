@@ -15,11 +15,11 @@
   "common": {
     "add": "Add",
     "delete": "Delete",
-    "from": "from",
+    "from": "From",
     "pattern": "pattern",
     "replacement": "replacement",
     "save": "Save",
-    "to": "to"
+    "to": "To"
   },
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
@@ -63,9 +63,8 @@
   "modal": {
     "copyView": {
       "copy": "Copy",
-      "editing": "Editing view",
-      "from": "from",
-      "reading": "Reading View"
+      "editing": "Editing",
+      "reading": "Reading"
     },
     "replaceText": {
       "down": "Move down",

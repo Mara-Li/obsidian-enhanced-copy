@@ -14,8 +14,12 @@
   },
   "common": {
     "add": "Ajouter",
+    "delete": "Supprimer",
+    "from": "Depuis",
     "pattern": "pattern",
-    "replacement": "remplacement"
+    "replacement": "remplacement",
+    "save": "Sauvegarder",
+    "to": "À"
   },
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
@@ -28,6 +32,10 @@
   "edit": {
     "desc": "Paramètre pour la vue d'édition",
     "title": "Édition"
+  },
+  "global": {
+    "copy": "Copier les paramètres entre les vues",
+    "title": "Mondial"
   },
   "hardBreaks": {
     "desc": "Ajouter un saut de ligne strict (deux espaces en fin de ligne) à la fin de chaque ligne.",
@@ -42,12 +50,29 @@
     "title": "Séparer les commandes"
   },
   "links": "Liens",
+  "log": {
+    "callout": {
+      "remove": "Supprimer le titre de l'accroche",
+      "title": "Convertir l'accroche"
+    },
+    "editMode": "Mode édition",
+    "empty": "selectedText est vide // Repli sur activeWindow.getSelection().toString()",
+    "noHardBreaks": "Pas de pauses dures - Supprimez les espaces supplémentaires à la fin de chaque ligne",
+    "readingMode": "Mode de lecture"
+  },
   "modal": {
+    "copyView": {
+      "copy": "Copie",
+      "editing": "Édition",
+      "reading": "Lecture"
+    },
     "replaceText": {
+      "down": "Descendre",
       "title": "Remplacer du texte",
       "up": "Monter"
     }
   },
+  "openTextReplacer": "Ouvrir le remplacement de texte",
   "other": "Autres options",
   "overrides": "Remplace les paramètres précédents",
   "reading": {
