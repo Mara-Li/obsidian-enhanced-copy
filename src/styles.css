@@ -93,3 +93,17 @@ nav.settings-tab-bar {
 .advanced-copy > .text-area .setting-item-info {
 	display: none;
 }
+
+.modal-content.advanced-copy {
+	padding-top: 1em;
+}
+
+
+.modal-content.advanced-copy .setting-item {
+	border-top: 0;
+}
+
+.modal-content.advanced-copy .modal-title {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
