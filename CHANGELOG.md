@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.2](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.1...0.1.2) (2023-08-09)
+
+
+### Bug Fixes
+
+* **css:** prevent css applied outside the plugin ([f50bfde](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f50bfdedf8b942429aa1eadc562682464c49d52a))
+
 ## [0.1.1](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.0...0.1.1) (2023-08-08)
 
 
