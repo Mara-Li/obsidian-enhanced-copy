@@ -5,12 +5,12 @@
     padding: 1em;
 }
 
-.settings-tab-bar {
+.advanced-copy.settingTab .settings-tab-bar {
 	display: flex;
 	flex-direction: row;
 }
 
-.settings-tab {
+.advanced-copy.settingTab .settings-tab {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -19,74 +19,71 @@
 	border: 1px solid var(--background-modifier-border)
 }
 
-.settings-tab-active {
+.advanced-copy.settingTab .settings-tab-active {
 	background-color: var(--color-accent);
 	color: var(--text-on-accent);
 }
 
-.settings-copy-reading-md {
+.advanced-copy.settingTab .tabName {
 	font-weight: bold;
 }
 
-.settings-tab-icon {
+.advanced-copy.settingTab .settings-tab-icon {
 	display: flex;
 }
 
 
 @media screen and (max-width: 600px) {
-	.settings-tab-bar,
-	.setting-item > .setting-item-control {
+	.advanced-copy.settingTab .settings-tab-bar,
+	.advanced-copy.settingTab .setting-item > .setting-item-control {
 		flex-direction: column;
 		width: 100%;
 	}
 
-	.settings-tab {
+	.advanced-copy.settingTab .settings-tab {
 		border-bottom: 1px solid var(--background-modifier-border) !important;
 		border-radius: 5px !important;
 		margin-bottom: 5px;
 	}
 
-	.settings-tab-bar {
+	.advanced-copy.settingTab .settings-tab-bar {
 		border-bottom: transparent !important;
 	}
-
-
-
 }
 
 
-.settings-tab {
+.advanced-copy.settingTab .settings-tab {
 	padding: 10px;
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 5px 5px 0 0;
 }
-.settings-tab:hover {
+.advanced-copy.settingTab .settings-tab:hover {
 	background-color: var(--background-modifier-hover);
 }
 
-.settings-tab-active {
+.advanced-copy.settingTab .settings-tab-active {
 	background-color: var(--color-accent);
 	color: var(--text-on-accent);
 	border: 0;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 }
-.settings-tab-name {
+.advanced-copy.settingTab .settings-tab-name {
 	font-weight: bold;
 	text-align: center;
 }
-.settings-tab-icon {
+.advanced-copy.settingTab .settings-tab-icon {
 	text-align: center;
 }
-.settings-tab-page > .setting-item:first-child {
+.advanced-copy.settingTab .settings-tab-page > .setting-item:first-child {
 	margin-top: 15px;
 }
 
-nav.settings-tab-bar {
+.advanced-copy.settingTab nav.settings-tab-bar {
 	border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.settings-tab {
+.advanced-copy.settingTab .settings-tab {
 	border-bottom: transparent;
 }
 

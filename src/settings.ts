@@ -43,7 +43,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 	display(): void {
 		const {containerEl} = this;
 		containerEl.empty();
-		
+		this.containerEl.addClasses(["advanced-copy","settingTab"]);
 		const tabBar = containerEl.createEl("nav", { cls: "settings-tab-bar" });
 		//remove Tab based on applying
 		if (this.plugin.settings.applyingTo === ApplyingToView.reading) {
@@ -65,14 +65,14 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 			const tabIcon = tabEl.createEl("div", {cls: "settings-tab-icon"});
 			setIcon(tabIcon, tabInfo.icon);
 			if (tabInfo.id === "global")
-				tabEl.addClass("settings-tab-active");
-			tabEl.createEl("div", {cls: "settings-copy-reading-md", text: tabInfo.name});
+				tabEl.addClasses(["settings-tab-active"]);
+			tabEl.createEl("div", {cls: "tabName", text: tabInfo.name});
 			tabEl.addEventListener("click", () => {
 				// @ts-ignore
 				for (const tabEl of tabBar.children)
-					tabEl.removeClass("settings-tab-active");
+					tabEl.removeClasses(["settings-tab-active"]);
 
-				tabEl.addClass("settings-tab-active");
+				tabEl.addClasses(["settings-tab-active"]);
 				this.renderSettingsPage(tabInfo.id);
 			});
 		}
