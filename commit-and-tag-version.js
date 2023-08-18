@@ -112,6 +112,7 @@ if (opt.beta) {
 		bumpFiles: bumpFiles,
 		dryRun: opt.dryRun,
 		tagPrefix: "",
+		releaseAs: opt.releaseAs,
 	})
 		.then(() => {
 			console.log("Done");
