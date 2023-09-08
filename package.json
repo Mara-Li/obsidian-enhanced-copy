@@ -42,5 +42,6 @@
 		"prerelease": "npm run bump",
 		"release": "npm run export"
 	},
-	"version": "0.1.3"
+	"version": "0.1.3",
+	"pnpm": true
 }
