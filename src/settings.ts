@@ -97,6 +97,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 	}
 	
 	renderGlobal() {
+		this.settingsPage.empty();
 		this.settingsPage.createEl("h1", {text: i18next.t("global.title")});
 		new Setting(this.settingsPage)
 			.setName(i18next.t("view.title"))
@@ -145,6 +146,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 	}
 	
 	renderReading() {
+		this.settingsPage.empty();
 		this.settingsPage.createEl("h1", {text: i18next.t("reading.desc")});
 		new Setting(this.settingsPage)
 			.setName(i18next.t("copyAsHTML"))
@@ -154,7 +156,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						this.plugin.settings.exportAsHTML = value;
 						await this.plugin.saveSettings();
-						this.renderReading();
+						this.renderSettingsPage("reading");
 					});
 			});
 		if (!this.plugin.settings.exportAsHTML) {
@@ -201,7 +203,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						this.plugin.settings.wikiToMarkdown = value;
 						await this.plugin.saveSettings();
-						this.renderEdit();
+						this.renderSettingsPage("edit");
 					});
 			});
 			
@@ -213,7 +215,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						this.plugin.settings.tabToSpace = value;
 						await this.plugin.saveSettings();
-						this.renderEdit();
+						this.renderSettingsPage("edit");
 					});
 			});
 			
