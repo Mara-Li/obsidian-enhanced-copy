@@ -35,7 +35,7 @@
   },
   "global": {
     "copy": "Copier les paramètres entre les vues",
-    "title": "Mondial"
+    "title": "Paramètres généraux"
   },
   "hardBreaks": {
     "desc": "Ajouter un saut de ligne strict (deux espaces en fin de ligne) à la fin de chaque ligne.",

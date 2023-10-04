@@ -176,7 +176,7 @@ function convertCallout(markdown: string, overrides: GlobalSettings): string {
 				//remove the line without adding a new line / space
 				return "undefined";
 			}
-			return "> $3";
+			return "> " + p3;
 		});
 		//remove line prepended by undefined
 		return markdown.replace("undefined\n>", ">");

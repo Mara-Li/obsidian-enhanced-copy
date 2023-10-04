@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.3](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.2...0.1.3) (2023-09-08)
+
+
+### Bug Fixes
+
+* **translation:** wrong translation for global ([4f9b370](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/4f9b370379575a2e616160bf4009d1c0ba9b7be6))
+
 ## [0.1.2](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.1...0.1.2) (2023-08-09)
 
 
