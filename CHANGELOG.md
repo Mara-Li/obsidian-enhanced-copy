@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.4](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.3...0.1.4) (2023-10-04)
+
+
+### Bug Fixes
+
+* **callout:** callout collision between type & title ([7b4024c](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/7b4024c7e5c3d1a418415cd552598978078d3e05))
+* **callout:** callout return $3 instead of the first line ([f016910](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f0169102dd404485a30220e0df1a4070d288dbae))
+* **callout:** return $3 instead of the real p3 ([f745023](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f745023b1ba88c5513658e2621598bad9afba2bd))
+* **settings:** fix reloading of the reading settings tabs ([4172fef](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/4172fefe5c118142e247253b5ae14b942e0f85e4))
+
 ## [0.1.3](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.2...0.1.3) (2023-09-08)
 
 
