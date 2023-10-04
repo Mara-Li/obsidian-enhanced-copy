@@ -91,16 +91,17 @@ It is done on purpose to prevent surprise when you use the plugin on editing vie
 
 ## 🤖 Developing
 
-To make changes to this plugin, first ensure you have the dependencies installed.
+To make changes to this plugin, first ensure you have the dependencies installed. First, don't forget that you need Node. The package manager used in the project is `pnpm` so you need to install it globally.
 
 ```
-npm install
+npm i pnpm -g
+pnpm install
 ```
 
 To start building the plugin with what mode enabled run the following command:
 
 ```
-npm run dev
+pnpm run dev
 ```
 
 > **Note**  
@@ -108,7 +109,7 @@ npm run dev
 > To start a release build run the following command:
 
 ```
-npm run build
+pnpm run build
 ```
 
 
