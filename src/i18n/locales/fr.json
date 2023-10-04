@@ -1,8 +1,9 @@
 {
   "callout": {
-    "desc": "Format du type de callout.",
+    "desc": "Format du type de callout. Tous les formats seront sous formes de citations.",
     "obsidian": "Utiliser le format de callout d'Obsidian",
-    "remove": "Suppression du type et transformation en simple citation",
+    "remove": "Suppression du type et titre",
+    "removeKeepTitle": "Conservation du titre mais suppression du type",
     "strong": "Convertir le type en gras",
     "title": "Type de callout"
   },

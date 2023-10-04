@@ -42,5 +42,6 @@
         "src\\utils\\conversion.ts": [
             ">"
         ]
-    }
+    },
+    "GitHooks.hooksDirectory": "e:\\Documents\\Github\\Pingouin\\.obsidian\\plugins\\advanced-copy\\.git\\hooks"
 }

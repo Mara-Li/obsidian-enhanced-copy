@@ -11,12 +11,12 @@ import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./uti
 
 export default class AdvancedCopy extends Plugin {
 	settings: AdvancedCopySettings = DEFAULT_SETTINGS;
-	
+
 	async onload() {
 		console.log(
 			`Advanced copy v.${this.manifest.version} loaded.`
 		);
-		
+
 		await i18next.init({
 			lng: translationLanguage,
 			fallbackLng: "en",
@@ -26,7 +26,7 @@ export default class AdvancedCopy extends Plugin {
 
 		await this.loadSettings();
 		this.addSettingTab(new AdvancedCopySettingTab(this.app, this));
-		
+
 		/**
 		 * Copy the selected text in markdown format
 		 */
@@ -42,6 +42,7 @@ export default class AdvancedCopy extends Plugin {
 					if (activeView && activeView.getMode() !== "source") {
 						devLog(i18next.t("log.readingMode"));
 						selectedText = getSelectionAsHTML(this.settings);
+						console.log(selectedText);
 						viewIn = ApplyingToView.reading;
 					} else if (activeView) {
 						devLog(i18next.t("log.editMode"));
@@ -60,6 +61,7 @@ export default class AdvancedCopy extends Plugin {
 							viewIn = ApplyingToView.reading;
 						}
 					}
+
 					if (selectedText && selectedText.trim().length > 0) {
 						if (!this.settings.exportAsHTML &&
 							(this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn)
@@ -88,7 +90,7 @@ export default class AdvancedCopy extends Plugin {
 					}
 				}
 			});
-			
+
 			this.addCommand({
 				id: "copy-reading-in-markdown",
 				name: i18next.t("commands.reading"),
@@ -109,7 +111,7 @@ export default class AdvancedCopy extends Plugin {
 					return false;
 				}
 			});
-			
+
 			this.addCommand({
 				id: "copy-other-in-markdown",
 				name: i18next.t("commands.other"),

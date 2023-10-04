@@ -2,7 +2,7 @@
 /**
  * @file interface.ts
  * @description Interface for the plugin
- * 
+ *
  */
 
 /**
@@ -47,10 +47,11 @@ export enum ConversionOfLinks {
  * @example `remove` : Remove the title
  * `> [!note]` -> `>`
  */
-export enum CalloutKeepTitle {
+export enum CalloutKeepType {
 	obsidian = "obsidian",
 	strong = "strong",
 	remove = "remove",
+	removeKeepTitle = "removeKeepTitle",
 }
 
 /**
@@ -96,7 +97,7 @@ export const DEFAULT_SETTINGS: AdvancedCopySettings = {
 	editing: {
 		footnotes: ConversionOfFootnotes.keep,
 		links: ConversionOfLinks.keep,
-		callout: CalloutKeepTitle.obsidian,
+		callout: CalloutKeepType.obsidian,
 		highlight: false,
 		hardBreak: false,
 		replaceText: []
@@ -104,7 +105,7 @@ export const DEFAULT_SETTINGS: AdvancedCopySettings = {
 	reading: {
 		footnotes: ConversionOfFootnotes.keep,
 		links: ConversionOfLinks.keep,
-		callout: CalloutKeepTitle.obsidian,
+		callout: CalloutKeepType.obsidian,
 		highlight: false,
 		hardBreak: false,
 		replaceText: []
@@ -114,7 +115,7 @@ export const DEFAULT_SETTINGS: AdvancedCopySettings = {
 export interface GlobalSettings {
 	footnotes: ConversionOfFootnotes,
 	links: ConversionOfLinks,
-	callout: CalloutKeepTitle,
+	callout: CalloutKeepType,
 	highlight: boolean,
 	hardBreak: boolean,
 	replaceText: ReplaceText[]

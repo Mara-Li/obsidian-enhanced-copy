@@ -1,9 +1,10 @@
 {
   "callout": {
-    "desc": "Format of the callout type.",
+    "desc": "Format of the callout type. All format will be in blockquote.",
     "obsidian": "Use Obsidian's default callout format",
-    "remove": "Remove the type and keep a simple blockquote",
-    "strong": "Convert the type to a simple strong text",
+    "remove": "Remove the type & title",
+    "removeKeepTitle": "Keeping the title but removing the type.",
+    "strong": "Convert the type to a simple strong text, keep the title",
     "title": "Callout type"
   },
   "commands": {

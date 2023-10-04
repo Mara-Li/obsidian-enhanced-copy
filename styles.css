@@ -1,0 +1,88 @@
+/* src/styles.css */
+.setting-item.copy-reading-in-markdown-dp select.dropdown {
+  width: 100%;
+  height: auto;
+  white-space: break-spaces;
+  padding: 1em;
+}
+.advanced-copy.settingTab .settings-tab-bar {
+  display: flex;
+  flex-direction: row;
+}
+.advanced-copy.settingTab .settings-tab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--size-4-2);
+  padding: 10px;
+  border: 1px solid var(--background-modifier-border);
+}
+.advanced-copy.settingTab .settings-tab-active {
+  background-color: var(--color-accent);
+  color: var(--text-on-accent);
+}
+.advanced-copy.settingTab .tabName {
+  font-weight: bold;
+}
+.advanced-copy.settingTab .settings-tab-icon {
+  display: flex;
+}
+@media screen and (max-width: 600px) {
+  .advanced-copy.settingTab .settings-tab-bar,
+  .advanced-copy.settingTab .setting-item > .setting-item-control {
+    flex-direction: column;
+    width: 100%;
+  }
+  .advanced-copy.settingTab .settings-tab {
+    border-bottom: 1px solid var(--background-modifier-border) !important;
+    border-radius: 5px !important;
+    margin-bottom: 5px;
+  }
+  .advanced-copy.settingTab .settings-tab-bar {
+    border-bottom: transparent !important;
+  }
+}
+.advanced-copy.settingTab .settings-tab {
+  padding: 10px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 5px 5px 0 0;
+}
+.advanced-copy.settingTab .settings-tab:hover {
+  background-color: var(--background-modifier-hover);
+}
+.advanced-copy.settingTab .settings-tab-active {
+  background-color: var(--color-accent);
+  color: var(--text-on-accent);
+  border: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.advanced-copy.settingTab .settings-tab-name {
+  font-weight: bold;
+  text-align: center;
+}
+.advanced-copy.settingTab .settings-tab-icon {
+  text-align: center;
+}
+.advanced-copy.settingTab .settings-tab-page > .setting-item:first-child {
+  margin-top: 15px;
+}
+.advanced-copy.settingTab nav.settings-tab-bar {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.advanced-copy.settingTab .settings-tab {
+  border-bottom: transparent;
+}
+.advanced-copy > .text-area .setting-item-info {
+  display: none;
+}
+.modal-content.advanced-copy {
+  padding-top: 1em;
+}
+.modal-content.advanced-copy .setting-item {
+  border-top: 0;
+}
+.modal-content.advanced-copy .modal-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

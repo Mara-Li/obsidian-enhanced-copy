@@ -1,7 +1,7 @@
 import i18next from "i18next";
 
 import {
-	AdvancedCopySettings, 	CalloutKeepTitle,
+	AdvancedCopySettings, 	CalloutKeepType,
 	ConversionOfFootnotes,
 	ConversionOfLinks,
 	GlobalSettings
@@ -168,22 +168,25 @@ function hardBreak(markdown: string, settings: GlobalSettings): string {
 function convertCallout(markdown: string, overrides: GlobalSettings): string {
 	devLog(i18next.t("log.callout.title"), overrides.callout);
 	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
-	if (overrides.callout === CalloutKeepTitle.remove) {
+	if (overrides.callout === CalloutKeepType.removeKeepTitle || overrides.callout === CalloutKeepType.remove) {
 		devLog(i18next.t("log.callout.remove"));
 		//delete the type of the callout
 		markdown = markdown.replace(calloutRegex, (match, p1, p2, p3) => {
+			console.log("COUCOU");
 			if (p3 === "") {
 				//remove the line without adding a new line / space
 				return "undefined";
 			}
-			return "> " + p3;
+			if (overrides.callout === CalloutKeepType.removeKeepTitle)
+				return `> **${p3}**`;
+			return "undefined";
 		});
 		//remove line prepended by undefined
 		return markdown.replace("undefined\n>", ">");
-	} else if (overrides.callout === CalloutKeepTitle.strong) {
+	} else if (overrides.callout === CalloutKeepType.strong) {
 		return markdown.replace(calloutRegex, "> **$1** $3");
 	}
-	
+
 	return markdown;
 }
 
@@ -204,7 +207,7 @@ function convertSpaceSize(markdown: string, settings: AdvancedCopySettings) {
 		 * So if we want to reduce the space size, we need to count each 4 space as 1 space for each line
 	 */
 	const countSpace = markdown.match(/^ +/gm);
-	
+
 	if (settings.spaceReadingSize >= 0 && countSpace) {
 		countSpace.forEach((space) => {
 			const newSpace = " ".repeat(space.length / 4 * settings.spaceReadingSize);

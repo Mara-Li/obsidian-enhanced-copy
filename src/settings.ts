@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
 
-import {ApplyingToView, CalloutKeepTitle, ConversionOfFootnotes, ConversionOfLinks, GlobalSettings} from "./interface";
+import {ApplyingToView, CalloutKeepType, ConversionOfFootnotes, ConversionOfLinks, GlobalSettings} from "./interface";
 import AdvancedCopy from "./main";
 import {AdvancedCopyViewModal, AllReplaceTextModal} from "./modal";
 
@@ -14,19 +14,19 @@ interface Tab {
 export class AdvancedCopySettingTab extends PluginSettingTab {
 	plugin: AdvancedCopy;
 	settingsPage!: HTMLElement;
-	
+
 	READING: Tab = {
 		name: i18next.t("reading.title"),
 		id: "reading",
 		icon: "book-open"
 	};
-	
+
 	EDIT: Tab = {
 		name: i18next.t("edit.title"),
 		id: "edit",
 		icon: "pencil"
 	};
-	
+
 	TABS: Tab[] = [
 		{
 			name: i18next.t("global.title"),
@@ -34,12 +34,12 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 			icon: "globe"
 		},
 	];
-	
+
 	constructor(app: App, plugin: AdvancedCopy) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
-	
+
 	display(): void {
 		const {containerEl} = this;
 		containerEl.empty();
@@ -78,9 +78,9 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 		}
 		this.settingsPage = containerEl.createEl("div", { cls: "settings-tab-page" });
 		this.renderSettingsPage("global");
-		
+
 	}
-	
+
 	renderSettingsPage(tab: string) {
 		this.settingsPage.empty();
 		switch (tab) {
@@ -95,7 +95,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 			break;
 		}
 	}
-	
+
 	renderGlobal() {
 		this.settingsPage.empty();
 		this.settingsPage.createEl("h1", {text: i18next.t("global.title")});
@@ -144,7 +144,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 	}
-	
+
 	renderReading() {
 		this.settingsPage.empty();
 		this.settingsPage.createEl("h1", {text: i18next.t("reading.desc")});
@@ -163,14 +163,14 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 			this.settingsPage.createEl("h2", {text: i18next.t("links")});
 			this.links(this.plugin.settings.reading);
 			this.footnotes(this.plugin.settings.reading);
-				
+
 			this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
 			this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
 			this.highlight(this.plugin.settings.reading);
 		}
-			
+
 		this.calloutTitle(this.plugin.settings.reading);
-			
+
 		if (!this.plugin.settings.exportAsHTML) {
 			this.settingsPage.createEl("h2", {text: i18next.t("other")});
 			this.hardBreak(this.plugin.settings.reading);
@@ -187,10 +187,10 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 						});
 				});
 		}
-		
+
 		this.regexReplacementButton(this.plugin.settings.reading);
 	}
-	
+
 	renderEdit() {
 		this.settingsPage.empty();
 		this.settingsPage.createEl("h1", {text: i18next.t("edit.desc")});
@@ -206,7 +206,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 						this.renderSettingsPage("edit");
 					});
 			});
-			
+
 		new Setting(this.settingsPage)
 			.setName(i18next.t("tabToSpace"))
 			.addToggle((toggle) => {
@@ -218,7 +218,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 						this.renderSettingsPage("edit");
 					});
 			});
-			
+
 		if (this.plugin.settings.tabToSpace) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("tabSpaceSize"))
@@ -248,10 +248,10 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 		this.highlight(this.plugin.settings.editing);
 		this.settingsPage.createEl("h2", {text: i18next.t("other")});
 		this.hardBreak(this.plugin.settings.editing);
-		
+
 		this.regexReplacementButton(this.plugin.settings.editing);
 	}
-	
+
 	highlight(settings: GlobalSettings) {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("highlight.title"))
@@ -265,7 +265,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					});
 			});
 	}
-	
+
 	calloutTitle(settings: GlobalSettings) {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("callout.title"))
@@ -276,14 +276,15 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					.addOption("obsidian", i18next.t("callout.obsidian"))
 					.addOption("strong", i18next.t("callout.strong"))
 					.addOption("remove", i18next.t("callout.remove"))
+					.addOption("removeKeepTitle", i18next.t("callout.removeKeepTitle"))
 					.setValue(settings.callout)
 					.onChange(async (value) => {
-						settings.callout = value as CalloutKeepTitle;
+						settings.callout = value as CalloutKeepType;
 						await this.plugin.saveSettings();
 					});
 			});
 	}
-	
+
 	footnotes(settings: GlobalSettings) {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("removeFootnotesLinks.title"))
@@ -301,7 +302,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					});
 			});
 	}
-	
+
 	links(settings: GlobalSettings) {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("copyLinksAsText.title"))
@@ -319,7 +320,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					});
 			});
 	}
-	
+
 	hardBreak(settings: GlobalSettings) {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("hardBreaks.title"))
@@ -333,7 +334,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 					});
 			});
 	}
-	
+
 	regexReplacementButton(settings: GlobalSettings) {
 		return new Setting(this.settingsPage)
 			.addButton((button) => {

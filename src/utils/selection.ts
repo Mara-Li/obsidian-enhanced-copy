@@ -102,9 +102,9 @@ export function copySelectionRange(editor: Editor):string {
 /**
  * In Canvas only, check if the selection is in editor or not
  * If in editor, return the text as in Obsidian. If not, run getSelectionAsHTML and return the output
- * @param app {App}} 
+ * @param app {App}}
  * @param settings {AdvancedCopySettings}
- * @returns {string} 
+ * @returns {string}
  */
 export function canvasSelectionText(app: App, settings: AdvancedCopySettings): string {
 	const editor = app.workspace.activeEditor;

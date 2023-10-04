@@ -1,5 +1,5 @@
 
-import { CalloutKeepTitle, GlobalSettings } from "../interface";
+import { CalloutKeepType, GlobalSettings } from "../interface";
 
 /**
  * Fix list that are not correctly converted to markdown
@@ -44,10 +44,11 @@ export function replaceAllDivCalloutToBlockquote(
 	settings: GlobalSettings
 ): HTMLDivElement {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
+	console.log(allDivCallout);
 	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
 		if (
-			settings.callout !== CalloutKeepTitle.remove &&
+			(settings.callout !== CalloutKeepType.remove && settings.callout !== CalloutKeepType.removeKeepTitle) &&
 			divCallout.classList[0] === "callout-title"
 		) {
 			const ancestor = commonAncestor as HTMLDivElement;
@@ -56,7 +57,7 @@ export function replaceAllDivCalloutToBlockquote(
 				divCallout.parentElement?.attributes.getNamedItem("data-callout")
 					?.value;
 			calloutTitle = `[!${calloutType}] `;
-			if (settings.callout === CalloutKeepTitle.strong) {
+			if (settings.callout === CalloutKeepType.strong) {
 				calloutTitle = `<strong>${capitalize(calloutType)}</strong> `;
 			}
 			//insert callout title in title-content-inner div as html, before the text
@@ -73,13 +74,14 @@ export function replaceAllDivCalloutToBlockquote(
 	}
 	const allTitleInner = div.querySelectorAll("div.callout-title-inner");
 	for (const titleInner of allTitleInner) {
-		if (titleInner && settings.callout !== CalloutKeepTitle.remove) {
+
+		if (titleInner && settings.callout !== CalloutKeepType.remove) {
 			titleInner.innerHTML = calloutTitle.toLowerCase().contains(
 				titleInner.innerHTML.toLowerCase()
 			)
-				? calloutTitle
-				: calloutTitle + titleInner.innerHTML;
-		} else if (titleInner && settings.callout === CalloutKeepTitle.remove) {
+				? `<strong>${calloutTitle}</strong>`
+				: `<strong>${calloutTitle}${titleInner.innerHTML}</strong>`;
+		} else if (titleInner && settings.callout === CalloutKeepType.remove) {
 			titleInner.remove();
 		}
 	}
