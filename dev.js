@@ -28,7 +28,7 @@ if (args.length > 0 && args[0] === "--prod") {
 }
 
 if (vaultDev.trim().length > 0) {
-	const filePath = path.join(vaultDev, ".obsidian", "plugins", "advanced-copy", ".hotreload");
+	const filePath = path.join(vaultDev, ".obsidian", "plugins", "enhanced-copy", ".hotreload");
 	if (!fs.existsSync(filePath)) {
 		console.log(`${c.danger.bold("❌")} ${c.danger(".hotreload file not found. Creating it...")}`);
 		fs.writeFile(filePath, "", (err) => {

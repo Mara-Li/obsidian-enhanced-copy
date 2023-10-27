@@ -11,7 +11,7 @@ if (!VAULT || VAULT.trim().length === 0) {
 	process.exit(1);
 }
 
-const pluginDir = path.join(VAULT, ".obsidian", "plugins", "advanced-copy");
+const pluginDir = path.join(VAULT, ".obsidian", "plugins", "enhanced-copy");
 
 if (!fs.existsSync(pluginDir)) {
 	console.log(c.yellow.underline("Creating plugin directory"));
