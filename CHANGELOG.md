@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.0](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.4...0.2.0) (2023-10-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* change the id of the plugin
+
+* change the id of the plugin ([8361509](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/836150964520761e7bebf52f027c96d1f834e6ac))
+
+
+### Features
+
+* allow to override the default copy function, so natif "copy" copy (using the menu) ([42052b9](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/42052b93762cea69ca2cb3e79ba3c2b30c0e8cce))
+
 ## [0.1.4](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.3...0.1.4) (2023-10-04)
 
 
