@@ -75,6 +75,10 @@
   },
   "openTextReplacer": "Open Text replacer",
   "other": "Other options",
+  "overrideCopy": {
+    "desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy",
+    "title": "Override native copy"
+  },
   "overrides": "Overrides previous settings",
   "reading": {
     "desc": "Reading view settings",

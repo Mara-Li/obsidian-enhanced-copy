@@ -14,6 +14,7 @@
 	},
 	"description": "Copy a selection in reading view while keeping the markdown formatting",
 	"devDependencies": {
+		"@codemirror/view": "^6.21.4",
 		"@lisandra-dev/eslint-config": "^1.1.4",
 		"@types/node": "^20.4.8",
 		"@typescript-eslint/eslint-plugin": "^6.2.1",
@@ -22,6 +23,7 @@
 		"cross-env": "^7.0.3",
 		"dedent": "^1.5.1",
 		"env-cmd": "^10.1.0",
+		"monkey-around": "^2.3.0",
 		"obsidian": "^1.4.0",
 		"obsidian-plugin-cli": "^0.9.0",
 		"typescript": "^5.1.6"

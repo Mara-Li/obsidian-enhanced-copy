@@ -67,7 +67,7 @@ export enum ApplyingToView {
 }
 
 
-export interface AdvancedCopySettings {
+export interface EnhancedCopySettings {
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
 	separateHotkey: boolean;
@@ -77,16 +77,17 @@ export interface AdvancedCopySettings {
 	spaceReadingSize: number;
 	editing: GlobalSettings;
 	reading: GlobalSettings;
+	overrideCopy: boolean;
 }
 
 /**
  * Default settings of the plugin
- * @type {AdvancedCopySettings}
+ * @type {EnhancedCopySettings}
  * @constant
  * @default
  * @readonly
  */
-export const DEFAULT_SETTINGS: AdvancedCopySettings = {
+export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 	exportAsHTML: false,
 	applyingTo: ApplyingToView.all,
 	separateHotkey: false,
@@ -109,7 +110,8 @@ export const DEFAULT_SETTINGS: AdvancedCopySettings = {
 		highlight: false,
 		hardBreak: false,
 		replaceText: []
-	}
+	},
+	overrideCopy: false,
 };
 
 export interface GlobalSettings {

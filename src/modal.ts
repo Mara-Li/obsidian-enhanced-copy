@@ -1,19 +1,19 @@
 import i18next from "i18next";
 import {App, Modal, Setting} from "obsidian";
 
-import {AdvancedCopySettings, CopySettingsView, ReplaceText} from "./interface";
+import {CopySettingsView, EnhancedCopySettings, ReplaceText} from "./interface";
 
 export class AllReplaceTextModal extends Modal {
 	replaceText: ReplaceText[];
 	onSubmit: (result: ReplaceText[]) => void;
-	
+
 	constructor(app: App, replaceText: ReplaceText[], onSubmit: (result: ReplaceText[]) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
 		this.replaceText = replaceText;
 	}
-	
-	
+
+
 	onOpen() {
 		const {contentEl} = this;
 		contentEl.empty();
@@ -32,7 +32,7 @@ export class AllReplaceTextModal extends Modal {
 					this.onOpen();
 				})
 			);
-		
+
 		for (const replacer of this.replaceText) {
 			new Setting(contentEl)
 				.addText(text => text
@@ -104,19 +104,19 @@ export class AllReplaceTextModal extends Modal {
 }
 
 export class AdvancedCopyViewModal extends Modal {
-	settings: AdvancedCopySettings;
+	settings: EnhancedCopySettings;
 	from: CopySettingsView;
 	to: CopySettingsView;
-	onSubmit: (result: AdvancedCopySettings) => void;
-	
-	constructor(app: App, settings: AdvancedCopySettings, onSubmit: (result: AdvancedCopySettings) => void) {
+	onSubmit: (result: EnhancedCopySettings) => void;
+
+	constructor(app: App, settings: EnhancedCopySettings, onSubmit: (result: EnhancedCopySettings) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
 		this.settings = settings;
 		this.from = CopySettingsView.reading;
 		this.to = CopySettingsView.editing;
 	}
-	
+
 	onOpen() {
 		const {contentEl} = this;
 
@@ -168,7 +168,7 @@ export class AdvancedCopyViewModal extends Modal {
 					this.close();
 				}));
 	}
-	
+
 	onClose() {
 		const { contentEl } = this;
 		contentEl.empty();

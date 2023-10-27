@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   ansi-colors:
     specifier: ^4.1.3
@@ -27,6 +31,9 @@ dependencies:
     version: 2.6.1
 
 devDependencies:
+  '@codemirror/view':
+    specifier: ^6.21.4
+    version: 6.21.4
   '@lisandra-dev/eslint-config':
     specifier: ^1.1.4
     version: 1.1.4
@@ -51,9 +58,12 @@ devDependencies:
   env-cmd:
     specifier: ^10.1.0
     version: 10.1.0
+  monkey-around:
+    specifier: ^2.3.0
+    version: 2.3.0
   obsidian:
     specifier: ^1.4.0
-    version: 1.4.0(@codemirror/state@6.2.1)(@codemirror/view@6.16.0)
+    version: 1.4.0(@codemirror/state@6.2.1)(@codemirror/view@6.21.4)
   obsidian-plugin-cli:
     specifier: ^0.9.0
     version: 0.9.0
@@ -96,11 +106,11 @@ packages:
     resolution: {integrity: sha512-RupHSZ8+OjNT38zU9fKH2sv+Dnlr8Eb8sl4NOnnqz95mCFTZUaiRP8Xv5MeeaG0px2b8Bnfe7YGwCV3nsBhbuw==}
     dev: true
 
-  /@codemirror/view@6.16.0:
-    resolution: {integrity: sha512-1Z2HkvkC3KR/oEZVuW9Ivmp8TWLzGEd8T8TA04TTwPvqogfkHBdYSlflytDOqmkUxM2d1ywTg7X2dU5mC+SXvg==}
+  /@codemirror/view@6.21.4:
+    resolution: {integrity: sha512-WKVZ7nvN0lwWPfAf05WxWqTpwjC8YN3q5goj3CsSig7//DD81LULgOx3nBegqpqP0iygBqRmW8z0KSc2QTAdAg==}
     dependencies:
       '@codemirror/state': 6.2.1
-      style-mod: 4.0.3
+      style-mod: 4.1.0
       w3c-keyname: 2.2.8
     dev: true
 
@@ -2192,7 +2202,7 @@ packages:
       path-is-absolute: 1.0.1
     dev: true
 
-  /reading-dirs@3.0.1:
+  /global-dirs@3.0.1:
     resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
     engines: {node: '>=10'}
     dependencies:
@@ -2486,8 +2496,9 @@ packages:
     resolution: {integrity: sha512-iwGqO3J21aaSkC7jWnHP/difazwS7SFeIqxv6wEtLU8Y5KlzFTjyqcSIT0d8s4+dDhKytsk9PJZ2BkS5eZwQRQ==}
     engines: {node: '>=10'}
     dependencies:
-      reading-dirs: 3.0.1
+      global-dirs: 3.0.1
       is-path-inside: 3.0.3
+      reading-dirs: 3.0.1
     dev: true
 
   /is-negative-zero@2.0.2:
@@ -2588,6 +2599,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-docker: 2.2.1
+    dev: true
+
+  /is-yarn-global@0.3.0:
+    resolution: {integrity: sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw==}
     dev: true
 
   /is-yarn-reading@0.3.0:
@@ -2858,6 +2873,10 @@ packages:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     dev: true
 
+  /monkey-around@2.3.0:
+    resolution: {integrity: sha512-QWcCUWjqE/MCk9cXlSKZ1Qc486LD439xw/Ak8Nt6l2PuL9+yrc9TJakt7OHDuOqPRYY4nTWBAEFKn32PE/SfXA==}
+    dev: true
+
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
@@ -3005,14 +3024,14 @@ packages:
       - encoding
     dev: true
 
-  /obsidian@1.4.0(@codemirror/state@6.2.1)(@codemirror/view@6.16.0):
+  /obsidian@1.4.0(@codemirror/state@6.2.1)(@codemirror/view@6.21.4):
     resolution: {integrity: sha512-fsZMPlxgflGSBSP6P4BjQi5+0MqZl3h6FEDEZ3CNnweNdDw0doyqN3FMO/PGWfuxPT77WicVwUxekuI3e6eCGg==}
     peerDependencies:
       '@codemirror/state': ^6.0.0
       '@codemirror/view': ^6.0.0
     dependencies:
       '@codemirror/state': 6.2.1
-      '@codemirror/view': 6.16.0
+      '@codemirror/view': 6.21.4
       '@types/codemirror': 5.60.8
       moment: 2.29.4
     dev: true
@@ -3312,6 +3331,13 @@ packages:
       util-deprecate: 1.0.2
     dev: false
 
+  /reading-dirs@3.0.1:
+    resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
+    engines: {node: '>=10'}
+    dependencies:
+      ini: 2.0.0
+    dev: true
+
   /redent@3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
     engines: {node: '>=8'}
@@ -3590,8 +3616,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /style-mod@4.0.3:
-    resolution: {integrity: sha512-78Jv8kYJdjbvRwwijtCevYADfsI0lGzYJe4mMFdceO8l75DFFDoqBhR1jVDicDRRaX4//g1u9wKeo+ztc2h1Rw==}
+  /style-mod@4.1.0:
+    resolution: {integrity: sha512-Ca5ib8HrFn+f+0n4N4ScTIA9iTOQ7MaGS1ylHcoVqW9J7w2w8PzN6g9gKmTYgGEBH8e120+RCmhpje6jC5uGWA==}
     dev: true
 
   /supports-color@5.5.0:
@@ -3809,6 +3835,7 @@ packages:
       is-ci: 2.0.0
       is-installed-globally: 0.4.0
       is-npm: 5.0.0
+      is-yarn-global: 0.3.0
       is-yarn-reading: 0.3.0
       latest-version: 5.1.0
       pupa: 2.1.1
@@ -3987,7 +4014,3 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false

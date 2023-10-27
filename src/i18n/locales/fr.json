@@ -75,6 +75,10 @@
   },
   "openTextReplacer": "Ouvrir le remplacement de texte",
   "other": "Autres options",
+  "overrideCopy": {
+    "desc": "Remplacer la copie native (CTRL + C, clic-droit...) par la copie améliorée",
+    "title": "Prendre en charge la copie native"
+  },
   "overrides": "Remplace les paramètres précédents",
   "reading": {
     "desc": "Paramètre pour la vue de lecture",

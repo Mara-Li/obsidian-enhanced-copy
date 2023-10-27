@@ -2,7 +2,7 @@ import i18next from "i18next";
 import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
 
 import {ApplyingToView, CalloutKeepType, ConversionOfFootnotes, ConversionOfLinks, GlobalSettings} from "./interface";
-import AdvancedCopy from "./main";
+import EnhancedCopy from "./main";
 import {AdvancedCopyViewModal, AllReplaceTextModal} from "./modal";
 
 interface Tab {
@@ -11,8 +11,8 @@ interface Tab {
 	icon: string;
 }
 
-export class AdvancedCopySettingTab extends PluginSettingTab {
-	plugin: AdvancedCopy;
+export class EnhancedCopySettingTab extends PluginSettingTab {
+	plugin: EnhancedCopy;
 	settingsPage!: HTMLElement;
 
 	READING: Tab = {
@@ -35,7 +35,7 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 		},
 	];
 
-	constructor(app: App, plugin: AdvancedCopy) {
+	constructor(app: App, plugin: EnhancedCopy) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -143,6 +143,18 @@ export class AdvancedCopySettingTab extends PluginSettingTab {
 						});
 				});
 		}
+
+		new Setting(this.settingsPage)
+			.setName(i18next.t("overrideCopy.title"))
+			.setDesc(i18next.t("overrideCopy.desc"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.overrideCopy)
+					.onChange(async (value) => {
+						this.plugin.settings.overrideCopy = value;
+						await this.plugin.saveSettings();
+					});
+			});
 	}
 
 	renderReading() {
