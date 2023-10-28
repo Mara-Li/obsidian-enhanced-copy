@@ -29,6 +29,11 @@ You can also choose to add a command for each copy-mode. It will create a comman
 - Editing view
 - Non markdown view (canvas, database-plugin...)
 
+Finally, you can to choose to override the default copy (from menu and the <kbd>CTRL</kbd>/<kbd>⌘</kbd> + <kbd>C</kbd>). Pretty useful for mobile!
+
+> [!Note]
+> The default copy is disabled on canvas, so I advice you to use the command separator to set an hotkey/button for "other" view & use the default copy on markdown view (reading and LP/source mode). 
+
 The reading view and editing view have ~ the same settings, but you need to set them separately. It will allow having different copy settings for each view.
 
 ### Common settings
@@ -82,12 +87,12 @@ It is done on purpose to prevent surprise when you use the plugin on editing vie
 ## 📥 Installation
 
 - [ ] From Obsidian's community plugins
-- [x] Using BRAT with `https://github.com/Lisandra-dev/copy-reading-in-markdown`
+- [x] Using BRAT with `https://github.com/Lisandra-dev/obsidian-enhanced-copy`
 - [x] From the release page:
-- Download the latest release
-- Unzip `copy-reading-in-markdown.zip` in `.obsidian/plugins/` path
-- In Obsidian settings, reload the plugin
-- Enable the plugin
+    - Download the latest release
+    - Unzip `obsidian-enhanced-copy.zip` in `.obsidian/plugins/` path
+    - In Obsidian settings, reload the plugin
+    - Enable the plugin
 
 ## 🤖 Developing
 
