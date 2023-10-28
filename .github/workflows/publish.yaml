@@ -22,7 +22,7 @@ jobs:
     if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && !inputs.bump)
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
-        PLUGIN_NAME: "advanced-copy"
+        PLUGIN_NAME: "enhanced-copy"
         STYLE: true
         BETA: ${{ inputs.beta || false }}
     secrets: 
@@ -31,7 +31,7 @@ jobs:
     if: ${{ inputs.bump }}
     uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
     with:
-        PLUGIN_NAME: "advanced-copy"
+        PLUGIN_NAME: "enhanced-copy"
         STYLE: true
         BETA: ${{ inputs.beta }}
     secrets: 
