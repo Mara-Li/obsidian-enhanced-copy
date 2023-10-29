@@ -57,7 +57,6 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	overrideNativeCopy(leaf: WorkspaceLeaf) {
-		console.log(leaf.view);
 		try {
 			return around(leaf.view, {
 				//@ts-ignore
@@ -171,7 +170,7 @@ export default class EnhancedCopy extends Plugin {
 				hotkeys: [],
 				checkCallback: (checking: boolean) => {
 					//everything not markdown view
-					const markdownView =  this.app.workspace.getActiveViewOfType(MarkdownView);
+					const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
 					devLog(!markdownView, checking);
 					if (!markdownView) {
 						if (!checking) {
@@ -203,6 +202,7 @@ export default class EnhancedCopy extends Plugin {
 				}
 			});
 		}
+
 		if (this.settings.overrideCopy) {
 			this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
 				if (!leaf) {
@@ -215,7 +215,16 @@ export default class EnhancedCopy extends Plugin {
 				}
 				//@ts-ignore
 				this.activeMonkeys[leaf.id] = this.overrideNativeCopy(leaf);
+				//enable clipboard event in canvas read-only
+				if (leaf.view instanceof ItemView && leaf.view.getViewType() === "canvas") {
+					//no event listener in dom
+					leaf.view.containerEl.addEventListener("copy", (event) => {
+						const selectedText = canvasSelectionText(this.app, this.settings);
+						event.preventDefault();
+						event.clipboardData?.setData("text/plain", selectedText);
+					});
 
+				}
 			}));
 			//register for editor
 			const copyExt = EditorView.domEventHandlers({

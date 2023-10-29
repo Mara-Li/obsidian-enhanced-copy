@@ -1,9 +1,9 @@
 import i18next from "i18next";
 import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
 
-import {ApplyingToView, CalloutKeepType, ConversionOfFootnotes, ConversionOfLinks, GlobalSettings} from "./interface";
+import {ApplyingToView, CalloutKeepType, ConversionOfFootnotes, ConversionOfLinks, EnhancedCopySettings, GlobalSettings} from "./interface";
 import EnhancedCopy from "./main";
-import {AdvancedCopyViewModal, AllReplaceTextModal} from "./modal";
+import {AllReplaceTextModal,EnhancedCopyViewModal} from "./modal";
 
 interface Tab {
 	name: string;
@@ -14,6 +14,7 @@ interface Tab {
 export class EnhancedCopySettingTab extends PluginSettingTab {
 	plugin: EnhancedCopy;
 	settingsPage!: HTMLElement;
+	settings: EnhancedCopySettings;
 
 	READING: Tab = {
 		name: i18next.t("reading.title"),
@@ -38,19 +39,20 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	constructor(app: App, plugin: EnhancedCopy) {
 		super(app, plugin);
 		this.plugin = plugin;
+		this.settings = plugin.settings;
 	}
 
 	display(): void {
 		const {containerEl} = this;
 		containerEl.empty();
-		this.containerEl.addClasses(["advanced-copy","settingTab"]);
+		this.containerEl.addClasses(["enhanced-copy","settingTab"]);
 		const tabBar = containerEl.createEl("nav", { cls: "settings-tab-bar" });
 		//remove Tab based on applying
-		if (this.plugin.settings.applyingTo === ApplyingToView.reading) {
+		if (this.settings.applyingTo === ApplyingToView.reading) {
 			this.TABS.push(this.READING);
 			this.TABS.remove(this.EDIT);
 			this.TABS = [...new Set(this.TABS)];
-		} else if (this.plugin.settings.applyingTo === ApplyingToView.edit) {
+		} else if (this.settings.applyingTo === ApplyingToView.edit) {
 			this.TABS.push(this.EDIT);
 			this.TABS.remove(this.READING);
 			this.TABS = [...new Set(this.TABS)];
@@ -98,6 +100,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 
 	renderGlobal() {
 		this.settingsPage.empty();
+		this.settingsPage.addClasses(["global"]);
 		this.settingsPage.createEl("h1", {text: i18next.t("global.title")});
 		new Setting(this.settingsPage)
 			.setName(i18next.t("view.title"))
@@ -107,36 +110,38 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					.addOption("all", i18next.t("view.all"))
 					.addOption("reading", i18next.t("view.reading"))
 					.addOption("edit", i18next.t("view.edit"))
-					.setValue(this.plugin.settings.applyingTo)
+					.setValue(this.settings.applyingTo)
 					.onChange(async (value) => {
-						this.plugin.settings.applyingTo = value as ApplyingToView;
+						this.settings.applyingTo = value as ApplyingToView;
 						await this.plugin.saveSettings();
-						if (this.plugin.settings.applyingTo === ApplyingToView.edit) {
-							this.plugin.settings.exportAsHTML = false;
+						if (this.settings.applyingTo === ApplyingToView.edit) {
+							this.settings.exportAsHTML = false;
 							await this.plugin.saveSettings();
 						}
 						this.display();
 					});
 			});
-		if (this.plugin.settings.applyingTo === ApplyingToView.all) {
+		if (this.settings.applyingTo === ApplyingToView.all) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("hotkey.title"))
 				.setDesc(i18next.t("hotkey.desc"))
 				.addToggle((toggle) => {
 					toggle
-						.setValue(this.plugin.settings.separateHotkey)
+						.setValue(this.settings.separateHotkey)
 						.onChange(async (value) => {
-							this.plugin.settings.separateHotkey = value;
+							this.settings.separateHotkey = value;
 							await this.plugin.saveSettings();
+							this.renderSettingsPage("global");
 						});
 				});
+
 			new Setting(this.settingsPage)
 				.addButton((button) => {
 					button
 						.setButtonText(i18next.t("global.copy"))
 						.onClick(async () => {
-							new AdvancedCopyViewModal(this.app, this.plugin.settings, (result) => {
-								this.plugin.settings = result;
+							new EnhancedCopyViewModal(this.app, this.settings, (result) => {
+								this.settings = result;
 								this.plugin.saveSettings();
 								this.display();
 							}).open();
@@ -149,9 +154,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			.setDesc(i18next.t("overrideCopy.desc"))
 			.addToggle((toggle) => {
 				toggle
-					.setValue(this.plugin.settings.overrideCopy)
+					.setValue(this.settings.overrideCopy)
 					.onChange(async (value) => {
-						this.plugin.settings.overrideCopy = value;
+						this.settings.overrideCopy = value;
 						await this.plugin.saveSettings();
 					});
 			});
@@ -164,56 +169,57 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			.setName(i18next.t("copyAsHTML"))
 			.addToggle((toggle) => {
 				toggle
-					.setValue(this.plugin.settings.exportAsHTML)
+					.setValue(this.settings.exportAsHTML)
 					.onChange(async (value) => {
-						this.plugin.settings.exportAsHTML = value;
+						this.settings.exportAsHTML = value;
 						await this.plugin.saveSettings();
 						this.renderSettingsPage("reading");
 					});
 			});
-		if (!this.plugin.settings.exportAsHTML) {
+		if (!this.settings.exportAsHTML) {
 			this.settingsPage.createEl("h2", {text: i18next.t("links")});
-			this.links(this.plugin.settings.reading);
-			this.footnotes(this.plugin.settings.reading);
+			this.links(this.settings.reading);
+			this.footnotes(this.settings.reading);
 
 			this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
 			this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
-			this.highlight(this.plugin.settings.reading);
+			this.highlight(this.settings.reading);
 		}
 
-		this.calloutTitle(this.plugin.settings.reading);
+		this.calloutTitle(this.settings.reading);
 
-		if (!this.plugin.settings.exportAsHTML) {
+		if (!this.settings.exportAsHTML) {
 			this.settingsPage.createEl("h2", {text: i18next.t("other")});
-			this.hardBreak(this.plugin.settings.reading);
+			this.hardBreak(this.settings.reading);
 			new Setting(this.settingsPage)
 				.setName(i18next.t("spaceSize.title"))
 				.setDesc(i18next.t("spaceSize.desc"))
 				.addText((text) => {
 					text
 						.setPlaceholder("-1")
-						.setValue(String(this.plugin.settings.spaceReadingSize))
+						.setValue(String(this.settings.spaceReadingSize))
 						.onChange(async (value) => {
-							this.plugin.settings.spaceReadingSize = Number(value);
+							this.settings.spaceReadingSize = Number(value);
 							await this.plugin.saveSettings();
 						});
 				});
 		}
 
-		this.regexReplacementButton(this.plugin.settings.reading);
+		this.regexReplacementButton(this.settings.reading);
 	}
 
 	renderEdit() {
 		this.settingsPage.empty();
+		this.settingsPage.addClasses(["edit"]);
 		this.settingsPage.createEl("h1", {text: i18next.t("edit.desc")});
 		new Setting(this.settingsPage)
 			.setName(i18next.t("wikiToMarkdown.title"))
 			.setDesc(i18next.t("wikiToMarkdown.desc"))
 			.addToggle((toggle) => {
 				toggle
-					.setValue(this.plugin.settings.wikiToMarkdown)
+					.setValue(this.settings.wikiToMarkdown)
 					.onChange(async (value) => {
-						this.plugin.settings.wikiToMarkdown = value;
+						this.settings.wikiToMarkdown = value;
 						await this.plugin.saveSettings();
 						this.renderSettingsPage("edit");
 					});
@@ -223,24 +229,24 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			.setName(i18next.t("tabToSpace"))
 			.addToggle((toggle) => {
 				toggle
-					.setValue(this.plugin.settings.tabToSpace)
+					.setValue(this.settings.tabToSpace)
 					.onChange(async (value) => {
-						this.plugin.settings.tabToSpace = value;
+						this.settings.tabToSpace = value;
 						await this.plugin.saveSettings();
 						this.renderSettingsPage("edit");
 					});
 			});
 
-		if (this.plugin.settings.tabToSpace) {
+		if (this.settings.tabToSpace) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("tabSpaceSize"))
 				.addText((text) => {
 					text
-						.setValue(this.plugin.settings.tabSpaceSize.toString())
+						.setValue(this.settings.tabSpaceSize.toString())
 						.onChange(async (value) => {
-							this.plugin.settings.tabSpaceSize = parseInt(value);
-							if (isNaN(this.plugin.settings.tabSpaceSize)) {
-								this.plugin.settings.tabSpaceSize = 4;
+							this.settings.tabSpaceSize = parseInt(value);
+							if (isNaN(this.settings.tabSpaceSize)) {
+								this.settings.tabSpaceSize = 4;
 								text.inputEl.style.borderColor = "red";
 							} else {
 								text.inputEl.style.borderColor = "";
@@ -250,18 +256,18 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 		this.settingsPage.createEl("h2", {text: i18next.t("links")});
-		if (this.plugin.settings.wikiToMarkdown) {
-			this.links(this.plugin.settings.editing);
+		if (this.settings.wikiToMarkdown) {
+			this.links(this.settings.editing);
 		}
-		this.footnotes(this.plugin.settings.editing);
+		this.footnotes(this.settings.editing);
 		this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
 		this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
-		this.calloutTitle(this.plugin.settings.editing);
-		this.highlight(this.plugin.settings.editing);
+		this.calloutTitle(this.settings.editing);
+		this.highlight(this.settings.editing);
 		this.settingsPage.createEl("h2", {text: i18next.t("other")});
-		this.hardBreak(this.plugin.settings.editing);
+		this.hardBreak(this.settings.editing);
 
-		this.regexReplacementButton(this.plugin.settings.editing);
+		this.regexReplacementButton(this.settings.editing);
 	}
 
 	highlight(settings: GlobalSettings) {
@@ -282,7 +288,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("callout.title"))
 			.setDesc(i18next.t("callout.desc"))
-			.setClass("copy-reading-in-markdown-dp")
+			.setClass("enhanced-copy-dp")
 			.addDropdown((dropdown) => {
 				dropdown
 					.addOption("obsidian", i18next.t("callout.obsidian"))
@@ -301,7 +307,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("removeFootnotesLinks.title"))
 			.setDesc(i18next.t("removeFootnotesLinks.desc"))
-			.setClass("copy-reading-in-markdown-dp")
+			.setClass("enhanced-copy-dp")
 			.addDropdown((dropdown) => {
 				dropdown
 					.addOption("keep", i18next.t("removeFootnotesLinks.keep"))
@@ -319,7 +325,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		return new Setting(this.settingsPage)
 			.setName(i18next.t("copyLinksAsText.title"))
 			.setDesc(i18next.t("copyLinksAsText.desc"))
-			.setClass("copy-reading-in-markdown-dp")
+			.setClass("enhanced-copy-dp")
 			.addDropdown((dropdown) => {
 				dropdown
 					.addOption("keep", i18next.t("copyLinksAsText.keep"))

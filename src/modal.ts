@@ -17,7 +17,7 @@ export class AllReplaceTextModal extends Modal {
 	onOpen() {
 		const {contentEl} = this;
 		contentEl.empty();
-		contentEl.addClass("advanced-copy");
+		contentEl.addClass("enhanced-copy");
 		new Setting(contentEl)
 			.setName(i18next.t("modal.replaceText.title"))
 			.setClass("modal-title")
@@ -103,7 +103,7 @@ export class AllReplaceTextModal extends Modal {
 	}
 }
 
-export class AdvancedCopyViewModal extends Modal {
+export class EnhancedCopyViewModal extends Modal {
 	settings: EnhancedCopySettings;
 	from: CopySettingsView;
 	to: CopySettingsView;
@@ -121,7 +121,7 @@ export class AdvancedCopyViewModal extends Modal {
 		const {contentEl} = this;
 
 		contentEl.empty();
-		contentEl.addClass("advanced-copy");
+		contentEl.addClass("enhanced-copy");
 		new Setting(contentEl)
 			.setName(i18next.t("common.from"))
 			.addDropdown(dropdown => dropdown

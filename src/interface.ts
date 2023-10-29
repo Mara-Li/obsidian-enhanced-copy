@@ -66,7 +66,6 @@ export enum ApplyingToView {
 	"edit" = "edit",
 }
 
-
 export interface EnhancedCopySettings {
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
