@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.1](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.0...0.2.1) (2023-10-29)
+
+
+### Features
+
+* allow copy for canvas (natif) ([b7f340e](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/b7f340e6df484b3416de05ea76327e45ad5bd4f9))
+
 ## [0.2.0](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.1.4...0.2.0) (2023-10-27)
 
 
