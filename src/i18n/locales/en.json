@@ -30,6 +30,10 @@
     "remove": "Remove markup for all links",
     "title": "Links format"
   },
+  "debug": {
+    "desc": "Show debug log in console",
+    "title": "Debug information"
+  },
   "edit": {
     "desc": "Edit view settings",
     "title": "Edit"

@@ -160,6 +160,17 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					});
 			});
+		new Setting(this.settingsPage)
+			.setName(i18next.t("debug.title"))
+			.setDesc(i18next.t("debug.desc"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.settings.devMode)
+					.onChange(async (value) => {
+						this.settings.devMode = value;
+						await this.plugin.saveSettings();
+					});
+			});
 	}
 
 	renderReading() {

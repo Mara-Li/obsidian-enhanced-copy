@@ -1,13 +1,13 @@
 import {EditorView} from "@codemirror/view";
 import i18next from "i18next";
 import {around} from "monkey-around";
-import { ItemView, MarkdownView, Plugin, WorkspaceLeaf} from "obsidian";
+import { ItemView, MarkdownView, Platform, Plugin, WorkspaceLeaf} from "obsidian";
+import merge from "ts-deepmerge";
 
 import {resources, translationLanguage} from "./i18n/i18next";
 import {ApplyingToView, DEFAULT_SETTINGS,EnhancedCopySettings} from "./interface";
 import {EnhancedCopySettingTab} from "./settings";
 import {convertEditMarkdown, convertMarkdown,} from "./utils/conversion";
-import {devLog} from "./utils/log";
 import {removeDataBasePluginRelationShip} from "./utils/pluginFix";
 import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
 
@@ -21,18 +21,18 @@ export default class EnhancedCopy extends Plugin {
 		let viewIn: ApplyingToView;
 		let selectedText: string;
 		if (activeView && activeView.getMode() !== "source") {
-			devLog(i18next.t("log.readingMode"));
+			this.devLog(i18next.t("log.readingMode"));
 			selectedText = getSelectionAsHTML(this.settings);
 			viewIn = ApplyingToView.reading;
 		} else if (activeView) {
-			devLog(i18next.t("log.editMode"));
+			this.devLog(i18next.t("log.editMode"));
 			const editor = activeView.editor;
-			selectedText = copySelectionRange(editor);
+			selectedText = copySelectionRange(editor, this);
 			viewIn = ApplyingToView.edit;
 		} else {
 			const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 			if (leafType === "canvas") {
-				selectedText = canvasSelectionText(this.app, this.settings);
+				selectedText = canvasSelectionText(this.app, this);
 				viewIn = this.app.workspace.activeEditor ? ApplyingToView.edit : ApplyingToView.reading;
 			} else {
 				selectedText = leafType === "database-plugin" ? removeDataBasePluginRelationShip() : activeWindow.getSelection()?.toString() ?? "";
@@ -46,8 +46,8 @@ export default class EnhancedCopy extends Plugin {
 			) {
 				selectedText = viewIn === ApplyingToView.edit
 					?
-					convertEditMarkdown(selectedText, this.settings.editing, this.settings) :
-					convertMarkdown(selectedText, this.settings, this.settings.reading);
+					convertEditMarkdown(selectedText, this.settings.editing, this) :
+					convertMarkdown(selectedText, this.settings.reading, this);
 			}
 			return selectedText;
 		} else if (viewIn === ApplyingToView.edit) {
@@ -64,7 +64,6 @@ export default class EnhancedCopy extends Plugin {
 					return (event: ClipboardEvent) => {
 						try {
 							const selectedText = this.enhancedCopy();
-							console.log(selectedText);
 							if (selectedText) {
 								event.preventDefault();
 								event.clipboardData?.setData("text/plain", selectedText);
@@ -135,9 +134,9 @@ export default class EnhancedCopy extends Plugin {
 				name: i18next.t("commands.editor"),
 				hotkeys: [],
 				editorCallback: (editor) => {
-					let selectedText = copySelectionRange(editor);
+					let selectedText = copySelectionRange(editor, this);
 					if (selectedText && selectedText.trim().length > 0) {
-						selectedText = convertEditMarkdown(selectedText, this.settings.editing, this.settings);
+						selectedText = convertEditMarkdown(selectedText, this.settings.editing, this);
 						navigator.clipboard.writeText(selectedText);
 					}
 				}
@@ -154,7 +153,7 @@ export default class EnhancedCopy extends Plugin {
 						if (!checking) {
 							let selectedText = getSelectionAsHTML(this.settings);
 							if (!this.settings.exportAsHTML) {
-								selectedText = convertMarkdown(selectedText, this.settings, this.settings.reading);
+								selectedText = convertMarkdown(selectedText, this.settings.reading, this);
 							}
 							navigator.clipboard.writeText(selectedText);
 						}
@@ -171,14 +170,14 @@ export default class EnhancedCopy extends Plugin {
 				checkCallback: (checking: boolean) => {
 					//everything not markdown view
 					const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-					devLog(!markdownView, checking);
+					this.devLog(!markdownView, checking);
 					if (!markdownView) {
 						if (!checking) {
 							const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 							let selectedText: string;
 							let viewIn: ApplyingToView;
 							if (leafType === "canvas") {
-								selectedText = canvasSelectionText(this.app, this.settings);
+								selectedText = canvasSelectionText(this.app, this);
 								viewIn = this.app.workspace.activeEditor ? ApplyingToView.edit : ApplyingToView.reading;
 							} else {
 								selectedText = leafType === "database-plugin" ? removeDataBasePluginRelationShip() : activeWindow.getSelection()?.toString() ?? "";
@@ -190,8 +189,8 @@ export default class EnhancedCopy extends Plugin {
 								) {
 									selectedText = viewIn === ApplyingToView.edit
 										?
-										convertEditMarkdown(selectedText, this.settings.editing, this.settings) :
-										convertMarkdown(selectedText, this.settings, this.settings.reading);
+										convertEditMarkdown(selectedText, this.settings.editing, this) :
+										convertMarkdown(selectedText, this.settings.reading, this);
 								}
 								navigator.clipboard.writeText(selectedText);
 							}
@@ -206,7 +205,6 @@ export default class EnhancedCopy extends Plugin {
 		if (this.settings.overrideCopy) {
 			this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
 				if (!leaf) {
-					console.log("No active leaf");
 					for (const monkey of Object.values(this.activeMonkeys)) {
 						monkey();
 					}
@@ -219,7 +217,7 @@ export default class EnhancedCopy extends Plugin {
 				if (leaf.view instanceof ItemView && leaf.view.getViewType() === "canvas") {
 					//no event listener in dom
 					leaf.view.containerEl.addEventListener("copy", (event) => {
-						const selectedText = canvasSelectionText(this.app, this.settings);
+						const selectedText = canvasSelectionText(this.app, this);
 						event.preventDefault();
 						event.clipboardData?.setData("text/plain", selectedText);
 					});
@@ -245,9 +243,26 @@ export default class EnhancedCopy extends Plugin {
 		}
 	}
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const loadedData = await this.loadData();
+		try {
+			this.settings = merge(DEFAULT_SETTINGS, loadedData) as unknown as EnhancedCopySettings;
+		} catch (e) {
+			console.warn("[Enhanced copy] Error while deep merging settings, using default loading method");
+			this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
+		}
 	}
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+	devLog(...args: unknown[]) {
+		if (!(Platform.isDesktop && this.settings.devMode)) {
+			return;
+		}
+		let callFunction = new Error().stack?.split("\n")[2].trim();
+		callFunction = callFunction?.substring(callFunction.indexOf("at ") + 3, callFunction.lastIndexOf(" ("));
+		callFunction = callFunction!.replace("Object.callback", "");
+		callFunction = callFunction.length > 0 ? callFunction : "main";
+		const date = new Date().toISOString().slice(11, 23);
+		console.log(`[${date}](${callFunction}):\n`, ...args);
 	}
 }

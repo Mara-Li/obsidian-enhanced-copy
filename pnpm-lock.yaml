@@ -67,6 +67,9 @@ devDependencies:
   obsidian-plugin-cli:
     specifier: ^0.9.0
     version: 0.9.0
+  ts-deepmerge:
+    specifier: ^6.2.0
+    version: 6.2.0
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
@@ -3691,6 +3694,11 @@ packages:
       typescript: '>=4.2.0'
     dependencies:
       typescript: 5.1.6
+    dev: true
+
+  /ts-deepmerge@6.2.0:
+    resolution: {integrity: sha512-2qxI/FZVDPbzh63GwWIZYE7daWKtwXZYuyc8YNq0iTmMUwn4mL0jRLsp6hfFlgbdRSR4x2ppe+E86FnvEpN7Nw==}
+    engines: {node: '>=14.13.1'}
     dev: true
 
   /ts-union-tools@0.0.1:

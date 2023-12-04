@@ -30,6 +30,10 @@
     "remove": "Supprimer les balises pour tous les liens",
     "title": "Format des liens"
   },
+  "debug": {
+    "desc": "Affiche le journal de débogage dans la console",
+    "title": "Informations de débogage"
+  },
   "edit": {
     "desc": "Paramètre pour la vue d'édition",
     "title": "Édition"

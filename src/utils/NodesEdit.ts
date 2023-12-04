@@ -44,7 +44,6 @@ export function replaceAllDivCalloutToBlockquote(
 	settings: GlobalSettings
 ): HTMLDivElement {
 	const allDivCallout = div.querySelectorAll("div[class*='callout']");
-	console.log(allDivCallout);
 	let calloutTitle = "";
 	for (const divCallout of allDivCallout) {
 		if (

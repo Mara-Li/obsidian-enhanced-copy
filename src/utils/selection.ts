@@ -2,7 +2,7 @@ import i18next from "i18next";
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
 
 import {EnhancedCopySettings} from "../interface";
-import { devLog } from "./log";
+import EnhancedCopy from "../main";
 import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 
 /**
@@ -82,7 +82,7 @@ function getAnchor(head: EditorPosition, anchor: EditorPosition) {
  * @param editor {Editor} Editor of the activeView
  * @returns {string} The selected text (copying behavior of Obsidian)
  */
-export function copySelectionRange(editor: Editor):string {
+export function copySelectionRange(editor: Editor, plugin: EnhancedCopy):string {
 	let selectedText = "";
 	const selection = editor.listSelections();
 	for (const selected of selection) {
@@ -93,7 +93,7 @@ export function copySelectionRange(editor: Editor):string {
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	if (selectedText === "") {
 		const getSelection = activeWindow.getSelection();
-		devLog(	i18next.t("log.empty"));
+		plugin.devLog(	i18next.t("log.empty"));
 		return getSelection === null ? "" : getSelection.toString();
 	}
 	return selectedText;
@@ -106,11 +106,12 @@ export function copySelectionRange(editor: Editor):string {
  * @param settings {EnhancedCopySettings}
  * @returns {string}
  */
-export function canvasSelectionText(app: App, settings: EnhancedCopySettings): string {
+export function canvasSelectionText(app: App, plugin: EnhancedCopy): string {
+	const {settings} = plugin;
 	const editor = app.workspace.activeEditor;
 	if (editor) {
 		const editorMode = editor.editor as Editor;
-		return copySelectionRange(editorMode);
+		return copySelectionRange(editorMode, plugin);
 	} else {
 		return getSelectionAsHTML(settings);
 	}

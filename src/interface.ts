@@ -77,6 +77,7 @@ export interface EnhancedCopySettings {
 	editing: GlobalSettings;
 	reading: GlobalSettings;
 	overrideCopy: boolean;
+	devMode: boolean;
 }
 
 /**
@@ -111,6 +112,7 @@ export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 		replaceText: []
 	},
 	overrideCopy: false,
+	devMode: false
 };
 
 export interface GlobalSettings {

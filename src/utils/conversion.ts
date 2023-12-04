@@ -6,7 +6,7 @@ import {
 	ConversionOfLinks,
 	EnhancedCopySettings, 		GlobalSettings
 } from "../interface";
-import {devLog} from "./log";
+import EnhancedCopy from "../main";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -154,25 +154,24 @@ function removeHighlightMark(markdown: string, settings: GlobalSettings): string
  * @param settings {EnhancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with hard breaks added if needed
  */
-function hardBreak(markdown: string, settings: GlobalSettings): string {
+function hardBreak(markdown: string, settings: GlobalSettings, plugin: EnhancedCopy): string {
 	if (settings.hardBreak) {
 		markdown = markdown.replace(/ *\n/g, "  \n");
 		markdown += "  ";
 	} else {
-		devLog(i18next.t("log.noHardBreaks"));
+		plugin.devLog(i18next.t("log.noHardBreaks"));
 		markdown = markdown.replace(/ *\n/g, "\n");
 	}
 	return markdown;
 }
 
-function convertCallout(markdown: string, overrides: GlobalSettings): string {
-	devLog(i18next.t("log.callout.title"), overrides.callout);
+function convertCallout(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy): string {
+	plugin.devLog(i18next.t("log.callout.title"), overrides.callout);
 	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
 	if (overrides.callout === CalloutKeepType.removeKeepTitle || overrides.callout === CalloutKeepType.remove) {
-		devLog(i18next.t("log.callout.remove"));
+		plugin.devLog(i18next.t("log.callout.remove"));
 		//delete the type of the callout
 		markdown = markdown.replace(calloutRegex, (match, p1, p2, p3) => {
-			console.log("COUCOU");
 			if (p3 === "") {
 				//remove the line without adding a new line / space
 				return "undefined";
@@ -238,7 +237,8 @@ function textReplacement(markdown: string, settings: GlobalSettings) {
  * @param overrides
  * @returns {string} converted markdown
  */
-export function convertMarkdown(markdown: string, settings: EnhancedCopySettings, overrides: GlobalSettings):string {
+export function convertMarkdown(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy): string {
+	const settings = plugin.settings;
 	return removeEmptyLineBeforeList(
 		convertSpaceSize(convertCallout(
 			hardBreak(
@@ -251,23 +251,23 @@ export function convertMarkdown(markdown: string, settings: EnhancedCopySettings
 					),
 					overrides
 				),
-				overrides
+				overrides,plugin
 			),
-			overrides),
+			overrides, plugin),
 		settings)
 	);
 }
 
-export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, settings: EnhancedCopySettings) {
+export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy) {
+	const settings = plugin.settings;
 	if (settings.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
 		markdown = removeLinksBracketsInMarkdown(markdown, overrides);
 	}
 	markdown = convertTabToSpace(markdown, settings);
 	markdown = removeMarkdownFootNotes(markdown, overrides);
-	markdown = convertCallout(markdown, overrides);
+	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
-	markdown = hardBreak(markdown, overrides);
-	markdown = textReplacement(markdown, overrides);
-	return markdown;
+	markdown = hardBreak(markdown, overrides, plugin);
+	return textReplacement(markdown, overrides);
 }
