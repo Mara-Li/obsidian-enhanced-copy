@@ -17,6 +17,10 @@ export default class EnhancedCopy extends Plugin {
 	activeMonkeys: Record<string, any> = {};
 
 	enhancedCopy() {
+		//get default if a modal is opened
+		if (document.querySelector(".modal-container")) {
+			return activeWindow.getSelection()?.toString() ?? "";
+		}
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 		let viewIn: ApplyingToView;
 		let selectedText: string;
