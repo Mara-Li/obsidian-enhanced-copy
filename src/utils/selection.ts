@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
 
-import {EnhancedCopySettings} from "../interface";
+import {COLLAPSE_INDICATOR, EnhancedCopySettings} from "../interface";
 import EnhancedCopy from "../main";
 import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 
@@ -13,6 +13,7 @@ import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
  * @returns {string}
  */
 export function getSelectionAsHTML(settings: EnhancedCopySettings): string {
+	console.log("GET SELECTION AS HTML");
 	const getSelection = activeWindow.getSelection();
 	if (getSelection === null) return "";
 	const range = getSelection.getRangeAt(0);
@@ -31,7 +32,7 @@ export function getSelectionAsHTML(settings: EnhancedCopySettings): string {
 		return div.innerHTML;
 	}
 	const allNoConvert = div.querySelectorAll("[data-type='html']");
-	let markdown = htmlToMarkdown(div.innerHTML);
+	let markdown = htmlToMarkdown(div.innerHTML.replace(COLLAPSE_INDICATOR, ""));
 	//no converting html to markdown the div that contains a class with "no-convert"
 	for (const noConvert of allNoConvert) {
 		const converted = htmlToMarkdown(noConvert.outerHTML);

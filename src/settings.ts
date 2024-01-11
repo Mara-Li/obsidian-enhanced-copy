@@ -51,17 +51,15 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		if (this.settings.applyingTo === ApplyingToView.reading) {
 			this.TABS.push(this.READING);
 			this.TABS.remove(this.EDIT);
-			this.TABS = [...new Set(this.TABS)];
 		} else if (this.settings.applyingTo === ApplyingToView.edit) {
 			this.TABS.push(this.EDIT);
 			this.TABS.remove(this.READING);
-			this.TABS = [...new Set(this.TABS)];
 		} else {
 			this.TABS.push(this.EDIT);
 			this.TABS.push(this.READING);
-			// remove duplicate
-			this.TABS = [...new Set(this.TABS)];
 		}
+		// remove duplicate
+		this.TABS = [...new Set(this.TABS)];
 		for (const tabInfo of this.TABS) {
 			const tabEl = tabBar.createEl("div", {cls: "settings-tab"});
 			const tabIcon = tabEl.createEl("div", {cls: "settings-tab-icon"});

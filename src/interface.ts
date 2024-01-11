@@ -66,6 +66,8 @@ export enum ApplyingToView {
 	"edit" = "edit",
 }
 
+export const COLLAPSE_INDICATOR = new RegExp("<div class=\"heading-collapse-indicator collapse-indicator collapse-icon( is-collapsed)?\"><svg xmlns=\".*\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"svg-icon right-triangle\"><path d=\"M3 8L12 17L21 8\"></path></svg></div>", "gi");
+
 export interface EnhancedCopySettings {
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
