@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.5](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.4...0.2.5) (2024-01-19)
+
+
+### Bug Fixes
+
+* cut doesn't work in canvas ([efd6651](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/efd66514b981c73ef4d62805505e97b6b94e26f3))
+
 ## [0.2.4](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.3...0.2.4) (2024-01-11)
 
 
