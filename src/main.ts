@@ -87,19 +87,19 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-	editorCopyHandler(event: ClipboardEvent, editor: EditorView) {
+	editorCopyHandler(event: ClipboardEvent, editor?: EditorView) {
 		const selectedText = this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData("text/plain", selectedText);
 	}
 
 	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-	editorCutHandler(event: ClipboardEvent, editor: EditorView) {
+	editorCutHandler(event: ClipboardEvent, editor?: EditorView) {
 		const selectedText = this.enhancedCopy();
 		event.clipboardData?.setData("text/plain", selectedText);
 		event.preventDefault();
 		//mimic cut behavior
-		const editorObs = this.app.workspace.getActiveViewOfType(MarkdownView)?.editor;
+		const editorObs = this.app.workspace.activeEditor?.editor;
 		if (editorObs) {
 			editorObs.replaceSelection("");
 		}
@@ -219,11 +219,11 @@ export default class EnhancedCopy extends Plugin {
 				this.activeMonkeys[leaf.id] = this.overrideNativeCopy(leaf);
 				//enable clipboard event in canvas read-only
 				if (leaf.view instanceof ItemView && leaf.view.getViewType() === "canvas") {
-					//no event listener in dom
 					leaf.view.containerEl.addEventListener("copy", (event) => {
-						const selectedText = canvasSelectionText(this.app, this);
-						event.preventDefault();
-						event.clipboardData?.setData("text/plain", selectedText);
+						this.editorCopyHandler(event);
+					});
+					leaf.view.containerEl.addEventListener("cut", (event) => {
+						this.editorCutHandler(event);
 					});
 
 				}
