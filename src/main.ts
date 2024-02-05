@@ -136,7 +136,6 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: "copy-editor-in-markdown",
 				name: i18next.t("commands.editor"),
-				hotkeys: [],
 				editorCallback: (editor) => {
 					let selectedText = copySelectionRange(editor, this);
 					if (selectedText && selectedText.trim().length > 0) {
@@ -149,7 +148,6 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: "copy-reading-in-markdown",
 				name: i18next.t("commands.reading"),
-				hotkeys: [],
 				checkCallback: (checking: boolean) => {
 					const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 					const readingMode = view && view.getMode() !== "source";
@@ -170,7 +168,6 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: "copy-other-in-markdown",
 				name: i18next.t("commands.other"),
-				hotkeys: [],
 				checkCallback: (checking: boolean) => {
 					//everything not markdown view
 					const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
