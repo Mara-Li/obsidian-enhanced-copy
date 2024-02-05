@@ -41,7 +41,7 @@ export class AllReplaceTextModal extends Modal {
 					.onChange(async (value) => {
 						replacer.pattern = value;
 					})
-					.inputEl.style.width = "100%"
+					.inputEl.classList.add("full-width")
 				)
 				.addText(text => text
 					.setPlaceholder(i18next.t("common.replacement"))
@@ -49,7 +49,7 @@ export class AllReplaceTextModal extends Modal {
 					.onChange(async (value) => {
 						replacer.replacement = value;
 					})
-					.inputEl.style.width = "100%"
+					.inputEl.classList.add("full-width")
 				)
 			/** Allow to change order with two arrow up / down **/
 				.addExtraButton(button => button
@@ -57,11 +57,12 @@ export class AllReplaceTextModal extends Modal {
 					.setTooltip(i18next.t("modal.replaceText.up"))
 					.onClick(() => {
 						const index = this.replaceText.indexOf(replacer);
-						if (index > 0) {
-							this.replaceText.splice(index, 1);
-							this.replaceText.splice(index - 1, 0, replacer);
-							this.onOpen();
+						if (index <= 0) {
+							return;
 						}
+						this.replaceText.splice(index, 1);
+						this.replaceText.splice(index - 1, 0, replacer);
+						this.onOpen();
 					})
 				)
 				.addExtraButton(button => button
@@ -69,11 +70,12 @@ export class AllReplaceTextModal extends Modal {
 					.setTooltip(i18next.t("modal.replaceText.down"))
 					.onClick(() => {
 						const index = this.replaceText.indexOf(replacer);
-						if (index < this.replaceText.length - 1) {
-							this.replaceText.splice(index, 1);
-							this.replaceText.splice(index + 1, 0, replacer);
-							this.onOpen();
+						if (index >= this.replaceText.length - 1) {
+							return;
 						}
+						this.replaceText.splice(index, 1);
+						this.replaceText.splice(index + 1, 0, replacer);
+						this.onOpen();
 					})
 				)
 				.addExtraButton(button => button
@@ -87,15 +89,22 @@ export class AllReplaceTextModal extends Modal {
 						}
 					})
 				)
-				.infoEl.style.display = "none";
+				.infoEl.classList.add("hide-info");
 		}
 		new Setting(contentEl)
 			.addButton(button => button
 				.setButtonText(i18next.t("common.save"))
+				.setCta()
 				.onClick(async () => {
 					this.onSubmit(this.replaceText);
 					this.close();
-				}));
+				}))
+			.addButton(button => button
+				.setButtonText(i18next.t("common.cancel"))
+				.setWarning()
+				.onClick(async () => {
+					this.close();
+				}));			
 	}
 	onClose() {
 		const { contentEl } = this;
@@ -119,7 +128,6 @@ export class EnhancedCopyViewModal extends Modal {
 
 	onOpen() {
 		const {contentEl} = this;
-
 		contentEl.empty();
 		contentEl.addClass("enhanced-copy");
 		new Setting(contentEl)
@@ -133,9 +141,9 @@ export class EnhancedCopyViewModal extends Modal {
 				.onChange(async (value) => {
 					this.from = value as CopySettingsView;
 				})
-				.selectEl.style.width = "100%"
+				.selectEl.classList.add("full-width")
 			)
-			.infoEl.style.width = "10%";
+			.infoEl.classList.add("min-width");
 		new Setting(contentEl)
 			.setName(i18next.t("common.to"))
 			.addDropdown(dropdown => dropdown
@@ -147,13 +155,14 @@ export class EnhancedCopyViewModal extends Modal {
 				.onChange(async (value) => {
 					this.to = value as CopySettingsView;
 				})
-				.selectEl.style.width = "100%"
+				.selectEl.classList.add("full-width")
 			)
-			.infoEl.style.width = "10%";
+			.infoEl.classList.add("min-width");
 
 		new Setting(contentEl)
 			.addButton(button => button
 				.setButtonText(i18next.t("modal.copyView.copy"))
+				.setCta()
 				.onClick(async () => {
 					if (this.from === this.to) {
 						return;
@@ -165,6 +174,12 @@ export class EnhancedCopyViewModal extends Modal {
 						this.settings.editing = overrides;
 					}
 					this.onSubmit(this.settings);
+					this.close();
+				}))
+			.addButton(button => button
+				.setButtonText(i18next.t("common.cancel"))
+				.setWarning()
+				.onClick(async () => {
 					this.close();
 				}));
 	}

@@ -15,6 +15,7 @@
   },
   "common": {
     "add": "Add",
+    "cancel": "Cancel",
     "delete": "Delete",
     "from": "From",
     "pattern": "pattern",

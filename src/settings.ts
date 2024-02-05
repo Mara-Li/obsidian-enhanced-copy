@@ -45,7 +45,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	display(): void {
 		const {containerEl} = this;
 		containerEl.empty();
-		this.containerEl.addClasses(["enhanced-copy","settingTab"]);
+		this.containerEl.addClasses(["enhanced-copy","setting-tab"]);
 		const tabBar = containerEl.createEl("nav", { cls: "settings-tab-bar" });
 		//remove Tab based on applying
 		if (this.settings.applyingTo === ApplyingToView.reading) {
@@ -254,12 +254,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						.setValue(this.settings.tabSpaceSize.toString())
 						.onChange(async (value) => {
 							this.settings.tabSpaceSize = parseInt(value);
-							if (isNaN(this.settings.tabSpaceSize)) {
-								this.settings.tabSpaceSize = 4;
-								text.inputEl.style.borderColor = "red";
-							} else {
-								text.inputEl.style.borderColor = "";
-							}
+							text.inputEl.toggleClass("error", isNaN(this.settings.tabSpaceSize) || this.settings.tabSpaceSize < 0);
+							if (isNaN(this.settings.tabSpaceSize) || this.settings.tabSpaceSize < 0) this.settings.tabSpaceSize = 4;
 							await this.plugin.saveSettings();
 						});
 				});
@@ -375,8 +371,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						})).open();
 						await this.plugin.saveSettings();
 					})
-					.buttonEl.style.width = "100%";
+					.buttonEl.classList.add("full-width");
 			})
-			.infoEl.style.display = "none";
+			.infoEl.classList.add("hide-info");
 	}
 }

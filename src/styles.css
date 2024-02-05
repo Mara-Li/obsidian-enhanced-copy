@@ -1,107 +1,119 @@
 .setting-item.enhanced-copy-dp select.dropdown {
-    width: 100%;
-    height: auto;
-    white-space: break-spaces;
-    padding: 1em;
+  width: 100%;
+  height: auto;
+  white-space: break-spaces;
+  padding: 1em;
 }
 
-.enhanced-copy.settingTab .settings-tab-bar {
-	display: flex;
-	flex-direction: row;
+.enhanced-copy.setting-tab .settings-tab-bar {
+  display: flex;
+  flex-direction: row;
 }
 
-
-.enhanced-copy.settingTab .settings-tab {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: var(--size-4-2);
-	padding: 10px;
-	border: 1px solid var(--background-modifier-border)
+.enhanced-copy.setting-tab .settings-tab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--size-4-2);
+  padding: 10px;
+  border: 1px solid var(--background-modifier-border);
 }
 
-.enhanced-copy.settingTab .settings-tab-active {
-	background-color: var(--color-accent);
-	color: var(--text-on-accent);
+.enhanced-copy.setting-tab .settings-tab-active {
+  background-color: var(--color-accent);
+  color: var(--text-on-accent);
 }
 
-.enhanced-copy.settingTab .tabName {
-	font-weight: bold;
+.enhanced-copy.setting-tab .tabName {
+  font-weight: bold;
 }
 
-.enhanced-copy.settingTab .settings-tab-icon {
-	display: flex;
+.enhanced-copy.setting-tab .settings-tab-icon {
+  display: flex;
 }
-
 
 @media screen and (max-width: 600px) {
-	.enhanced-copy.settingTab .settings-tab-bar,
-	.enhanced-copy.settingTab .setting-item > .setting-item-control {
-		flex-direction: column;
-		width: 100%;
-	}
+  .enhanced-copy.setting-tab .settings-tab-bar,
+  .enhanced-copy.setting-tab .setting-item > .setting-item-control {
+    flex-direction: column;
+    width: 100%;
+  }
 
-	.enhanced-copy.settingTab .settings-tab {
-		border-bottom: 1px solid var(--background-modifier-border) !important;
-		border-radius: 5px !important;
-		margin-bottom: 5px;
-	}
+  .enhanced-copy.setting-tab .settings-tab {
+    border-bottom: 1px solid var(--background-modifier-border) !important;
+    border-radius: 5px !important;
+    margin-bottom: 5px;
+  }
 
-	.enhanced-copy.settingTab .settings-tab-bar {
-		border-bottom: transparent !important;
-	}
-}
-
-
-.enhanced-copy.settingTab .settings-tab {
-	padding: 10px;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: 5px 5px 0 0;
-}
-.enhanced-copy.settingTab .settings-tab:hover {
-	background-color: var(--background-modifier-hover);
+  .enhanced-copy.setting-tab .settings-tab-bar {
+    border-bottom: transparent !important;
+  }
 }
 
-.enhanced-copy.settingTab .settings-tab-active {
-	background-color: var(--color-accent);
-	color: var(--text-on-accent);
-	border: 0;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
+.enhanced-copy.setting-tab .settings-tab {
+  padding: 10px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 5px 5px 0 0;
 }
-.enhanced-copy.settingTab .settings-tab-name {
-	font-weight: bold;
-	text-align: center;
-}
-.enhanced-copy.settingTab .settings-tab-icon {
-	text-align: center;
-}
-.enhanced-copy.settingTab .settings-tab-page > .setting-item:first-child {
-	margin-top: 15px;
+.enhanced-copy.setting-tab .settings-tab:hover {
+  background-color: var(--background-modifier-hover);
 }
 
-.enhanced-copy.settingTab nav.settings-tab-bar {
-	border-bottom: 1px solid var(--background-modifier-border);
+.enhanced-copy.setting-tab .settings-tab-active {
+  background-color: var(--color-accent);
+  color: var(--text-on-accent);
+  border: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.enhanced-copy.setting-tab .settings-tab-name {
+  font-weight: bold;
+  text-align: center;
+}
+.enhanced-copy.setting-tab .settings-tab-icon {
+  text-align: center;
+}
+.enhanced-copy.setting-tab .settings-tab-page > .setting-item:first-child {
+  margin-top: 15px;
 }
 
-.enhanced-copy.settingTab .settings-tab {
-	border-bottom: transparent;
+.enhanced-copy.setting-tab nav.settings-tab-bar {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.enhanced-copy.setting-tab .settings-tab {
+  border-bottom: transparent;
 }
 
 .enhanced-copy > .text-area .setting-item-info {
-	display: none;
+  display: none;
 }
 
 .modal-content.enhanced-copy {
-	padding-top: 1em;
+  padding-top: 1em;
 }
 
-
 .modal-content.enhanced-copy .setting-item {
-	border-top: 0;
+  border-top: 0;
 }
 
 .modal-content.enhanced-copy .modal-title {
-	margin-bottom: 0;
-	padding-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.enhanced-copy.setting-tab input.error {
+  border-color: var(--text-error);
+}
+
+.enhanced-copy .full-width {
+  width: 100%;
+}
+
+.enhanced-copy .min-width {
+  width: 10%;
+}
+
+.enhanced-copy .hide-info {
+  display: none;
 }
