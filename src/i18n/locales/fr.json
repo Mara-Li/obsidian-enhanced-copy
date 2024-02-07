@@ -81,7 +81,7 @@
   "openTextReplacer": "Ouvrir le remplacement de texte",
   "other": "Autres options",
   "overrideCopy": {
-    "desc": "Remplacer la copie native (CTRL + C, clic-droit...) par la copie améliorée",
+    "desc": "Remplacer la copie native (CTRL + C, clic-droit...) par la copie améliorée (nécessite un rechargement d'Obsidian)",
     "title": "Prendre en charge la copie native"
   },
   "overrides": "Remplace les paramètres précédents",

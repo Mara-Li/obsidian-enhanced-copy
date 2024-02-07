@@ -1,22 +1,22 @@
-import {EditorView} from "@codemirror/view";
+import { EditorView } from "@codemirror/view";
 import i18next from "i18next";
-import {around} from "monkey-around";
-import { ItemView, MarkdownView, Platform, Plugin, WorkspaceLeaf} from "obsidian";
+import { around } from "monkey-around";
+import { ItemView, MarkdownView, Platform, Plugin, WorkspaceLeaf } from "obsidian";
 import merge from "ts-deepmerge";
 
-import {resources, translationLanguage} from "./i18n/i18next";
-import {ApplyingToView, DEFAULT_SETTINGS,EnhancedCopySettings} from "./interface";
-import {EnhancedCopySettingTab} from "./settings";
-import {convertEditMarkdown, convertMarkdown,} from "./utils/conversion";
-import {removeDataBasePluginRelationShip} from "./utils/pluginFix";
-import {canvasSelectionText, copySelectionRange, getSelectionAsHTML} from "./utils/selection";
+import { resources, translationLanguage } from "./i18n/i18next";
+import { ApplyingToView, DEFAULT_SETTINGS, EnhancedCopySettings, GlobalSettings } from "./interface";
+import { EnhancedCopySettingTab } from "./settings";
+import { convertEditMarkdown, convertMarkdown, } from "./utils/conversion";
+import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
+import { canvasSelectionText, copySelectionRange, getSelectionAsHTML } from "./utils/selection";
 
 export default class EnhancedCopy extends Plugin {
 	settings: EnhancedCopySettings = DEFAULT_SETTINGS;
 	//eslint-disable-next-line @typescript-eslint/no-explicit-any
 	activeMonkeys: Record<string, any> = {};
 
-	enhancedCopy() {
+	enhancedCopy(profile?: GlobalSettings) {
 		//get default if a modal is opened
 		if (document.querySelector(".modal-container")) {
 			return activeWindow.getSelection()?.toString() ?? "";
@@ -26,7 +26,7 @@ export default class EnhancedCopy extends Plugin {
 		let selectedText: string;
 		if (activeView && activeView.getMode() !== "source") {
 			this.devLog(i18next.t("log.readingMode"));
-			selectedText = getSelectionAsHTML(this.settings);
+			selectedText = getSelectionAsHTML(profile ?? this.settings.reading);
 			viewIn = ApplyingToView.reading;
 		} else if (activeView) {
 			this.devLog(i18next.t("log.editMode"));
@@ -43,15 +43,17 @@ export default class EnhancedCopy extends Plugin {
 				viewIn = ApplyingToView.reading;
 			}
 		}
-
+		const exportAsHTML = profile ? profile?.copyAsHTML ?? false : this.settings.reading.copyAsHTML;
+		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
-			if (!this.settings.exportAsHTML &&
-				(this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn)
+			if (!exportAsHTML &&
+				(applyingTo === ApplyingToView.all || applyingTo === viewIn)
 			) {
+				console.log(profile);
 				selectedText = viewIn === ApplyingToView.edit
 					?
-					convertEditMarkdown(selectedText, this.settings.editing, this) :
-					convertMarkdown(selectedText, this.settings.reading, this);
+					convertEditMarkdown(selectedText, profile ?? this.settings.editing, this) :
+					convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
 			return selectedText;
 		} else if (viewIn === ApplyingToView.edit) {
@@ -61,10 +63,13 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	overrideNativeCopy(leaf: WorkspaceLeaf) {
+		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		if (activeView && activeView.getMode() !== "source" && !this.settings.reading.overrideNativeCopy) return;
+		if (activeView && activeView.getMode() === "source" && !this.settings.editing.overrideNativeCopy) return;
 		try {
 			return around(leaf.view, {
 				//@ts-ignore
-				handleCopy: () =>{
+				handleCopy: () => {
 					return (event: ClipboardEvent) => {
 						try {
 							const selectedText = this.enhancedCopy();
@@ -121,9 +126,29 @@ export default class EnhancedCopy extends Plugin {
 		await this.loadSettings();
 		this.addSettingTab(new EnhancedCopySettingTab(this.app, this));
 
-		/**
-		 * Copy the selected text in markdown format
-		 */
+
+		for (const profile of this.settings.profiles) {
+			if (!profile.name) continue;
+			this.addCommand({
+				id: `copy-${profile.name}-in-markdown`,
+				name: profile.name,
+				checkCallback: (checking: boolean) => {
+					const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+					const readingMode = view && view.getMode() !== "source";
+					if (profile.applyingTo === ApplyingToView.all || 
+						(profile.applyingTo === ApplyingToView.reading && readingMode) || 
+						(profile.applyingTo === ApplyingToView.edit && !readingMode)
+					) {
+						if (!checking) {
+							navigator.clipboard.writeText(this.enhancedCopy(profile));
+						}
+						return true;
+					}
+					return false;
+				}
+			});
+		}
+
 		if (!this.settings.separateHotkey || this.settings.applyingTo !== ApplyingToView.all) {
 			this.addCommand({
 				id: "copy-all-in-markdown",
@@ -153,7 +178,7 @@ export default class EnhancedCopy extends Plugin {
 					const readingMode = view && view.getMode() !== "source";
 					if (readingMode) {
 						if (!checking) {
-							let selectedText = getSelectionAsHTML(this.settings);
+							let selectedText = getSelectionAsHTML(this.settings.reading);
 							if (!this.settings.exportAsHTML) {
 								selectedText = convertMarkdown(selectedText, this.settings.reading, this);
 							}
@@ -203,7 +228,7 @@ export default class EnhancedCopy extends Plugin {
 			});
 		}
 
-		if (this.settings.overrideCopy) {
+		if (this.settings.reading.overrideNativeCopy || this.settings.editing.overrideNativeCopy) {
 			this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
 				if (!leaf) {
 					for (const monkey of Object.values(this.activeMonkeys)) {
@@ -215,7 +240,7 @@ export default class EnhancedCopy extends Plugin {
 				//@ts-ignore
 				this.activeMonkeys[leaf.id] = this.overrideNativeCopy(leaf);
 				//enable clipboard event in canvas read-only
-				if (leaf.view instanceof ItemView && leaf.view.getViewType() === "canvas") {
+				if (leaf.view instanceof ItemView && leaf.view.getViewType() === "canvas" && this.settings.reading.overrideNativeCopy) {
 					leaf.view.containerEl.addEventListener("copy", (event) => {
 						this.editorCopyHandler(event);
 					});
@@ -225,16 +250,18 @@ export default class EnhancedCopy extends Plugin {
 
 				}
 			}));
+			if (this.settings.editing.overrideNativeCopy) {
 			//register for editor
-			const copyExt = EditorView.domEventHandlers({
-				copy: this.editorCopyHandler.bind(this)
-			});
-			const cutExt = EditorView.domEventHandlers({
-				cut: this.editorCutHandler.bind(this)
-			});
+				const copyExt = EditorView.domEventHandlers({
+					copy: this.editorCopyHandler.bind(this)
+				});
+				const cutExt = EditorView.domEventHandlers({
+					cut: this.editorCutHandler.bind(this)
+				});
 
-			this.registerEditorExtension(copyExt);
-			this.registerEditorExtension(cutExt);
+				this.registerEditorExtension(copyExt);
+				this.registerEditorExtension(cutExt);
+			}
 		}
 	}
 	onunload() {

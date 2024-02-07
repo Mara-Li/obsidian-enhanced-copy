@@ -81,7 +81,7 @@
   "openTextReplacer": "Open Text replacer",
   "other": "Other options",
   "overrideCopy": {
-    "desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy",
+    "desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy (need a reload of Obsidian)",
     "title": "Override native copy"
   },
   "overrides": "Overrides previous settings",
