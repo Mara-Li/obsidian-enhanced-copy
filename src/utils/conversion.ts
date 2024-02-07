@@ -110,10 +110,10 @@ function fixFootNotes(markdown: string, settings: GlobalSettings): string {
 function fixFootnoteContents(markdown: string, overrides: GlobalSettings): string {
 	const regexFootNotes = /(.*)\[\]\(#fnref-(\d)-\w+\)/g;
 	if (overrides.footnotes === ConversionOfFootnotes.remove) {
-		markdown = markdown.replace(regexFootNotes, "$1");
+		return markdown.replace(regexFootNotes, "$1");
 	} else if (overrides.footnotes === ConversionOfFootnotes.format) {
 		markdown= markdown.replace(regexFootNotes, "[^$2]: $1");
-		markdown = markdown.replace(/(\[\^\w+\]): (\d+)\./gm, "$1:");
+		return markdown.replace(/(\[\^\w+\]): (\d+)\./gm, "$1:");
 	}
 	return markdown;
 }

@@ -121,6 +121,7 @@ export default class EnhancedCopy extends Plugin {
 			fallbackLng: "en",
 			resources,
 			returnNull: false,
+			returnEmptyString: false,
 		});
 
 		await this.loadSettings();

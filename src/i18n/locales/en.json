@@ -19,6 +19,7 @@
     "delete": "Delete",
     "from": "From",
     "pattern": "pattern",
+    "profile": "Profile name",
     "replacement": "replacement",
     "save": "Save",
     "to": "To"
@@ -34,6 +35,8 @@
   "debug": {
     "desc": "Show debug log in console",
     "title": "Debug information"
+  },
+  "delete": {
   },
   "edit": {
     "desc": "Edit view settings",
@@ -84,7 +87,13 @@
     "desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy (need a reload of Obsidian)",
     "title": "Override native copy"
   },
-  "overrides": "Overrides previous settings",
+  "profile": {
+    "add": {
+      "desc": "Add a copy profile. \nAn Obsidian reload is required to use it as a command.",
+      "title": "Add profile"
+    },
+    "delete": "Delete profile"
+  },
   "reading": {
     "desc": "Reading view settings",
     "title": "Reading"
@@ -96,7 +105,6 @@
     "remove": "Remove all links markup and contents",
     "title": "Footnotes format"
   },
-  "settings": "[ COPY OPTIONS ]",
   "spaceSize": {
     "desc": "Number of spaces to be used for indentation. Use -1 to disable the conversion.",
     "title": "Space size"

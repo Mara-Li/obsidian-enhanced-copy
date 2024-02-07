@@ -53,8 +53,7 @@ export function replaceAllDivCalloutToBlockquote(
 			const ancestor = commonAncestor as HTMLDivElement;
 			const calloutType =
 				ancestor.attributes.getNamedItem("data-callout")?.value ??
-				divCallout.parentElement?.attributes.getNamedItem("data-callout")
-					?.value;
+				(divCallout.parentElement ? divCallout.parentElement.attributes.getNamedItem("data-callout")?.value : "");
 			calloutTitle = `[!${calloutType}] `;
 			if (settings.callout === CalloutKeepType.strong) {
 				calloutTitle = `<strong>${capitalize(calloutType)}</strong> `;

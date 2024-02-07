@@ -218,7 +218,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage)
 			.addButton((button) => {
 				button
-					.setButtonText("Delete profile")
+					.setButtonText(i18next.t("profile.delete"))
 					.onClick(async () => {
 						const index = this.settings.profiles.findIndex((profile) => profile.name === tab);
 						this.settings.profiles.splice(index, 1);
@@ -266,8 +266,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage)
 			.addButton((button) => {
 				button
-					.setButtonText("Add profile")
-					.setTooltip("Add a new profile for copying. Need a reload to use as command")
+					.setButtonText(i18next.t("profile.add.title"))
+					.setTooltip(i18next.t("profile.add.desc"))
 					.onClick(async () => {
 						new NameProfile(this.app, (result) => {
 							this.settings.profiles.push({

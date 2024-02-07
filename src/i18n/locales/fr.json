@@ -19,6 +19,7 @@
     "delete": "Supprimer",
     "from": "Depuis",
     "pattern": "pattern",
+    "profile": "Nom du profil",
     "replacement": "remplacement",
     "save": "Sauvegarder",
     "to": "Vers"
@@ -34,6 +35,8 @@
   "debug": {
     "desc": "Affiche le journal de débogage dans la console",
     "title": "Informations de débogage"
+  },
+  "delete": {
   },
   "edit": {
     "desc": "Paramètre pour la vue d'édition",
@@ -84,7 +87,13 @@
     "desc": "Remplacer la copie native (CTRL + C, clic-droit...) par la copie améliorée (nécessite un rechargement d'Obsidian)",
     "title": "Prendre en charge la copie native"
   },
-  "overrides": "Remplace les paramètres précédents",
+  "profile": {
+    "add": {
+      "desc": "Ajouter un profil de copy. Un rechargement d'Obsidian est nécessaire pour l'utiliser comme commande.",
+      "title": "Ajouter un profile"
+    },
+    "delete": "Supprimer le profile"
+  },
   "reading": {
     "desc": "Paramètre pour la vue de lecture",
     "title": "Lecture"
@@ -96,7 +105,6 @@
     "remove": "Supprimer balises et contenu",
     "title": "Format des footnotes"
   },
-  "settings": "[ COPY OPTIONS ]",
   "spaceSize": {
     "desc": "Modification du nombre d'espace pour la mise en retrait. Utiliser -1 pour désactiver la fonction de conversion.",
     "title": "Nombre d'espace"

@@ -202,10 +202,10 @@ export class NameProfile extends Modal {
 		contentEl.empty();
 		contentEl.addClass("enhanced-copy");
 		new Setting(contentEl)
-			.setName("Profile name")
+			.setName(i18next.t("common.profile"))
 			.setClass("modal-title")
 			.addText(text => text
-				.setPlaceholder("Profile name")
+				.setPlaceholder(i18next.t("common.profile"))
 				.setValue(this.name)
 				.onChange(async (value) => {
 					this.name = value;
