@@ -165,9 +165,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			//remove all previous profile
 			this.TABS = this.TABS.filter((tab) => tab.id !== profile.name);
 			this.TABS.push({
-				name: profile.name ?? "truc",
+				name: profile.name ?? "profile",
 				id: profile.name ?? "profile",
-				icon: "code"
+				icon: "layers-2"
 			});
 		}
 		this.TABS = [...new Set(this.TABS)];
