@@ -205,10 +205,11 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		case "edit":
 			this.renderEdit();
 			break;	
-		}
-		if (this.settings.profiles.find((profile) => profile.name === tab)) {
+		default:
 			this.renderProfile(tab);
+			break;	
 		}
+		
 	}
 
 	renderProfile(tab: string) {

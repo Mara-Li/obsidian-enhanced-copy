@@ -49,7 +49,6 @@ export default class EnhancedCopy extends Plugin {
 			if (!exportAsHTML &&
 				(applyingTo === ApplyingToView.all || applyingTo === viewIn)
 			) {
-				console.log(profile);
 				selectedText = viewIn === ApplyingToView.edit
 					?
 					convertEditMarkdown(selectedText, profile ?? this.settings.editing, this) :
