@@ -157,38 +157,41 @@ export default class EnhancedCopy extends Plugin {
 					navigator.clipboard.writeText(this.enhancedCopy());
 				}
 			});
-		} else if (this.settings.separateHotkey && this.settings.applyingTo === ApplyingToView.all) {
-			this.addCommand({
-				id: "copy-editor-in-markdown",
-				name: i18next.t("commands.editor"),
-				editorCallback: (editor) => {
-					let selectedText = copySelectionRange(editor, this);
-					if (selectedText && selectedText.trim().length > 0) {
-						selectedText = convertEditMarkdown(selectedText, this.settings.editing, this);
-						navigator.clipboard.writeText(selectedText);
-					}
-				}
-			});
-
-			this.addCommand({
-				id: "copy-reading-in-markdown",
-				name: i18next.t("commands.reading"),
-				checkCallback: (checking: boolean) => {
-					const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-					const readingMode = view && view.getMode() !== "source";
-					if (readingMode) {
-						if (!checking) {
-							let selectedText = getSelectionAsHTML(this.settings.reading);
-							if (!this.settings.exportAsHTML) {
-								selectedText = convertMarkdown(selectedText, this.settings.reading, this);
-							}
+		} else if (this.settings.separateHotkey) {
+			if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === ApplyingToView.edit) {
+				this.addCommand({
+					id: "copy-editor-in-markdown",
+					name: i18next.t("commands.editor"),
+					editorCallback: (editor) => {
+						let selectedText = copySelectionRange(editor, this);
+						if (selectedText && selectedText.trim().length > 0) {
+							selectedText = convertEditMarkdown(selectedText, this.settings.editing, this);
 							navigator.clipboard.writeText(selectedText);
 						}
-						return true;
 					}
-					return false;
-				}
-			});
+				});
+			}
+			if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === ApplyingToView.reading) {
+				this.addCommand({
+					id: "copy-reading-in-markdown",
+					name: i18next.t("commands.reading"),
+					checkCallback: (checking: boolean) => {
+						const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+						const readingMode = view && view.getMode() !== "source";
+						if (readingMode) {
+							if (!checking) {
+								let selectedText = getSelectionAsHTML(this.settings.reading);
+								if (!this.settings.exportAsHTML) {
+									selectedText = convertMarkdown(selectedText, this.settings.reading, this);
+								}
+								navigator.clipboard.writeText(selectedText);
+							}
+							return true;
+						}
+						return false;
+					}
+				});
+			}
 
 			this.addCommand({
 				id: "copy-other-in-markdown",
