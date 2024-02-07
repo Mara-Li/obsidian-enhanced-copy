@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import {App, Modal, Setting} from "obsidian";
 
-import {CopySettingsView, EnhancedCopySettings, ReplaceText} from "./interface";
+import {CopySettingsView, EnhancedCopySettings, GlobalSettings, ReplaceText} from "./interface";
 
 export class AllReplaceTextModal extends Modal {
 	replaceText: ReplaceText[];
@@ -130,12 +130,20 @@ export class EnhancedCopyViewModal extends Modal {
 		const {contentEl} = this;
 		contentEl.empty();
 		contentEl.addClass("enhanced-copy");
+
+		const profileOptions: Record<string, string> = {};
+		for (const profile of this.settings.profiles) {
+			if (!profile.name) continue;
+			profileOptions[profile.name] = profile.name;
+		}
+
 		new Setting(contentEl)
 			.setName(i18next.t("common.from"))
 			.addDropdown(dropdown => dropdown
 				.addOptions({
 					reading: i18next.t("modal.copyView.reading"),
 					editing: i18next.t("modal.copyView.editing"),
+					...profileOptions
 				})
 				.setValue(this.from)
 				.onChange(async (value) => {
@@ -150,6 +158,7 @@ export class EnhancedCopyViewModal extends Modal {
 				.addOptions({
 					reading: i18next.t("modal.copyView.reading"),
 					editing: i18next.t("modal.copyView.editing"),
+					...profileOptions
 				})
 				.setValue(this.to)
 				.onChange(async (value) => {
@@ -167,11 +176,36 @@ export class EnhancedCopyViewModal extends Modal {
 					if (this.from === this.to) {
 						return;
 					}
-					const overrides = this.from === CopySettingsView.editing ? this.settings.editing : this.settings.reading;
-					if (this.to === CopySettingsView.reading) {
-						this.settings.reading = overrides;
-					} else {
-						this.settings.editing = overrides;
+					let override: GlobalSettings | undefined;
+					switch(this.from) {
+					case CopySettingsView.reading:
+						override = this.settings.reading;
+						break;
+					case CopySettingsView.editing:
+						override = this.settings.editing;
+						break;
+					default:
+						// eslint-disable-next-line no-case-declarations
+						const profile = this.settings.profiles.find(profile => profile.name === this.from);
+						if (profile) {
+							override = profile;
+						}
+					}
+					
+					if (!override) return;
+					switch(this.to) {
+					case CopySettingsView.reading:
+						this.settings.reading = override;
+						break;
+					case CopySettingsView.editing:
+						this.settings.editing = override;
+						break;
+					default:
+						// eslint-disable-next-line no-case-declarations
+						const profileIndex = this.settings.profiles.findIndex(profile => profile.name === this.to);
+						if (profileIndex) {
+							this.settings.profiles[profileIndex] = override;
+						}
 					}
 					this.onSubmit(this.settings);
 					this.close();

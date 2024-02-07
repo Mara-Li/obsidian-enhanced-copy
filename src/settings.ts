@@ -165,9 +165,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			//remove all previous profile
 			this.TABS = this.TABS.filter((tab) => tab.id !== profile.name);
 			this.TABS.push({
-				name: profile.name ?? "truc",
+				name: profile.name ?? "profile",
 				id: profile.name ?? "profile",
-				icon: "code"
+				icon: "layers-2"
 			});
 		}
 		this.TABS = [...new Set(this.TABS)];
@@ -301,33 +301,35 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						this.display();
 					});
 			});
-		if (this.settings.applyingTo === ApplyingToView.all) {
-			new Setting(this.settingsPage)
-				.setName(i18next.t("hotkey.title"))
-				.setDesc(i18next.t("hotkey.desc"))
-				.addToggle((toggle) => {
-					toggle
-						.setValue(this.settings.separateHotkey)
-						.onChange(async (value) => {
-							this.settings.separateHotkey = value;
-							await this.plugin.saveSettings();
-							this.renderSettingsPage("global");
-						});
-				});
+		
+		new Setting(this.settingsPage)
+			.setName(i18next.t("hotkey.title"))
+			.setDesc(i18next.t("hotkey.desc"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.settings.separateHotkey)
+					.onChange(async (value) => {
+						this.settings.separateHotkey = value;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage("global");
+					});
+			});
 
-			new Setting(this.settingsPage)
-				.addButton((button) => {
-					button
-						.setButtonText(i18next.t("global.copy"))
-						.onClick(async () => {
-							new EnhancedCopyViewModal(this.app, this.settings, (result) => {
-								this.settings = result;
-								this.plugin.saveSettings();
-								this.display();
-							}).open();
-						});
-				});
-		}
+		new Setting(this.settingsPage)
+			.addButton((button) => {
+				button
+					.setButtonText(i18next.t("global.copy"))
+					.onClick(async () => {
+						new EnhancedCopyViewModal(this.app, this.settings, (result) => {
+							this.settings = result;
+							this.plugin.saveSettings();
+							this.display();
+						}).open();
+					})
+					.buttonEl.classList.add("full-width");
+			})
+			.infoEl.classList.add("hide-info");
+		
 
 
 		new Setting(this.settingsPage)
