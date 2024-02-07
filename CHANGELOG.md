@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.6](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.5...0.2.6) (2024-02-07)
+
+
+### Features
+
+* add profile settings ([e9e3def](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/e9e3defe12192a2d71429a4116d2df46d7a56620))
+* allow to copy profile ([37e330a](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/37e330ab94ef49a8ecb18d3445ee7c31dab88c2a))
+* allow to separate commands even if applying is not set to all ([528a0de](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/528a0de2975f9add5e787a987c805482dbc3902b))
+* profile for commands ([63a77bc](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/63a77bc7fbe6f7e704067fe9826121304aecb03f))
+
 ## [0.2.5](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.4...0.2.5) (2024-01-19)
 
 
