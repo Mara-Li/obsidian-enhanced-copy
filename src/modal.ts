@@ -189,3 +189,47 @@ export class EnhancedCopyViewModal extends Modal {
 		contentEl.empty();
 	}
 }
+
+export class NameProfile extends Modal {
+	name: string = "";
+	onSubmit: (result: string) => void;
+	constructor(app: App, onSubmit: (result: string) => void) {
+		super(app);
+		this.onSubmit = onSubmit;
+	}
+	onOpen() {
+		const {contentEl} = this;
+		contentEl.empty();
+		contentEl.addClass("enhanced-copy");
+		new Setting(contentEl)
+			.setName(i18next.t("common.profile"))
+			.setClass("modal-title")
+			.addText(text => text
+				.setPlaceholder(i18next.t("common.profile"))
+				.setValue(this.name)
+				.onChange(async (value) => {
+					this.name = value;
+				})
+				.inputEl.classList.add("full-width")
+			);
+		
+		new Setting(contentEl)
+			.addButton(button => button
+				.setButtonText(i18next.t("common.save"))
+				.setCta()
+				.onClick(async () => {
+					this.onSubmit(this.name);
+					this.close();
+				}))
+			.addButton(button => button
+				.setButtonText(i18next.t("common.cancel"))
+				.setWarning()
+				.onClick(async () => {
+					this.close();
+				}));	
+	}
+	onClose() {
+		const { contentEl } = this;
+		contentEl.empty();
+	}
+}

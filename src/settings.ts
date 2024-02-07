@@ -1,9 +1,9 @@
 import i18next from "i18next";
-import {App, PluginSettingTab, setIcon, Setting} from "obsidian";
+import { App, PluginSettingTab, setIcon, Setting } from "obsidian";
 
-import {ApplyingToView, CalloutKeepType, ConversionOfFootnotes, ConversionOfLinks, EnhancedCopySettings, GlobalSettings} from "./interface";
+import { ApplyingToView, CalloutKeepType, ConversionOfFootnotes, ConversionOfLinks, EnhancedCopySettings, GlobalSettings } from "./interface";
 import EnhancedCopy from "./main";
-import {AllReplaceTextModal,EnhancedCopyViewModal} from "./modal";
+import { AllReplaceTextModal, EnhancedCopyViewModal, NameProfile } from "./modal";
 
 interface Tab {
 	name: string;
@@ -36,6 +36,108 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		},
 	];
 
+	createReadingSettings(settings: GlobalSettings, profile?: boolean) {
+		this.settingsPage.createEl("h1", { text: i18next.t("reading.desc") });
+		new Setting(this.settingsPage)
+			.setName(i18next.t("copyAsHTML"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(settings.copyAsHTML ?? false)
+					.onChange(async (value) => {
+						settings.copyAsHTML = value;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(settings.name ?? "reading");
+					});
+			});
+		if (!settings.copyAsHTML) {
+			this.settingsPage.createEl("h2", { text: i18next.t("links") });
+			this.links(settings);
+			this.footnotes(settings);
+
+			this.settingsPage.createEl("h2", { text: i18next.t("unconventionalMarkdown.title") });
+			this.settingsPage.createEl("i", { text: i18next.t("unconventionalMarkdown.desc") });
+			this.highlight(settings);
+		}
+
+		this.calloutTitle(settings);
+
+		if (!settings.copyAsHTML) {
+			this.settingsPage.createEl("h2", { text: i18next.t("other") });
+			this.hardBreak(settings);
+			new Setting(this.settingsPage)
+				.setName(i18next.t("spaceSize.title"))
+				.setDesc(i18next.t("spaceSize.desc"))
+				.addText((text) => {
+					text
+						.setPlaceholder("-1")
+						.setValue(String(settings.spaceReadingSize ?? -1))
+						.onChange(async (value) => {
+							settings.spaceReadingSize = Number(value);
+							await this.plugin.saveSettings();
+						});
+				});
+		}
+		if (!profile) this.overrideSetting(settings);
+		this.regexReplacementButton(settings);
+	}
+
+	createEditSettings(settings: GlobalSettings, profile?: boolean) {
+		this.settingsPage.createEl("h1", { text: i18next.t("edit.desc") });
+		new Setting(this.settingsPage)
+			.setName(i18next.t("wikiToMarkdown.title"))
+			.setDesc(i18next.t("wikiToMarkdown.desc"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(settings.wikiToMarkdown ?? false)
+					.onChange(async (value) => {
+						settings.wikiToMarkdown = value;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(settings.name ?? "edit");
+					});
+			});
+
+		new Setting(this.settingsPage)
+			.setName(i18next.t("tabToSpace"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(settings.tabToSpace ?? false)
+					.onChange(async (value) => {
+						settings.tabToSpace = value;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(settings.name ?? "edit");
+					});
+			});
+
+		if (settings.tabToSpace) {
+			new Setting(this.settingsPage)
+				.setName(i18next.t("tabSpaceSize"))
+				.addText((text) => {
+					text
+						.setValue(settings.tabSpaceSize ? settings.tabSpaceSize.toString() : "4")
+						.onChange(async (value) => {
+							settings.tabSpaceSize = parseInt(value);
+							text.inputEl.toggleClass("error", isNaN(settings.tabSpaceSize) || settings.tabSpaceSize < 0);
+							if (isNaN(settings.tabSpaceSize) || settings.tabSpaceSize < 0) settings.tabSpaceSize = 4;
+							await this.plugin.saveSettings();
+						});
+				});
+		}
+		this.settingsPage.createEl("h2", { text: i18next.t("links") });
+		if (settings.wikiToMarkdown) {
+			this.links(settings);
+		}
+		this.footnotes(settings);
+		this.settingsPage.createEl("h2", { text: i18next.t("unconventionalMarkdown.title") });
+		this.settingsPage.createEl("i", { text: i18next.t("unconventionalMarkdown.desc") });
+		this.calloutTitle(settings);
+		this.highlight(settings);
+		this.settingsPage.createEl("h2", { text: i18next.t("other") });
+		this.hardBreak(settings);
+		if (!profile) this.overrideSetting(settings);
+		this.regexReplacementButton(settings);
+
+	}
+
 	constructor(app: App, plugin: EnhancedCopy) {
 		super(app, plugin);
 		this.plugin = plugin;
@@ -43,9 +145,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const {containerEl} = this;
+		const { containerEl } = this;
 		containerEl.empty();
-		this.containerEl.addClasses(["enhanced-copy","setting-tab"]);
+		this.containerEl.addClasses(["enhanced-copy", "setting-tab"]);
 		const tabBar = containerEl.createEl("nav", { cls: "settings-tab-bar" });
 		//remove Tab based on applying
 		if (this.settings.applyingTo === ApplyingToView.reading) {
@@ -58,15 +160,25 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			this.TABS.push(this.EDIT);
 			this.TABS.push(this.READING);
 		}
-		// remove duplicate
+		
+		for (const profile of this.settings.profiles) {
+			//remove all previous profile
+			this.TABS = this.TABS.filter((tab) => tab.id !== profile.name);
+			this.TABS.push({
+				name: profile.name ?? "truc",
+				id: profile.name ?? "profile",
+				icon: "code"
+			});
+		}
 		this.TABS = [...new Set(this.TABS)];
+		
 		for (const tabInfo of this.TABS) {
-			const tabEl = tabBar.createEl("div", {cls: "settings-tab"});
-			const tabIcon = tabEl.createEl("div", {cls: "settings-tab-icon"});
+			const tabEl = tabBar.createEl("div", { cls: "settings-tab" });
+			const tabIcon = tabEl.createEl("div", { cls: "settings-tab-icon" });
 			setIcon(tabIcon, tabInfo.icon);
 			if (tabInfo.id === "global")
 				tabEl.addClasses(["settings-tab-active"]);
-			tabEl.createEl("div", {cls: "tabName", text: tabInfo.name});
+			tabEl.createEl("div", { cls: "tabName", text: tabInfo.name });
 			tabEl.addEventListener("click", () => {
 				// @ts-ignore
 				for (const tabEl of tabBar.children)
@@ -92,14 +204,84 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			break;
 		case "edit":
 			this.renderEdit();
-			break;
+			break;	
+		default:
+			this.renderProfile(tab);
+			break;	
 		}
+		
+	}
+
+	renderProfile(tab: string) {
+		const profile = this.settings.profiles.find((profile) => profile.name === tab);
+		if (!profile) return;
+		this.settingsPage.empty();
+		new Setting(this.settingsPage)
+			.addButton((button) => {
+				button
+					.setButtonText(i18next.t("profile.delete"))
+					.onClick(async () => {
+						const index = this.settings.profiles.findIndex((profile) => profile.name === tab);
+						this.settings.profiles.splice(index, 1);
+						//remove from tabs
+						this.TABS = this.TABS.filter((tab) => tab.id !== profile.name);
+						this.plugin.saveSettings();
+						this.display();
+						this.renderGlobal();
+					})
+					.buttonEl.classList.add("full-width");
+			})
+			.infoEl.classList.add("hide-info");
+		profile.applyingTo = profile.applyingTo ?? ApplyingToView.all;	
+		this.settingsPage.createEl("h1", { text: profile.name });	
+		new Setting(this.settingsPage)
+			.setName(i18next.t("view.title"))
+			.setDesc(i18next.t("view.desc"))
+			.addDropdown((dropdown) => {
+				dropdown
+					.addOption("all", i18next.t("view.all"))
+					.addOption("reading", i18next.t("view.reading"))
+					.addOption("edit", i18next.t("view.edit"))
+					.setValue(profile.applyingTo ?? ApplyingToView.all)
+					.onChange(async (value) => {
+						profile.applyingTo = value as ApplyingToView;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(tab);
+					});
+			});
+		if (profile.applyingTo === ApplyingToView.all) {
+			this.createReadingSettings(profile, true);
+			this.createEditSettings(profile, true);
+		} else if (profile.applyingTo === ApplyingToView.reading) {
+			this.createReadingSettings(profile, true);
+		}
+		else if (profile.applyingTo === ApplyingToView.edit) {
+			this.createEditSettings(profile, true);
+		}
+
 	}
 
 	renderGlobal() {
 		this.settingsPage.empty();
 		this.settingsPage.addClasses(["global"]);
-		this.settingsPage.createEl("h1", {text: i18next.t("global.title")});
+		new Setting(this.settingsPage)
+			.addButton((button) => {
+				button
+					.setButtonText(i18next.t("profile.add.title"))
+					.setTooltip(i18next.t("profile.add.desc"))
+					.onClick(async () => {
+						new NameProfile(this.app, (result) => {
+							this.settings.profiles.push({
+								name: result,
+								...this.settings.editing
+							});
+							this.plugin.saveSettings();
+							this.display();
+						}).open();
+						
+					});
+			});
+		this.settingsPage.createEl("h1", { text: i18next.t("global.title") });
 		new Setting(this.settingsPage)
 			.setName(i18next.t("view.title"))
 			.setDesc(i18next.t("view.desc"))
@@ -147,17 +329,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 
-		new Setting(this.settingsPage)
-			.setName(i18next.t("overrideCopy.title"))
-			.setDesc(i18next.t("overrideCopy.desc"))
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.settings.overrideCopy)
-					.onChange(async (value) => {
-						this.settings.overrideCopy = value;
-						await this.plugin.saveSettings();
-					});
-			});
+
 		new Setting(this.settingsPage)
 			.setName(i18next.t("debug.title"))
 			.setDesc(i18next.t("debug.desc"))
@@ -173,106 +345,14 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 
 	renderReading() {
 		this.settingsPage.empty();
-		this.settingsPage.createEl("h1", {text: i18next.t("reading.desc")});
-		new Setting(this.settingsPage)
-			.setName(i18next.t("copyAsHTML"))
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.settings.exportAsHTML)
-					.onChange(async (value) => {
-						this.settings.exportAsHTML = value;
-						await this.plugin.saveSettings();
-						this.renderSettingsPage("reading");
-					});
-			});
-		if (!this.settings.exportAsHTML) {
-			this.settingsPage.createEl("h2", {text: i18next.t("links")});
-			this.links(this.settings.reading);
-			this.footnotes(this.settings.reading);
-
-			this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
-			this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
-			this.highlight(this.settings.reading);
-		}
-
-		this.calloutTitle(this.settings.reading);
-
-		if (!this.settings.exportAsHTML) {
-			this.settingsPage.createEl("h2", {text: i18next.t("other")});
-			this.hardBreak(this.settings.reading);
-			new Setting(this.settingsPage)
-				.setName(i18next.t("spaceSize.title"))
-				.setDesc(i18next.t("spaceSize.desc"))
-				.addText((text) => {
-					text
-						.setPlaceholder("-1")
-						.setValue(String(this.settings.spaceReadingSize))
-						.onChange(async (value) => {
-							this.settings.spaceReadingSize = Number(value);
-							await this.plugin.saveSettings();
-						});
-				});
-		}
-
-		this.regexReplacementButton(this.settings.reading);
+		this.settingsPage.addClasses(["reading"]);
+		this.createReadingSettings(this.settings.reading);
 	}
 
 	renderEdit() {
 		this.settingsPage.empty();
 		this.settingsPage.addClasses(["edit"]);
-		this.settingsPage.createEl("h1", {text: i18next.t("edit.desc")});
-		new Setting(this.settingsPage)
-			.setName(i18next.t("wikiToMarkdown.title"))
-			.setDesc(i18next.t("wikiToMarkdown.desc"))
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.settings.wikiToMarkdown)
-					.onChange(async (value) => {
-						this.settings.wikiToMarkdown = value;
-						await this.plugin.saveSettings();
-						this.renderSettingsPage("edit");
-					});
-			});
-
-		new Setting(this.settingsPage)
-			.setName(i18next.t("tabToSpace"))
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.settings.tabToSpace)
-					.onChange(async (value) => {
-						this.settings.tabToSpace = value;
-						await this.plugin.saveSettings();
-						this.renderSettingsPage("edit");
-					});
-			});
-
-		if (this.settings.tabToSpace) {
-			new Setting(this.settingsPage)
-				.setName(i18next.t("tabSpaceSize"))
-				.addText((text) => {
-					text
-						.setValue(this.settings.tabSpaceSize.toString())
-						.onChange(async (value) => {
-							this.settings.tabSpaceSize = parseInt(value);
-							text.inputEl.toggleClass("error", isNaN(this.settings.tabSpaceSize) || this.settings.tabSpaceSize < 0);
-							if (isNaN(this.settings.tabSpaceSize) || this.settings.tabSpaceSize < 0) this.settings.tabSpaceSize = 4;
-							await this.plugin.saveSettings();
-						});
-				});
-		}
-		this.settingsPage.createEl("h2", {text: i18next.t("links")});
-		if (this.settings.wikiToMarkdown) {
-			this.links(this.settings.editing);
-		}
-		this.footnotes(this.settings.editing);
-		this.settingsPage.createEl("h2", {text: i18next.t("unconventionalMarkdown.title")});
-		this.settingsPage.createEl("i", {text: i18next.t("unconventionalMarkdown.desc")});
-		this.calloutTitle(this.settings.editing);
-		this.highlight(this.settings.editing);
-		this.settingsPage.createEl("h2", {text: i18next.t("other")});
-		this.hardBreak(this.settings.editing);
-
-		this.regexReplacementButton(this.settings.editing);
+		this.createEditSettings(this.settings.editing);
 	}
 
 	highlight(settings: GlobalSettings) {
@@ -284,6 +364,20 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					.setValue(settings.highlight)
 					.onChange(async (value) => {
 						settings.highlight = value;
+						await this.plugin.saveSettings();
+					});
+			});
+	}
+
+	overrideSetting(settings: GlobalSettings) {
+		return new Setting(this.settingsPage)
+			.setName(i18next.t("overrideCopy.title"))
+			.setDesc(i18next.t("overrideCopy.desc"))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(settings.overrideNativeCopy)
+					.onChange(async (value) => {
+						settings.overrideNativeCopy = value;
 						await this.plugin.saveSettings();
 					});
 			});

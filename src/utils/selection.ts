@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
 
-import {COLLAPSE_INDICATOR, EnhancedCopySettings} from "../interface";
+import {COLLAPSE_INDICATOR, GlobalSettings} from "../interface";
 import EnhancedCopy from "../main";
 import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
 
@@ -12,7 +12,7 @@ import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
  * @param settings {EnhancedCopySettings} Settings of the plugin
  * @returns {string}
  */
-export function getSelectionAsHTML(settings: EnhancedCopySettings): string {
+export function getSelectionAsHTML(settings: GlobalSettings): string {
 	console.log("GET SELECTION AS HTML");
 	const getSelection = activeWindow.getSelection();
 	if (getSelection === null) return "";
@@ -27,8 +27,8 @@ export function getSelectionAsHTML(settings: EnhancedCopySettings): string {
 		const type = commonAncestor.nodeName.toLowerCase();
 		div = reNumerateList(div, type);
 	}
-	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings.reading);
-	if (settings.exportAsHTML) {
+	div = replaceAllDivCalloutToBlockquote(div, range.commonAncestorContainer, settings);
+	if (settings.copyAsHTML) {
 		return div.innerHTML;
 	}
 	const allNoConvert = div.querySelectorAll("[data-type='html']");
@@ -114,7 +114,7 @@ export function canvasSelectionText(app: App, plugin: EnhancedCopy): string {
 		const editorMode = editor.editor as Editor;
 		return copySelectionRange(editorMode, plugin);
 	} else {
-		return getSelectionAsHTML(settings);
+		return getSelectionAsHTML(settings.reading);
 	}
 }
 

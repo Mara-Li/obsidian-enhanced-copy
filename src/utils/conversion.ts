@@ -3,8 +3,7 @@ import i18next from "i18next";
 import {
 	CalloutKeepType,
 	ConversionOfFootnotes,
-	ConversionOfLinks,
-	EnhancedCopySettings, 		GlobalSettings
+	ConversionOfLinks, 		GlobalSettings
 } from "../interface";
 import EnhancedCopy from "../main";
 
@@ -111,10 +110,10 @@ function fixFootNotes(markdown: string, settings: GlobalSettings): string {
 function fixFootnoteContents(markdown: string, overrides: GlobalSettings): string {
 	const regexFootNotes = /(.*)\[\]\(#fnref-(\d)-\w+\)/g;
 	if (overrides.footnotes === ConversionOfFootnotes.remove) {
-		markdown = markdown.replace(regexFootNotes, "$1");
+		return markdown.replace(regexFootNotes, "$1");
 	} else if (overrides.footnotes === ConversionOfFootnotes.format) {
 		markdown= markdown.replace(regexFootNotes, "[^$2]: $1");
-		markdown = markdown.replace(/(\[\^\w+\]): (\d+)\./gm, "$1:");
+		return markdown.replace(/(\[\^\w+\]): (\d+)\./gm, "$1:");
 	}
 	return markdown;
 }
@@ -140,7 +139,7 @@ function removeMarkdownFootNotes(markdown: string, overrides: GlobalSettings): s
  * @returns {string} Markdown with highlight removed if needed
  */
 function removeHighlightMark(markdown: string, settings: GlobalSettings): string {
-	if (settings.highlight ) {
+	if (settings.highlight) {
 		return markdown.replace(/==([^=]+)==/g, "$1");
 	}
 	return markdown;
@@ -189,27 +188,24 @@ function convertCallout(markdown: string, overrides: GlobalSettings, plugin: Enh
 	return markdown;
 }
 
-
-
-
-function convertTabToSpace(markdown: string, settings: EnhancedCopySettings) {
+function convertTabToSpace(markdown: string, settings: GlobalSettings) {
 	if (settings.tabToSpace) {
-		const spaces = " ".repeat(settings.tabSpaceSize);
+		const spaces = " ".repeat(settings.tabSpaceSize ?? 4);
 		return markdown.replace(/\t/g, spaces);
 	}
 	return markdown;
 }
 
-function convertSpaceSize(markdown: string, settings: EnhancedCopySettings) {
+function convertSpaceSize(markdown: string, settings: GlobalSettings) {
 	/** Note:
 		 * Turndown will always convert \t to 4 space
 		 * So if we want to reduce the space size, we need to count each 4 space as 1 space for each line
 	 */
 	const countSpace = markdown.match(/^ +/gm);
-
+	if (!settings.spaceReadingSize) return markdown;
 	if (settings.spaceReadingSize >= 0 && countSpace) {
 		countSpace.forEach((space) => {
-			const newSpace = " ".repeat(space.length / 4 * settings.spaceReadingSize);
+			const newSpace = " ".repeat(space.length / 4 * (settings.spaceReadingSize ?? 1));
 			markdown = markdown.replace(space, newSpace);
 		});
 	}
@@ -238,7 +234,6 @@ function textReplacement(markdown: string, settings: GlobalSettings) {
  * @returns {string} converted markdown
  */
 export function convertMarkdown(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy): string {
-	const settings = plugin.settings;
 	return removeEmptyLineBeforeList(
 		convertSpaceSize(convertCallout(
 			hardBreak(
@@ -254,17 +249,16 @@ export function convertMarkdown(markdown: string, overrides: GlobalSettings, plu
 				overrides,plugin
 			),
 			overrides, plugin),
-		settings)
+		overrides)
 	);
 }
 
 export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy) {
-	const settings = plugin.settings;
-	if (settings.wikiToMarkdown) {
+	if (overrides.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
 		markdown = removeLinksBracketsInMarkdown(markdown, overrides);
 	}
-	markdown = convertTabToSpace(markdown, settings);
+	markdown = convertTabToSpace(markdown, overrides);
 	markdown = removeMarkdownFootNotes(markdown, overrides);
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);

@@ -72,14 +72,11 @@ export interface EnhancedCopySettings {
 	exportAsHTML: boolean;
 	applyingTo: ApplyingToView;
 	separateHotkey: boolean;
-	wikiToMarkdown: boolean;
-	tabToSpace: boolean;
-	tabSpaceSize: number;
-	spaceReadingSize: number;
 	editing: GlobalSettings;
 	reading: GlobalSettings;
-	overrideCopy: boolean;
 	devMode: boolean;
+	profiles: GlobalSettings[];
+
 }
 
 /**
@@ -93,17 +90,14 @@ export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 	exportAsHTML: false,
 	applyingTo: ApplyingToView.all,
 	separateHotkey: false,
-	wikiToMarkdown: false,
-	tabToSpace: false,
-	tabSpaceSize: 4,
-	spaceReadingSize: -1, //disabled
 	editing: {
 		footnotes: ConversionOfFootnotes.keep,
 		links: ConversionOfLinks.keep,
 		callout: CalloutKeepType.obsidian,
 		highlight: false,
 		hardBreak: false,
-		replaceText: []
+		replaceText: [],
+		overrideNativeCopy: false
 	},
 	reading: {
 		footnotes: ConversionOfFootnotes.keep,
@@ -111,19 +105,31 @@ export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 		callout: CalloutKeepType.obsidian,
 		highlight: false,
 		hardBreak: false,
-		replaceText: []
+		replaceText: [],
+		overrideNativeCopy: false,
+		spaceReadingSize: -1, // -1 disabled
+		wikiToMarkdown: false
 	},
-	overrideCopy: false,
-	devMode: false
+	devMode: false,
+	profiles: []
 };
 
 export interface GlobalSettings {
+	name?: string,
+	copyAsHTML?: boolean,
 	footnotes: ConversionOfFootnotes,
 	links: ConversionOfLinks,
 	callout: CalloutKeepType,
 	highlight: boolean,
 	hardBreak: boolean,
-	replaceText: ReplaceText[]
+	replaceText: ReplaceText[],
+	overrideNativeCopy: boolean,
+	spaceReadingSize?: number, //only work in reading mode
+	tabToSpace?: boolean //only work in edit mode
+	tabSpaceSize?: number //only work in edit mode
+	wikiToMarkdown?: boolean
+	applyingTo?: ApplyingToView //only work in profiles
+	
 }
 
 export interface ReplaceText {
