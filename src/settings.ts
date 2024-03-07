@@ -37,7 +37,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	];
 
 	createReadingSettings(settings: GlobalSettings, profile?: boolean) {
-		this.settingsPage.createEl("h1", { text: i18next.t("reading.desc") });
+		new Setting(this.settingsPage).setName(i18next.t("reading.desc")).setHeading();
 		new Setting(this.settingsPage)
 			.setName(i18next.t("copyAsHTML"))
 			.addToggle((toggle) => {
@@ -50,19 +50,24 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					});
 			});
 		if (!settings.copyAsHTML) {
-			this.settingsPage.createEl("h2", { text: i18next.t("links") });
+			new Setting(this.settingsPage).setName(i18next.t("links")).setHeading().setClass("h2");
 			this.links(settings);
 			this.footnotes(settings);
 
-			this.settingsPage.createEl("h2", { text: i18next.t("unconventionalMarkdown.title") });
-			this.settingsPage.createEl("i", { text: i18next.t("unconventionalMarkdown.desc") });
+			new Setting(this.settingsPage).setName(i18next.t("unconventionalMarkdown.title"))
+				.setHeading()
+				.setClass("h2")
+				.setDesc(i18next.t("unconventionalMarkdown.desc"));
 			this.highlight(settings);
 		}
 
 		this.calloutTitle(settings);
 
 		if (!settings.copyAsHTML) {
-			this.settingsPage.createEl("h2", { text: i18next.t("other") });
+			new Setting(this.settingsPage)
+				.setName(i18next.t("other"))
+				.setHeading()
+				.setClass("h2");
 			this.hardBreak(settings);
 			new Setting(this.settingsPage)
 				.setName(i18next.t("spaceSize.title"))
@@ -82,7 +87,10 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	}
 
 	createEditSettings(settings: GlobalSettings, profile?: boolean) {
-		this.settingsPage.createEl("h1", { text: i18next.t("edit.desc") });
+		new Setting(this.settingsPage)
+			.setName(i18next.t("edit.desc"))
+			.setHeading();
+
 		new Setting(this.settingsPage)
 			.setName(i18next.t("wikiToMarkdown.title"))
 			.setDesc(i18next.t("wikiToMarkdown.desc"))
@@ -122,16 +130,28 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						});
 				});
 		}
-		this.settingsPage.createEl("h2", { text: i18next.t("links") });
+		new Setting(this.settingsPage)
+			.setName(i18next.t("links"))
+			.setHeading()
+			.setClass("h2");
 		if (settings.wikiToMarkdown) {
 			this.links(settings);
 		}
 		this.footnotes(settings);
-		this.settingsPage.createEl("h2", { text: i18next.t("unconventionalMarkdown.title") });
-		this.settingsPage.createEl("i", { text: i18next.t("unconventionalMarkdown.desc") });
+		new Setting(this.settingsPage)
+			.setName(i18next.t("unconventionalMarkdown.title"))
+			.setHeading()
+			.setClass("h2")
+			.setDesc(i18next.t("unconventionalMarkdown.desc"));
+
 		this.calloutTitle(settings);
 		this.highlight(settings);
-		this.settingsPage.createEl("h2", { text: i18next.t("other") });
+
+		new Setting(this.settingsPage)
+			.setName(i18next.t("other") )
+			.setHeading()
+			.setClass("h2");
+
 		this.hardBreak(settings);
 		if (!profile) this.overrideSetting(settings);
 		this.regexReplacementButton(settings);
@@ -233,7 +253,11 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			})
 			.infoEl.classList.add("hide-info");
 		profile.applyingTo = profile.applyingTo ?? ApplyingToView.all;	
-		this.settingsPage.createEl("h1", { text: profile.name });	
+		
+		new Setting(this.settingsPage)
+			.setName(profile.name ?? "profile")
+			.setHeading();
+
 		new Setting(this.settingsPage)
 			.setName(i18next.t("view.title"))
 			.setDesc(i18next.t("view.desc"))
@@ -281,7 +305,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						
 					});
 			});
-		this.settingsPage.createEl("h1", { text: i18next.t("global.title") });
+		new Setting(this.settingsPage)
+			.setName(i18next.t("global.title"))
+			.setHeading();
 		new Setting(this.settingsPage)
 			.setName(i18next.t("view.title"))
 			.setDesc(i18next.t("view.desc"))

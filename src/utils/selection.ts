@@ -13,7 +13,6 @@ import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
  * @returns {string}
  */
 export function getSelectionAsHTML(settings: GlobalSettings): string {
-	console.log("GET SELECTION AS HTML");
 	const getSelection = activeWindow.getSelection();
 	if (getSelection === null) return "";
 	const range = getSelection.getRangeAt(0);
