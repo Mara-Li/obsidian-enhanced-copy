@@ -10,6 +10,14 @@
   flex-direction: row;
 }
 
+.enhanced-copy.setting-tab .setting-item.setting-item-heading .setting-item-name {
+  font-size: var(--h1-size);
+}
+
+.enhanced-copy.setting-tab .setting-item.setting-item-heading.h3 .setting-item-name {
+  font-size: var(--h3-size);
+}
+
 .enhanced-copy.setting-tab .settings-tab {
   display: flex;
   flex-direction: row;
@@ -116,4 +124,8 @@
 
 .enhanced-copy .hide-info {
   display: none;
+}
+
+.enhanced-copy.setting-tab .h2 {
+  
 }

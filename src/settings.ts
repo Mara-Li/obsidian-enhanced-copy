@@ -50,13 +50,13 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					});
 			});
 		if (!settings.copyAsHTML) {
-			new Setting(this.settingsPage).setName(i18next.t("links")).setHeading().setClass("h2");
+			new Setting(this.settingsPage).setName(i18next.t("links")).setHeading().setClass("h3");
 			this.links(settings);
 			this.footnotes(settings);
 
 			new Setting(this.settingsPage).setName(i18next.t("unconventionalMarkdown.title"))
 				.setHeading()
-				.setClass("h2")
+				.setClass("h3")
 				.setDesc(i18next.t("unconventionalMarkdown.desc"));
 			this.highlight(settings);
 		}
@@ -67,7 +67,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("other"))
 				.setHeading()
-				.setClass("h2");
+				.setClass("h3");
 			this.hardBreak(settings);
 			new Setting(this.settingsPage)
 				.setName(i18next.t("spaceSize.title"))
@@ -133,7 +133,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage)
 			.setName(i18next.t("links"))
 			.setHeading()
-			.setClass("h2");
+			.setClass("h3");
 		if (settings.wikiToMarkdown) {
 			this.links(settings);
 		}
@@ -141,7 +141,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage)
 			.setName(i18next.t("unconventionalMarkdown.title"))
 			.setHeading()
-			.setClass("h2")
+			.setClass("h3")
 			.setDesc(i18next.t("unconventionalMarkdown.desc"));
 
 		this.calloutTitle(settings);
@@ -150,7 +150,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage)
 			.setName(i18next.t("other") )
 			.setHeading()
-			.setClass("h2");
+			.setClass("h3");
 
 		this.hardBreak(settings);
 		if (!profile) this.overrideSetting(settings);
