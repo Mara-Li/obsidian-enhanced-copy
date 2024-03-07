@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.7](https://github.com/Lisandra-dev/obsidian-enhanced-copy/compare/0.2.6...0.2.7) (2024-03-07)
+
 ## [0.2.6](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.5...0.2.6) (2024-02-07)
 
 
