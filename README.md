@@ -89,8 +89,8 @@ It is done on purpose to prevent surprise when you use the plugin on editing vie
 
 ## 📥 Installation
 
-- [ ] From Obsidian's community plugins
-- [x] Using BRAT with `https://github.com/Lisandra-dev/obsidian-enhanced-copy`
+- [x] From Obsidian's community plugins
+- [x] Using BRAT with `https://github.com/Mara-Li/obsidian-enhanced-copy`
 - [x] From the release page:
   - Download the latest release
   - Unzip `obsidian-enhanced-copy.zip` in `.obsidian/plugins/` path
