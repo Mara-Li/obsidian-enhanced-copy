@@ -20,16 +20,16 @@ permissions:
 jobs:
   release:
     if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && !inputs.bump)
-    uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
+    uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
         PLUGIN_NAME: "enhanced-copy"
         STYLE: true
-        BETA: ${{ inputs.beta || false }}
+        CACHE: pnpm
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   bump-version:
     if: ${{ inputs.bump }}
-    uses: lisandra-dev/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
+    uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
     with:
         PLUGIN_NAME: "enhanced-copy"
         STYLE: true
