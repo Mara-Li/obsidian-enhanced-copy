@@ -13,5 +13,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           reviewers: |
               mara-li
-          assignees: lisandra-dev
+          assignees: mara-li
           skipKeywords: wip, draft
