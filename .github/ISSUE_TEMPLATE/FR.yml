@@ -3,7 +3,7 @@ description: "Suggest an idea for this project"
 title: "[FR]: "
 labels: ["enhancement"]
 assignees:
-  - lisandra-dev
+  - Mara-Li
 body:
   - type: markdown
     attributes:
