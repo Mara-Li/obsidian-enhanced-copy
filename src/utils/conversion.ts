@@ -3,9 +3,10 @@ import i18next from "i18next";
 import {
 	CalloutKeepType,
 	ConversionOfFootnotes,
-	ConversionOfLinks, 		GlobalSettings
+	ConversionOfLinks,
+	type GlobalSettings,
 } from "../interface";
-import EnhancedCopy from "../main";
+import type EnhancedCopy from "../main";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -17,7 +18,9 @@ function removeEmptyLineBeforeList(markdown: string): string {
 	const newLines = [];
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i];
-		if (!(line.trim().length === 0 && i + 1 < lines.length && lines[i + 1].startsWith("-"))) {
+		if (
+			!(line.trim().length === 0 && i + 1 < lines.length && lines[i + 1].startsWith("-"))
+		) {
 			newLines.push(line);
 		}
 	}
@@ -41,12 +44,14 @@ function removeEmptyLineBeforeList(markdown: string): string {
  * @param settings {EnhancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with links removed if needed
  */
-function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSettings): string {
+function removeLinksBracketsInMarkdown(
+	markdown: string,
+	settings: GlobalSettings
+): string {
 	const regexLinks = /!?\[([^\]]+)\]\(([^)]+)\)/g;
-	if (settings.links === ConversionOfLinks.remove) {
+	if (settings.links === ConversionOfLinks.Remove) {
 		markdown = markdown.replaceAll(regexLinks, "$1");
-	} else if (settings.links === ConversionOfLinks.external
-	) {
+	} else if (settings.links === ConversionOfLinks.External) {
 		//convert links only if they don't have `http` or `https` in them
 		markdown = markdown.replaceAll(regexLinks, (match, p1, p2) => {
 			if (p2.startsWith("http")) {
@@ -67,7 +72,7 @@ function removeLinksBracketsInMarkdown(markdown: string, settings: GlobalSetting
  */
 function convertWikiToMarkdown(markdown: string): string {
 	const regexWikiLinks = /\[\[([^\]]+)\]\]/g;
-	return markdown.replaceAll(regexWikiLinks, (match, p1) => {
+	return markdown.replaceAll(regexWikiLinks, (_match, p1) => {
 		const parts = p1.split("|");
 		if (parts.length === 1) {
 			return `[${p1}](${p1})`;
@@ -90,10 +95,10 @@ function convertWikiToMarkdown(markdown: string): string {
  */
 function fixFootNotes(markdown: string, settings: GlobalSettings): string {
 	const regexFootNotes = /\[{2}(\w+)\]{2}\((.*)\)/g;
-	if (settings.footnotes === ConversionOfFootnotes.remove) {
+	if (settings.footnotes === ConversionOfFootnotes.Remove) {
 		//keep links but remove footnotes format : [1](#text)[1]
 		markdown = markdown.replace(regexFootNotes, "");
-	} else if (settings.footnotes === ConversionOfFootnotes.format) {
+	} else if (settings.footnotes === ConversionOfFootnotes.Format) {
 		//keep links but format footnotes format : [[1]](#text)
 		markdown = markdown.replace(regexFootNotes, "[^$1]");
 	}
@@ -109,17 +114,17 @@ function fixFootNotes(markdown: string, settings: GlobalSettings): string {
  */
 function fixFootnoteContents(markdown: string, overrides: GlobalSettings): string {
 	const regexFootNotes = /(.*)\[\]\(#fnref-(\d)-\w+\)/g;
-	if (overrides.footnotes === ConversionOfFootnotes.remove) {
+	if (overrides.footnotes === ConversionOfFootnotes.Remove) {
 		return markdown.replace(regexFootNotes, "$1");
-	} else if (overrides.footnotes === ConversionOfFootnotes.format) {
-		markdown= markdown.replace(regexFootNotes, "[^$2]: $1");
+	} else if (overrides.footnotes === ConversionOfFootnotes.Format) {
+		markdown = markdown.replace(regexFootNotes, "[^$2]: $1");
 		return markdown.replace(/(\[\^\w+\]): (\d+)\./gm, "$1:");
 	}
 	return markdown;
 }
 
 function removeMarkdownFootNotes(markdown: string, overrides: GlobalSettings): string {
-	if (overrides.footnotes === ConversionOfFootnotes.remove) {
+	if (overrides.footnotes === ConversionOfFootnotes.Remove) {
 		/** regex replace only text[^1] and not the line that start with [^1]:
 		 * @example
 		 * `text[^1]` -> `text`
@@ -153,7 +158,11 @@ function removeHighlightMark(markdown: string, settings: GlobalSettings): string
  * @param settings {EnhancedCopySettings} Settings of the plugin
  * @returns {string} Markdown with hard breaks added if needed
  */
-function hardBreak(markdown: string, settings: GlobalSettings, plugin: EnhancedCopy): string {
+function hardBreak(
+	markdown: string,
+	settings: GlobalSettings,
+	plugin: EnhancedCopy
+): string {
 	if (settings.hardBreak) {
 		markdown = markdown.replace(/ *\n/g, "  \n");
 		markdown += "  ";
@@ -164,24 +173,30 @@ function hardBreak(markdown: string, settings: GlobalSettings, plugin: EnhancedC
 	return markdown;
 }
 
-function convertCallout(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy): string {
+function convertCallout(
+	markdown: string,
+	overrides: GlobalSettings,
+	plugin: EnhancedCopy
+): string {
 	plugin.devLog(i18next.t("log.callout.title"), overrides.callout);
 	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
-	if (overrides.callout === CalloutKeepType.removeKeepTitle || overrides.callout === CalloutKeepType.remove) {
+	if (
+		overrides.callout === CalloutKeepType.RemoveKeepTitle ||
+		overrides.callout === CalloutKeepType.Remove
+	) {
 		plugin.devLog(i18next.t("log.callout.remove"));
 		//delete the type of the callout
-		markdown = markdown.replace(calloutRegex, (match, p1, p2, p3) => {
+		markdown = markdown.replace(calloutRegex, (_match, _p1, _p2, p3) => {
 			if (p3 === "") {
 				//remove the line without adding a new line / space
 				return "undefined";
 			}
-			if (overrides.callout === CalloutKeepType.removeKeepTitle)
-				return `> **${p3}**`;
+			if (overrides.callout === CalloutKeepType.RemoveKeepTitle) return `> **${p3}**`;
 			return "undefined";
 		});
 		//remove line prepended by undefined
 		return markdown.replace("undefined\n>", ">");
-	} else if (overrides.callout === CalloutKeepType.strong) {
+	} else if (overrides.callout === CalloutKeepType.Strong) {
 		return markdown.replace(calloutRegex, "> **$1** $3");
 	}
 
@@ -198,14 +213,14 @@ function convertTabToSpace(markdown: string, settings: GlobalSettings) {
 
 function convertSpaceSize(markdown: string, settings: GlobalSettings) {
 	/** Note:
-		 * Turndown will always convert \t to 4 space
-		 * So if we want to reduce the space size, we need to count each 4 space as 1 space for each line
+	 * Turndown will always convert \t to 4 space
+	 * So if we want to reduce the space size, we need to count each 4 space as 1 space for each line
 	 */
 	const countSpace = markdown.match(/^ +/gm);
 	if (!settings.spaceReadingSize) return markdown;
 	if (settings.spaceReadingSize >= 0 && countSpace) {
 		countSpace.forEach((space) => {
-			const newSpace = " ".repeat(space.length / 4 * (settings.spaceReadingSize ?? 1));
+			const newSpace = " ".repeat((space.length / 4) * (settings.spaceReadingSize ?? 1));
 			markdown = markdown.replace(space, newSpace);
 		});
 	}
@@ -215,9 +230,9 @@ function convertSpaceSize(markdown: string, settings: GlobalSettings) {
 function textReplacement(markdown: string, settings: GlobalSettings) {
 	const replacement = settings.replaceText;
 	for (const replace of replacement) {
-		let pattern : string | RegExp = replace.pattern;
-		if (pattern.match(/^\/.*\/([gmiyu]+)$/)) {
-			const flags = pattern.replace(/^\/.*\/([gmiyu]+)$/, "$1");
+		let pattern: string | RegExp = replace.pattern;
+		if (pattern.match(/^\/.*\/([gmiyus]+)$/)) {
+			const flags = pattern.replace(/^\/.*\/([gmiysu]+)$/, "$1");
 			const regex = pattern.replace(/^\/(.*)\/(.*)$/, "$1");
 			pattern = new RegExp(regex, flags);
 		}
@@ -233,27 +248,41 @@ function textReplacement(markdown: string, settings: GlobalSettings) {
  * @param overrides
  * @returns {string} converted markdown
  */
-export function convertMarkdown(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy): string {
+export function convertMarkdown(
+	markdown: string,
+	overrides: GlobalSettings,
+	plugin: EnhancedCopy
+): string {
 	return removeEmptyLineBeforeList(
-		convertSpaceSize(convertCallout(
-			hardBreak(
-				removeHighlightMark(
-					fixFootNotes(
-						removeLinksBracketsInMarkdown(
-							(textReplacement(markdown, overrides))
-							, overrides),
+		convertSpaceSize(
+			convertCallout(
+				hardBreak(
+					removeHighlightMark(
+						fixFootNotes(
+							removeLinksBracketsInMarkdown(
+								textReplacement(markdown, overrides),
+								overrides
+							),
+							overrides
+						),
 						overrides
 					),
-					overrides
+					overrides,
+					plugin
 				),
-				overrides,plugin
+				overrides,
+				plugin
 			),
-			overrides, plugin),
-		overrides)
+			overrides
+		)
 	);
 }
 
-export function convertEditMarkdown(markdown: string, overrides: GlobalSettings, plugin: EnhancedCopy) {
+export function convertEditMarkdown(
+	markdown: string,
+	overrides: GlobalSettings,
+	plugin: EnhancedCopy
+) {
 	if (overrides.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
 		markdown = removeLinksBracketsInMarkdown(markdown, overrides);

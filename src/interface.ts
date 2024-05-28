@@ -1,4 +1,3 @@
-
 /**
  * @file interface.ts
  * @description Interface for the plugin
@@ -16,9 +15,9 @@
  * @enum {string} ConversionOfFootnotes
  */
 export enum ConversionOfFootnotes {
-	keep = "keep",
-	remove = "remove",
-	format = "format",
+	Keep = "keep",
+	Remove = "remove",
+	Format = "format",
 }
 
 /**
@@ -33,9 +32,9 @@ export enum ConversionOfFootnotes {
  * @enum {string} ConversionOfLinks
  */
 export enum ConversionOfLinks {
-	keep = "keep",
-	remove = "remove",
-	external = "external",
+	Keep = "keep",
+	Remove = "remove",
+	External = "external",
 }
 
 /**
@@ -48,10 +47,10 @@ export enum ConversionOfLinks {
  * `> [!note]` -> `>`
  */
 export enum CalloutKeepType {
-	obsidian = "obsidian",
-	strong = "strong",
-	remove = "remove",
-	removeKeepTitle = "removeKeepTitle",
+	Obsidian = "obsidian",
+	Strong = "strong",
+	Remove = "remove",
+	RemoveKeepTitle = "removeKeepTitle",
 }
 
 /**
@@ -61,12 +60,15 @@ export enum CalloutKeepType {
  * @example `edit` : Apply the markdown conversion to edit mode only
  */
 export enum ApplyingToView {
-	"all" = "all",
-	"reading" = "reading",
-	"edit" = "edit",
+	All = "all",
+	Reading = "reading",
+	Edit = "edit",
 }
 
-export const COLLAPSE_INDICATOR = new RegExp("<div class=\"heading-collapse-indicator collapse-indicator collapse-icon( is-collapsed)?\"><svg xmlns=\".*\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"svg-icon right-triangle\"><path d=\"M3 8L12 17L21 8\"></path></svg></div>", "gi");
+export const COLLAPSE_INDICATOR = new RegExp(
+	'<div class="heading-collapse-indicator collapse-indicator collapse-icon( is-collapsed)?"><svg xmlns=".*" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>',
+	"gi"
+);
 
 export interface EnhancedCopySettings {
 	exportAsHTML: boolean;
@@ -76,7 +78,6 @@ export interface EnhancedCopySettings {
 	reading: GlobalSettings;
 	devMode: boolean;
 	profiles: GlobalSettings[];
-
 }
 
 /**
@@ -88,56 +89,55 @@ export interface EnhancedCopySettings {
  */
 export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 	exportAsHTML: false,
-	applyingTo: ApplyingToView.all,
+	applyingTo: ApplyingToView.All,
 	separateHotkey: false,
 	editing: {
-		footnotes: ConversionOfFootnotes.keep,
-		links: ConversionOfLinks.keep,
-		callout: CalloutKeepType.obsidian,
+		footnotes: ConversionOfFootnotes.Keep,
+		links: ConversionOfLinks.Keep,
+		callout: CalloutKeepType.Obsidian,
 		highlight: false,
 		hardBreak: false,
 		replaceText: [],
-		overrideNativeCopy: false
+		overrideNativeCopy: false,
 	},
 	reading: {
-		footnotes: ConversionOfFootnotes.keep,
-		links: ConversionOfLinks.keep,
-		callout: CalloutKeepType.obsidian,
+		footnotes: ConversionOfFootnotes.Keep,
+		links: ConversionOfLinks.Keep,
+		callout: CalloutKeepType.Obsidian,
 		highlight: false,
 		hardBreak: false,
 		replaceText: [],
 		overrideNativeCopy: false,
 		spaceReadingSize: -1, // -1 disabled
-		wikiToMarkdown: false
+		wikiToMarkdown: false,
 	},
 	devMode: false,
-	profiles: []
+	profiles: [],
 };
 
 export interface GlobalSettings {
-	name?: string,
-	copyAsHTML?: boolean,
-	footnotes: ConversionOfFootnotes,
-	links: ConversionOfLinks,
-	callout: CalloutKeepType,
-	highlight: boolean,
-	hardBreak: boolean,
-	replaceText: ReplaceText[],
-	overrideNativeCopy: boolean,
-	spaceReadingSize?: number, //only work in reading mode
-	tabToSpace?: boolean //only work in edit mode
-	tabSpaceSize?: number //only work in edit mode
-	wikiToMarkdown?: boolean
-	applyingTo?: ApplyingToView //only work in profiles
-	
+	name?: string;
+	copyAsHTML?: boolean;
+	footnotes: ConversionOfFootnotes;
+	links: ConversionOfLinks;
+	callout: CalloutKeepType;
+	highlight: boolean;
+	hardBreak: boolean;
+	replaceText: ReplaceText[];
+	overrideNativeCopy: boolean;
+	spaceReadingSize?: number; //only work in reading mode
+	tabToSpace?: boolean; //only work in edit mode
+	tabSpaceSize?: number; //only work in edit mode
+	wikiToMarkdown?: boolean;
+	applyingTo?: ApplyingToView; //only work in profiles
 }
 
 export interface ReplaceText {
-	pattern: string,
-	replacement: string
+	pattern: string;
+	replacement: string;
 }
 
 export enum CopySettingsView {
-	reading = "reading",
-	editing = "editing"
+	Reading = "reading",
+	Editing = "editing",
 }

@@ -1,15 +1,24 @@
 import { EditorView } from "@codemirror/view";
 import i18next from "i18next";
 import { around } from "monkey-around";
-import { ItemView, MarkdownView, Platform, Plugin, WorkspaceLeaf } from "obsidian";
+import { ItemView, MarkdownView, Platform, Plugin, type WorkspaceLeaf } from "obsidian";
 import merge from "ts-deepmerge";
 
 import { resources, translationLanguage } from "./i18n/i18next";
-import { ApplyingToView, DEFAULT_SETTINGS, EnhancedCopySettings, GlobalSettings } from "./interface";
+import {
+	ApplyingToView,
+	DEFAULT_SETTINGS,
+	type EnhancedCopySettings,
+	type GlobalSettings,
+} from "./interface";
 import { EnhancedCopySettingTab } from "./settings";
-import { convertEditMarkdown, convertMarkdown, } from "./utils/conversion";
+import { convertEditMarkdown, convertMarkdown } from "./utils/conversion";
 import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
-import { canvasSelectionText, copySelectionRange, getSelectionAsHTML } from "./utils/selection";
+import {
+	canvasSelectionText,
+	copySelectionRange,
+	getSelectionAsHTML,
+} from "./utils/selection";
 
 export default class EnhancedCopy extends Plugin {
 	settings: EnhancedCopySettings = DEFAULT_SETTINGS;
@@ -27,35 +36,40 @@ export default class EnhancedCopy extends Plugin {
 		if (activeView && activeView.getMode() !== "source") {
 			this.devLog(i18next.t("log.readingMode"));
 			selectedText = getSelectionAsHTML(profile ?? this.settings.reading);
-			viewIn = ApplyingToView.reading;
+			viewIn = ApplyingToView.Reading;
 		} else if (activeView) {
 			this.devLog(i18next.t("log.editMode"));
 			const editor = activeView.editor;
 			selectedText = copySelectionRange(editor, this);
-			viewIn = ApplyingToView.edit;
+			viewIn = ApplyingToView.Edit;
 		} else {
 			const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
 			if (leafType === "canvas") {
 				selectedText = canvasSelectionText(this.app, this);
-				viewIn = this.app.workspace.activeEditor ? ApplyingToView.edit : ApplyingToView.reading;
+				viewIn = this.app.workspace.activeEditor
+					? ApplyingToView.Edit
+					: ApplyingToView.Reading;
 			} else {
-				selectedText = leafType === "database-plugin" ? removeDataBasePluginRelationShip() : activeWindow.getSelection()?.toString() ?? "";
-				viewIn = ApplyingToView.reading;
+				selectedText =
+					leafType === "database-plugin"
+						? removeDataBasePluginRelationShip()
+						: activeWindow.getSelection()?.toString() ?? "";
+				viewIn = ApplyingToView.Reading;
 			}
 		}
-		const exportAsHTML = profile ? profile?.copyAsHTML ?? false : this.settings.reading.copyAsHTML;
+		const exportAsHTML = profile
+			? profile?.copyAsHTML ?? false
+			: this.settings.reading.copyAsHTML;
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
-			if (!exportAsHTML &&
-				(applyingTo === ApplyingToView.all || applyingTo === viewIn)
-			) {
-				selectedText = viewIn === ApplyingToView.edit
-					?
-					convertEditMarkdown(selectedText, profile ?? this.settings.editing, this) :
-					convertMarkdown(selectedText, profile ?? this.settings.reading, this);
+			if (!exportAsHTML && (applyingTo === ApplyingToView.All || applyingTo === viewIn)) {
+				selectedText =
+					viewIn === ApplyingToView.Edit
+						? convertEditMarkdown(selectedText, profile ?? this.settings.editing, this)
+						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
 			return selectedText;
-		} else if (viewIn === ApplyingToView.edit) {
+		} else if (viewIn === ApplyingToView.Edit) {
 			return selectedText;
 		}
 		return selectedText;
@@ -63,8 +77,18 @@ export default class EnhancedCopy extends Plugin {
 
 	overrideNativeCopy(leaf: WorkspaceLeaf) {
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-		if (activeView && activeView.getMode() !== "source" && !this.settings.reading.overrideNativeCopy) return;
-		if (activeView && activeView.getMode() === "source" && !this.settings.editing.overrideNativeCopy) return;
+		if (
+			activeView &&
+			activeView.getMode() !== "source" &&
+			!this.settings.reading.overrideNativeCopy
+		)
+			return;
+		if (
+			activeView &&
+			activeView.getMode() === "source" &&
+			!this.settings.editing.overrideNativeCopy
+		)
+			return;
 		try {
 			return around(leaf.view, {
 				//@ts-ignore
@@ -77,28 +101,24 @@ export default class EnhancedCopy extends Plugin {
 								event.clipboardData?.setData("text/plain", selectedText);
 							}
 							//old(event);
-						}
-						catch (e) {
+						} catch (e) {
 							console.error(e);
 						}
 					};
-				}
+				},
 			});
-		}
-		catch (e) {
+		} catch (e) {
 			console.error(e);
 		}
 	}
 
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-	editorCopyHandler(event: ClipboardEvent, editor?: EditorView) {
+	editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const selectedText = this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData("text/plain", selectedText);
 	}
 
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-	editorCutHandler(event: ClipboardEvent, editor?: EditorView) {
+	editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const selectedText = this.enhancedCopy();
 		event.clipboardData?.setData("text/plain", selectedText);
 		event.preventDefault();
@@ -109,11 +129,8 @@ export default class EnhancedCopy extends Plugin {
 		}
 	}
 
-
 	async onload() {
-		console.log(
-			`Enhanced copy v.${this.manifest.version} loaded.`
-		);
+		console.log(`Enhanced copy v.${this.manifest.version} loaded.`);
 
 		await i18next.init({
 			lng: translationLanguage,
@@ -126,7 +143,6 @@ export default class EnhancedCopy extends Plugin {
 		await this.loadSettings();
 		this.addSettingTab(new EnhancedCopySettingTab(this.app, this));
 
-
 		for (const profile of this.settings.profiles) {
 			if (!profile.name) continue;
 			this.addCommand({
@@ -135,9 +151,10 @@ export default class EnhancedCopy extends Plugin {
 				checkCallback: (checking: boolean) => {
 					const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 					const readingMode = view && view.getMode() !== "source";
-					if (profile.applyingTo === ApplyingToView.all || 
-						(profile.applyingTo === ApplyingToView.reading && readingMode) || 
-						(profile.applyingTo === ApplyingToView.edit && !readingMode)
+					if (
+						profile.applyingTo === ApplyingToView.All ||
+						(profile.applyingTo === ApplyingToView.Reading && readingMode) ||
+						(profile.applyingTo === ApplyingToView.Edit && !readingMode)
 					) {
 						if (!checking) {
 							navigator.clipboard.writeText(this.enhancedCopy(profile));
@@ -145,33 +162,46 @@ export default class EnhancedCopy extends Plugin {
 						return true;
 					}
 					return false;
-				}
+				},
 			});
 		}
 
-		if (!this.settings.separateHotkey || this.settings.applyingTo !== ApplyingToView.all) {
+		if (
+			!this.settings.separateHotkey ||
+			this.settings.applyingTo !== ApplyingToView.All
+		) {
 			this.addCommand({
 				id: "copy-all-in-markdown",
 				name: i18next.t("commands.all"),
 				callback: () => {
 					navigator.clipboard.writeText(this.enhancedCopy());
-				}
+				},
 			});
 		} else if (this.settings.separateHotkey) {
-			if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === ApplyingToView.edit) {
+			if (
+				this.settings.applyingTo === ApplyingToView.All ||
+				this.settings.applyingTo === ApplyingToView.Edit
+			) {
 				this.addCommand({
 					id: "copy-editor-in-markdown",
 					name: i18next.t("commands.editor"),
 					editorCallback: (editor) => {
 						let selectedText = copySelectionRange(editor, this);
 						if (selectedText && selectedText.trim().length > 0) {
-							selectedText = convertEditMarkdown(selectedText, this.settings.editing, this);
+							selectedText = convertEditMarkdown(
+								selectedText,
+								this.settings.editing,
+								this
+							);
 							navigator.clipboard.writeText(selectedText);
 						}
-					}
+					},
 				});
 			}
-			if (this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === ApplyingToView.reading) {
+			if (
+				this.settings.applyingTo === ApplyingToView.All ||
+				this.settings.applyingTo === ApplyingToView.Reading
+			) {
 				this.addCommand({
 					id: "copy-reading-in-markdown",
 					name: i18next.t("commands.reading"),
@@ -182,14 +212,18 @@ export default class EnhancedCopy extends Plugin {
 							if (!checking) {
 								let selectedText = getSelectionAsHTML(this.settings.reading);
 								if (!this.settings.exportAsHTML) {
-									selectedText = convertMarkdown(selectedText, this.settings.reading, this);
+									selectedText = convertMarkdown(
+										selectedText,
+										this.settings.reading,
+										this
+									);
 								}
 								navigator.clipboard.writeText(selectedText);
 							}
 							return true;
 						}
 						return false;
-					}
+					},
 				});
 			}
 
@@ -202,24 +236,33 @@ export default class EnhancedCopy extends Plugin {
 					this.devLog(!markdownView, checking);
 					if (!markdownView) {
 						if (!checking) {
-							const leafType = this.app.workspace.getActiveViewOfType(ItemView)?.getViewType();
+							const leafType = this.app.workspace
+								.getActiveViewOfType(ItemView)
+								?.getViewType();
 							let selectedText: string;
 							let viewIn: ApplyingToView;
 							if (leafType === "canvas") {
 								selectedText = canvasSelectionText(this.app, this);
-								viewIn = this.app.workspace.activeEditor ? ApplyingToView.edit : ApplyingToView.reading;
+								viewIn = this.app.workspace.activeEditor
+									? ApplyingToView.Edit
+									: ApplyingToView.Reading;
 							} else {
-								selectedText = leafType === "database-plugin" ? removeDataBasePluginRelationShip() : activeWindow.getSelection()?.toString() ?? "";
-								viewIn = ApplyingToView.reading;
+								selectedText =
+									leafType === "database-plugin"
+										? removeDataBasePluginRelationShip()
+										: activeWindow.getSelection()?.toString() ?? "";
+								viewIn = ApplyingToView.Reading;
 							}
 							if (selectedText && selectedText.trim().length > 0) {
-								if (!this.settings.exportAsHTML &&
-									(this.settings.applyingTo === ApplyingToView.all || this.settings.applyingTo === viewIn)
+								if (
+									!this.settings.exportAsHTML &&
+									(this.settings.applyingTo === ApplyingToView.All ||
+										this.settings.applyingTo === viewIn)
 								) {
-									selectedText = viewIn === ApplyingToView.edit
-										?
-										convertEditMarkdown(selectedText, this.settings.editing, this) :
-										convertMarkdown(selectedText, this.settings.reading, this);
+									selectedText =
+										viewIn === ApplyingToView.Edit
+											? convertEditMarkdown(selectedText, this.settings.editing, this)
+											: convertMarkdown(selectedText, this.settings.reading, this);
 								}
 								navigator.clipboard.writeText(selectedText);
 							}
@@ -227,39 +270,47 @@ export default class EnhancedCopy extends Plugin {
 						return true;
 					}
 					return false;
-				}
+				},
 			});
 		}
 
-		if (this.settings.reading.overrideNativeCopy || this.settings.editing.overrideNativeCopy) {
-			this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
-				if (!leaf) {
-					for (const monkey of Object.values(this.activeMonkeys)) {
-						monkey();
+		if (
+			this.settings.reading.overrideNativeCopy ||
+			this.settings.editing.overrideNativeCopy
+		) {
+			this.registerEvent(
+				this.app.workspace.on("active-leaf-change", async (leaf) => {
+					if (!leaf) {
+						for (const monkey of Object.values(this.activeMonkeys)) {
+							monkey();
+						}
+						this.activeMonkeys = {};
+						return;
 					}
-					this.activeMonkeys = {};
-					return;
-				}
-				//@ts-ignore
-				this.activeMonkeys[leaf.id] = this.overrideNativeCopy(leaf);
-				//enable clipboard event in canvas read-only
-				if (leaf.view instanceof ItemView && leaf.view.getViewType() === "canvas" && this.settings.reading.overrideNativeCopy) {
-					leaf.view.containerEl.addEventListener("copy", (event) => {
-						this.editorCopyHandler(event);
-					});
-					leaf.view.containerEl.addEventListener("cut", (event) => {
-						this.editorCutHandler(event);
-					});
-
-				}
-			}));
+					//@ts-ignore
+					this.activeMonkeys[leaf.id] = this.overrideNativeCopy(leaf);
+					//enable clipboard event in canvas read-only
+					if (
+						leaf.view instanceof ItemView &&
+						leaf.view.getViewType() === "canvas" &&
+						this.settings.reading.overrideNativeCopy
+					) {
+						leaf.view.containerEl.addEventListener("copy", (event) => {
+							this.editorCopyHandler(event);
+						});
+						leaf.view.containerEl.addEventListener("cut", (event) => {
+							this.editorCutHandler(event);
+						});
+					}
+				})
+			);
 			if (this.settings.editing.overrideNativeCopy) {
-			//register for editor
+				//register for editor
 				const copyExt = EditorView.domEventHandlers({
-					copy: this.editorCopyHandler.bind(this)
+					copy: this.editorCopyHandler.bind(this),
 				});
 				const cutExt = EditorView.domEventHandlers({
-					cut: this.editorCutHandler.bind(this)
+					cut: this.editorCutHandler.bind(this),
 				});
 
 				this.registerEditorExtension(copyExt);
@@ -276,9 +327,14 @@ export default class EnhancedCopy extends Plugin {
 	async loadSettings() {
 		const loadedData = await this.loadData();
 		try {
-			this.settings = merge(DEFAULT_SETTINGS, loadedData) as unknown as EnhancedCopySettings;
-		} catch (e) {
-			console.warn("[Enhanced copy] Error while deep merging settings, using default loading method");
+			this.settings = merge(
+				DEFAULT_SETTINGS,
+				loadedData
+			) as unknown as EnhancedCopySettings;
+		} catch (_e) {
+			console.warn(
+				"[Enhanced copy] Error while deep merging settings, using default loading method"
+			);
 			this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
 		}
 	}
@@ -290,7 +346,10 @@ export default class EnhancedCopy extends Plugin {
 			return;
 		}
 		let callFunction = new Error().stack?.split("\n")[2].trim();
-		callFunction = callFunction?.substring(callFunction.indexOf("at ") + 3, callFunction.lastIndexOf(" ("));
+		callFunction = callFunction?.substring(
+			callFunction.indexOf("at ") + 3,
+			callFunction.lastIndexOf(" (")
+		);
 		callFunction = callFunction!.replace("Object.callback", "");
 		callFunction = callFunction.length > 0 ? callFunction : "main";
 		const date = new Date().toISOString().slice(11, 23);

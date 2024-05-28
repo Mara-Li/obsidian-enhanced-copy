@@ -1,9 +1,9 @@
 import i18next from "i18next";
-import {App, Editor, EditorPosition, htmlToMarkdown} from "obsidian";
+import { type App, type Editor, type EditorPosition, htmlToMarkdown } from "obsidian";
 
-import {COLLAPSE_INDICATOR, GlobalSettings} from "../interface";
-import EnhancedCopy from "../main";
-import {reNumerateList, replaceAllDivCalloutToBlockquote} from "./NodesEdit";
+import { COLLAPSE_INDICATOR, type GlobalSettings } from "../interface";
+import type EnhancedCopy from "../main";
+import { reNumerateList, replaceAllDivCalloutToBlockquote } from "./node_edit";
 
 /**
  * Get the selection of the activeWindows and transform it as HTML
@@ -35,7 +35,10 @@ export function getSelectionAsHTML(settings: GlobalSettings): string {
 	//no converting html to markdown the div that contains a class with "no-convert"
 	for (const noConvert of allNoConvert) {
 		const converted = htmlToMarkdown(noConvert.outerHTML);
-		markdown = markdown.replace(converted, noConvert.outerHTML.replace(/ ?data-type=["']html["']/, ""));
+		markdown = markdown.replace(
+			converted,
+			noConvert.outerHTML.replace(/ ?data-type=["']html["']/, "")
+		);
 	}
 	return markdown;
 }
@@ -82,7 +85,7 @@ function getAnchor(head: EditorPosition, anchor: EditorPosition) {
  * @param editor {Editor} Editor of the activeView
  * @returns {string} The selected text (copying behavior of Obsidian)
  */
-export function copySelectionRange(editor: Editor, plugin: EnhancedCopy):string {
+export function copySelectionRange(editor: Editor, plugin: EnhancedCopy): string {
 	let selectedText = "";
 	const selection = editor.listSelections();
 	for (const selected of selection) {
@@ -93,7 +96,7 @@ export function copySelectionRange(editor: Editor, plugin: EnhancedCopy):string 
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	if (selectedText === "") {
 		const getSelection = activeWindow.getSelection();
-		plugin.devLog(	i18next.t("log.empty"));
+		plugin.devLog(i18next.t("log.empty"));
 		return getSelection === null ? "" : getSelection.toString();
 	}
 	return selectedText;
@@ -107,7 +110,7 @@ export function copySelectionRange(editor: Editor, plugin: EnhancedCopy):string 
  * @returns {string}
  */
 export function canvasSelectionText(app: App, plugin: EnhancedCopy): string {
-	const {settings} = plugin;
+	const { settings } = plugin;
 	const editor = app.workspace.activeEditor;
 	if (editor) {
 		const editorMode = editor.editor as Editor;
@@ -116,4 +119,3 @@ export function canvasSelectionText(app: App, plugin: EnhancedCopy): string {
 		return getSelectionAsHTML(settings.reading);
 	}
 }
-
