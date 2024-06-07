@@ -1,4 +1,12 @@
 {
+  "auto": {
+    "desc": "Allow to automatically use this profile based on the path, tag or properties.<br/>For properties, it will be matched on the <code>enhanced_copy</code> key.<br/>It also supports regex (without the need to enclose them in <code>/</code>)!",
+    "frontmatter": "Properties",
+    "path": "Path",
+    "placeholder": "Value to match",
+    "tag": "Tags",
+    "title": "Automatic use"
+  },
   "callout": {
     "desc": "Format of the callout type. All format will be in blockquote.",
     "obsidian": "Use Obsidian's default callout format",

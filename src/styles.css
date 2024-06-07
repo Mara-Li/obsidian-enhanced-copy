@@ -141,3 +141,10 @@
   border-color: var(--text-error);
   --background-modifier-border-focus: var(--background-modifier-error);
 }
+
+.enhanced-copy code {
+  font-size: var(--font-ui-smaller);
+  padding: 0;
+  position: revert;
+  bottom: 0;
+}

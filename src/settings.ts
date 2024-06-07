@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import { type App, PluginSettingTab, setIcon, Setting } from "obsidian";
+import { type App, PluginSettingTab, sanitizeHTMLToDom, setIcon, Setting } from "obsidian";
 
 import {
 	ApplyingToView,
@@ -277,8 +277,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			});
 
 		new Setting(this.settingsPage)
-			.setName("Auto rules")
-			.setDesc("Allow to automatically use this profile based on the path, tag or frontmatter. For frontmatter, it will be matched on the 'enhanced_copy' key. It supports regex!")
+			.setName(i18next.t("auto.title"))
+			.setDesc(sanitizeHTMLToDom(i18next.t("auto.desc")))
 			.addExtraButton((button) => 
 				button
 					.setIcon("plus")
@@ -298,9 +298,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				.setClass("full-width")
 				.addDropdown((dropdown) => {
 					dropdown
-						.addOption("path", "Path")
-						.addOption("tag", "Tag")
-						.addOption("frontmatter", "Frontmatter")
+						.addOption("path", i18next.t("auto.path"))
+						.addOption("tag", i18next.t("auto.tag"))
+						.addOption("frontmatter", i18next.t("auto.frontmatter"))
 						.setValue(rules.type)
 						.onChange(async (value) => {
 							rules.type = value as "path" | "tag" | "frontmatter";
@@ -310,7 +310,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				.addText((text) => {
 					text
 						.setValue(rules.value)
-						.setPlaceholder("value to be matched")
+						.setPlaceholder(i18next.t("auto.placeholder"))
 						.onChange(async (value) => {
 							rules.value = value;
 							await this.plugin.saveSettings();
