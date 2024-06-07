@@ -524,7 +524,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					.setButtonText(i18next.t("openTextReplacer"))
 					.onClick(async () => {
 						if (!settings.replaceText) settings.replaceText = [];
-						new AllReplaceTextModal(this.app, settings.replaceText, async (result) => {
+						new AllReplaceTextModal(this.app, JSON.parse(JSON.stringify(settings.replaceText)), async (result) => {
 							settings.replaceText = result;
 						}).open();
 						await this.plugin.saveSettings();
