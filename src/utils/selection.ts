@@ -88,6 +88,12 @@ function getAnchor(head: EditorPosition, anchor: EditorPosition) {
 export function copySelectionRange(editor: Editor, plugin: EnhancedCopy): string {
 	let selectedText = "";
 	const selection = editor.listSelections();
+	const inlineTitle = activeWindow.document.querySelector(".inline-title:focus");
+	const viewHeader = activeWindow.document.querySelector(".view-header-title:focus");
+	if (inlineTitle?.textContent && inlineTitle.textContent !== "") return inlineTitle.textContent;
+	else if (viewHeader?.textContent && viewHeader.textContent !== "") {
+		return viewHeader.textContent;
+	}
 	for (const selected of selection) {
 		const head = getHead(selected.head, selected.anchor);
 		const anchor = getAnchor(selected.head, selected.anchor);
