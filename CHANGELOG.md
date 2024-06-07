@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.9](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.8...0.2.9) (2024-06-07)
+
+
+### Features
+
+* support autoapply profile ([f3e09e5](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f3e09e599dfc4a135241e0a06842f7f744b50ebe))
+
+
+### Bug Fixes
+
+* autoSave in regex modals ([95e5e48](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/95e5e48a07df2f50a150f447361c494e987d4863))
+* selection of inline-title and view-header when using editor ([93c0407](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/93c04074a9d15eabc439377e484dbed26618f5cc))
+
 ## [0.2.8](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.7...0.2.8) (2024-05-28)
 
 ## [0.2.7](https://github.com/Lisandra-dev/obsidian-enhanced-copy/compare/0.2.6...0.2.7) (2024-03-07)
