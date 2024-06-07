@@ -71,7 +71,7 @@ export const COLLAPSE_INDICATOR = new RegExp(
 );
 
 export interface EnhancedCopySettings {
-	exportAsHTML: boolean;
+	copyAsHTML: boolean;
 	applyingTo: ApplyingToView;
 	separateHotkey: boolean;
 	editing: GlobalSettings;
@@ -88,7 +88,7 @@ export interface EnhancedCopySettings {
  * @readonly
  */
 export const DEFAULT_SETTINGS: EnhancedCopySettings = {
-	exportAsHTML: false,
+	copyAsHTML: false,
 	applyingTo: ApplyingToView.All,
 	separateHotkey: false,
 	editing: {
@@ -115,6 +115,11 @@ export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 	profiles: [],
 };
 
+export interface AutoRules {
+	type: "path" | "tag" | "frontmatter";
+	value: string;
+}
+
 export interface GlobalSettings {
 	name?: string;
 	copyAsHTML?: boolean;
@@ -130,6 +135,11 @@ export interface GlobalSettings {
 	tabSpaceSize?: number; //only work in edit mode
 	wikiToMarkdown?: boolean;
 	applyingTo?: ApplyingToView; //only work in profiles
+	/**
+	 * Allow to automatically use this profile based on the path, tag or frontmatter
+	 */
+	autoRules?: AutoRules[]; //only work in profiles
+	
 }
 
 export interface ReplaceText {

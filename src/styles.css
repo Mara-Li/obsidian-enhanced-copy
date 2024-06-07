@@ -10,11 +10,15 @@
   flex-direction: row;
 }
 
-.enhanced-copy.setting-tab .setting-item.setting-item-heading .setting-item-name {
+.enhanced-copy.setting-tab
+  .setting-item.setting-item-heading
+  .setting-item-name {
   font-size: var(--h1-size);
 }
 
-.enhanced-copy.setting-tab .setting-item.setting-item-heading.h3 .setting-item-name {
+.enhanced-copy.setting-tab
+  .setting-item.setting-item-heading.h3
+  .setting-item-name {
   font-size: var(--h3-size);
 }
 
@@ -114,6 +118,9 @@
   border-color: var(--text-error);
 }
 
+.enhanced-copy .full-width input {
+  width: 100%;
+}
 .enhanced-copy .full-width {
   width: 100%;
 }
@@ -126,6 +133,11 @@
   display: none;
 }
 
-.enhanced-copy.setting-tab .h2 {
-  
+.enhanced-copy .no-display .setting-item-info {
+  display: none;
+}
+
+.enhanced-copy input.error {
+  border-color: var(--text-error);
+  --background-modifier-border-focus: var(--background-modifier-error);
 }

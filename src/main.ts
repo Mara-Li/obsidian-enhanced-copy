@@ -1,7 +1,7 @@
 import { EditorView } from "@codemirror/view";
 import i18next from "i18next";
 import { around } from "monkey-around";
-import { ItemView, MarkdownView, Platform, Plugin, type WorkspaceLeaf } from "obsidian";
+import { getAllTags, ItemView, MarkdownView, Platform, Plugin, type WorkspaceLeaf } from "obsidian";
 import merge from "ts-deepmerge";
 
 import { resources, translationLanguage } from "./i18n/i18next";
@@ -24,6 +24,37 @@ export default class EnhancedCopy extends Plugin {
 	settings: EnhancedCopySettings = DEFAULT_SETTINGS;
 	//eslint-disable-next-line @typescript-eslint/no-explicit-any
 	activeMonkeys: Record<string, any> = {};
+
+	/**
+	 * Get the profile based on file path, tag or frontmatter
+	 * Needs a active file to work
+	 */
+	getProfile(viewOfType?: ApplyingToView) {
+		const activeFile = this.app.workspace.getActiveFile();
+		if (!activeFile) return;
+		const path = activeFile.path;
+		const cache = this.app.metadataCache.getFileCache(activeFile);
+		const cacheFrontmatterKeys = cache?.frontmatter?.enhanced_copy;
+		const enhancedCopyFrontmatter : string[] = cacheFrontmatterKeys && typeof cacheFrontmatterKeys === "string" ? [cacheFrontmatterKeys] : cacheFrontmatterKeys;
+		const tags = cache ? getAllTags(cache) ?? [] : [];
+		const profiles = this.settings.profiles;
+		for (const profile of profiles) {
+			if (profile.autoRules) {
+				for (const rule of profile.autoRules) {
+					if (viewOfType && profile.applyingTo !== ApplyingToView.All && profile.applyingTo !== viewOfType ) continue;
+					if (rule.type === "path" && path.match(rule.value)) {
+						return profile;
+					}
+					if (rule.type === "tag" && tags.find((tag) => tag.match(rule.value))) {
+						return profile;
+					}
+					if (rule.type === "frontmatter" && enhancedCopyFrontmatter) {
+						return profile;
+					}
+				}
+			}
+		}
+	}
 
 	enhancedCopy(profile?: GlobalSettings) {
 		//get default if a modal is opened
@@ -57,6 +88,8 @@ export default class EnhancedCopy extends Plugin {
 				viewIn = ApplyingToView.Reading;
 			}
 		}
+		if (!profile) profile = this.getProfile(viewIn);
+		this.devLog("Profile: ", profile);
 		const exportAsHTML = profile
 			? profile?.copyAsHTML ?? false
 			: this.settings.reading.copyAsHTML;
@@ -188,9 +221,10 @@ export default class EnhancedCopy extends Plugin {
 					editorCallback: (editor) => {
 						let selectedText = copySelectionRange(editor, this);
 						if (selectedText && selectedText.trim().length > 0) {
+							const profile = this.getProfile(ApplyingToView.Edit) ?? this.settings.editing;
 							selectedText = convertEditMarkdown(
 								selectedText,
-								this.settings.editing,
+								profile,
 								this
 							);
 							navigator.clipboard.writeText(selectedText);
@@ -210,11 +244,12 @@ export default class EnhancedCopy extends Plugin {
 						const readingMode = view && view.getMode() !== "source";
 						if (readingMode) {
 							if (!checking) {
-								let selectedText = getSelectionAsHTML(this.settings.reading);
-								if (!this.settings.exportAsHTML) {
+								const profile = this.getProfile(ApplyingToView.Reading) ?? this.settings.reading;
+								let selectedText = getSelectionAsHTML(profile);
+								if (!this.settings.copyAsHTML) {
 									selectedText = convertMarkdown(
 										selectedText,
-										this.settings.reading,
+										profile,
 										this
 									);
 								}
@@ -254,15 +289,17 @@ export default class EnhancedCopy extends Plugin {
 								viewIn = ApplyingToView.Reading;
 							}
 							if (selectedText && selectedText.trim().length > 0) {
+								const isProfile = this.getProfile(viewIn);
+								const profile = isProfile ?? this.settings;
 								if (
-									!this.settings.exportAsHTML &&
-									(this.settings.applyingTo === ApplyingToView.All ||
-										this.settings.applyingTo === viewIn)
+									!profile.copyAsHTML &&
+									(profile.applyingTo === ApplyingToView.All ||
+										profile.applyingTo === viewIn)
 								) {
 									selectedText =
 										viewIn === ApplyingToView.Edit
-											? convertEditMarkdown(selectedText, this.settings.editing, this)
-											: convertMarkdown(selectedText, this.settings.reading, this);
+											? convertEditMarkdown(selectedText, isProfile ?? this.settings.editing, this)
+											: convertMarkdown(selectedText, isProfile ?? this.settings.reading, this);
 								}
 								navigator.clipboard.writeText(selectedText);
 							}

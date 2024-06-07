@@ -275,6 +275,59 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						this.renderSettingsPage(tab);
 					});
 			});
+
+		new Setting(this.settingsPage)
+			.setName("Auto rules")
+			.setDesc("Allow to automatically use this profile based on the path, tag or frontmatter. For frontmatter, it will be matched on the 'enhanced_copy' key. It supports regex!")
+			.addExtraButton((button) => 
+				button
+					.setIcon("plus")
+					.setTooltip("Add new rule")
+					.onClick(async () => {
+						profile.autoRules = profile.autoRules ?? [];
+						profile.autoRules.unshift({
+							type: "path",
+							value: "",
+						});
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(tab);
+					}))
+		for (const rules of profile.autoRules ?? []) {
+			new Setting(this.settingsPage)
+				.setClass("no-display")
+				.setClass("full-width")
+				.addDropdown((dropdown) => {
+					dropdown
+						.addOption("path", "Path")
+						.addOption("tag", "Tag")
+						.addOption("frontmatter", "Frontmatter")
+						.setValue(rules.type)
+						.onChange(async (value) => {
+							rules.type = value as "path" | "tag" | "frontmatter";
+							await this.plugin.saveSettings();
+						});
+				})
+				.addText((text) => {
+					text
+						.setValue(rules.value)
+						.setPlaceholder("value to be matched")
+						.onChange(async (value) => {
+							rules.value = value;
+							await this.plugin.saveSettings();
+						});
+				})
+				.addExtraButton((button) => {
+					button
+						.setIcon("trash")
+						.onClick(async () => {
+							const index = profile.autoRules?.findIndex((rule) => rule === rules);
+							if (index === undefined) return;
+							profile.autoRules?.splice(index, 1);
+							await this.plugin.saveSettings();
+							this.renderSettingsPage(tab);
+						});
+				});
+		}	
 		if (profile.applyingTo === ApplyingToView.All) {
 			this.createReadingSettings(profile, true);
 			this.createEditSettings(profile, true);
@@ -317,7 +370,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						this.settings.applyingTo = value as ApplyingToView;
 						await this.plugin.saveSettings();
 						if (this.settings.applyingTo === ApplyingToView.Edit) {
-							this.settings.exportAsHTML = false;
+							this.settings.copyAsHTML = false;
 							await this.plugin.saveSettings();
 						}
 						this.display();

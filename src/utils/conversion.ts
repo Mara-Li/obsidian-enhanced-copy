@@ -231,10 +231,10 @@ function textReplacement(markdown: string, settings: GlobalSettings) {
 	const replacement = settings.replaceText;
 	for (const replace of replacement) {
 		let pattern: string | RegExp = replace.pattern;
-		if (pattern.match(/^\/.*\/([gmiyus]+)$/)) {
-			const flags = pattern.replace(/^\/.*\/([gmiysu]+)$/, "$1");
+		if (pattern.match(/^\/.*\/([gmiyus]+)?$/)) {
+			const flags = pattern.replace(/^\/.*\/([gmiyus]+)?$/, "$1");
 			const regex = pattern.replace(/^\/(.*)\/(.*)$/, "$1");
-			pattern = new RegExp(regex, flags);
+			pattern = new RegExp(regex, flags.length > 0 ? flags : undefined);
 		}
 		markdown = markdown.replace(pattern, replace.replacement);
 	}

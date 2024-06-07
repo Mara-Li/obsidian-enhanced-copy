@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import { type App, Modal, Setting } from "obsidian";
+import { type App, Modal, Notice, Setting } from "obsidian";
 
 import {
 	CopySettingsView,
@@ -22,6 +22,19 @@ export class AllReplaceTextModal extends Modal {
 		this.replaceText = replaceText;
 	}
 
+	validateRegex(pattern: string): boolean {
+		try {
+			if (pattern.match(/^\/.*\/([gmiyus]+)?$/)) {
+				const flags = pattern.replace(/^\/.*\/([gmiyus]+)?$/, "$1");
+				const regex = pattern.replace(/^\/(.*)\/(.*)$/, "$1");
+				new RegExp(regex, flags.length > 0 ? flags : undefined);
+			}
+			return true; //valid or string
+		} catch (e) {
+			return false;
+		}
+	}
+
 	onOpen() {
 		const { contentEl } = this;
 		contentEl.empty();
@@ -34,7 +47,7 @@ export class AllReplaceTextModal extends Modal {
 					.setIcon("plus")
 					.setTooltip(i18next.t("common.add"))
 					.onClick(() => {
-						this.replaceText.push({
+						this.replaceText.unshift({
 							pattern: "",
 							replacement: "",
 						});
@@ -50,6 +63,7 @@ export class AllReplaceTextModal extends Modal {
 						.setValue(replacer.pattern)
 						.onChange(async (value) => {
 							replacer.pattern = value;
+							text.inputEl.setAttribute("data-pattern", value);
 						})
 						.inputEl.classList.add("full-width")
 				)
@@ -59,6 +73,7 @@ export class AllReplaceTextModal extends Modal {
 						.setValue(replacer.replacement)
 						.onChange(async (value) => {
 							replacer.replacement = value;
+							text.inputEl.setAttribute("data-replacement", value);
 						})
 						.inputEl.classList.add("full-width")
 				)
@@ -111,6 +126,17 @@ export class AllReplaceTextModal extends Modal {
 					.setButtonText(i18next.t("common.save"))
 					.setCta()
 					.onClick(async () => {
+						for (const replacer of this.replaceText) {
+							if (!this.validateRegex(replacer.pattern)) {
+								new Notice(`Invalid regex for ${replacer.pattern}`);
+								//search the faulty input
+								const input = contentEl.querySelector(
+									`[data-pattern="${replacer.pattern}"]`
+								);
+								if (input) input.addClass("error");
+								return;
+							}
+						}
 						this.onSubmit(this.replaceText);
 						this.close();
 					})
