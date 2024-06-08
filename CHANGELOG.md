@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.10](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.9...0.2.10) (2024-06-08)
+
+
+### Features
+
+* add a command to use the native copy of Obsidian ([58980c4](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/58980c4a3eaad94b7c7fca3c7d3252e588864c4d))
+
 ## [0.2.9](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.8...0.2.9) (2024-06-07)
 
 
