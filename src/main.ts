@@ -17,6 +17,8 @@ import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import {
 	canvasSelectionText,
 	copySelectionRange,
+	getAnchor,
+	getHead,
 	getSelectionAsHTML,
 } from "./utils/selection";
 
@@ -354,6 +356,30 @@ export default class EnhancedCopy extends Plugin {
 				this.registerEditorExtension(cutExt);
 			}
 		}
+		//file menu
+		this.registerEvent(
+			this.app.workspace.on("editor-menu", (menu, editor, view) => {
+				menu.addItem((item) => {
+					item.setTitle(i18next.t("commands.brute"));
+					item.setIcon("clipboard");
+					item.onClick(() => {
+						navigator.clipboard.writeText(copySelectionRange(editor, this));
+					});
+				});
+			}))
+		//use the native copy
+		this.addCommand({
+			id: "copy-brute",
+			name: i18next.t("commands.brute"),
+			callback: () => {
+				const editor = this.app.workspace.activeEditor?.editor;
+				if (editor) {
+					navigator.clipboard.writeText(copySelectionRange(editor, this));
+				} else {
+					navigator.clipboard.writeText(activeWindow.getSelection()?.toString() ?? "");
+				}
+			},
+		});
 	}
 	onunload() {
 		console.log(`CopyReadingInMarkdown v.${this.manifest.version} unloaded.`);

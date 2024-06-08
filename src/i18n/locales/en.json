@@ -17,6 +17,7 @@
   },
   "commands": {
     "all": "Copy selected text",
+    "brute": "Native copy",
     "editor": "Copy selected text from edit view",
     "other": "Copy selected text from opened view",
     "reading": "Copy selected text from reading view"

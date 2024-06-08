@@ -49,7 +49,7 @@ export function getSelectionAsHTML(settings: GlobalSettings): string {
  * @param {EditorPosition} anchor Original anchor from EditorSelection
  */
 
-function getHead(head: EditorPosition, anchor: EditorPosition) {
+export function getHead(head: EditorPosition, anchor: EditorPosition) {
 	if (head.line === anchor.line) {
 		if (head.ch < anchor.ch) {
 			return head;
@@ -68,7 +68,7 @@ function getHead(head: EditorPosition, anchor: EditorPosition) {
  * @param {EditorPosition} anchor Original anchor from EditorSelection
  */
 
-function getAnchor(head: EditorPosition, anchor: EditorPosition) {
+export function getAnchor(head: EditorPosition, anchor: EditorPosition) {
 	if (head.line === anchor.line) {
 		if (head.ch < anchor.ch) {
 			return anchor;
