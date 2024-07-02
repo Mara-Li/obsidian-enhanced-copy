@@ -139,7 +139,6 @@ export interface GlobalSettings {
 	 * Allow to automatically use this profile based on the path, tag or frontmatter
 	 */
 	autoRules?: AutoRules[]; //only work in profiles
-	
 }
 
 export interface ReplaceText {

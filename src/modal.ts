@@ -30,7 +30,7 @@ export class AllReplaceTextModal extends Modal {
 				new RegExp(regex, flags.length > 0 ? flags : undefined);
 			}
 			return true; //valid or string
-		} catch (e) {
+		} catch (_e) {
 			return false;
 		}
 	}

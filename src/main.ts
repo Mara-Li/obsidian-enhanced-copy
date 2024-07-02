@@ -1,7 +1,14 @@
 import { EditorView } from "@codemirror/view";
 import i18next from "i18next";
 import { around } from "monkey-around";
-import { getAllTags, ItemView, MarkdownView, Platform, Plugin, type WorkspaceLeaf } from "obsidian";
+import {
+	getAllTags,
+	ItemView,
+	MarkdownView,
+	Platform,
+	Plugin,
+	type WorkspaceLeaf,
+} from "obsidian";
 import merge from "ts-deepmerge";
 
 import { resources, translationLanguage } from "./i18n/i18next";
@@ -17,8 +24,6 @@ import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import {
 	canvasSelectionText,
 	copySelectionRange,
-	getAnchor,
-	getHead,
 	getSelectionAsHTML,
 } from "./utils/selection";
 
@@ -37,13 +42,21 @@ export default class EnhancedCopy extends Plugin {
 		const path = activeFile.path;
 		const cache = this.app.metadataCache.getFileCache(activeFile);
 		const cacheFrontmatterKeys = cache?.frontmatter?.enhanced_copy;
-		const enhancedCopyFrontmatter : string[] = cacheFrontmatterKeys && typeof cacheFrontmatterKeys === "string" ? [cacheFrontmatterKeys] : cacheFrontmatterKeys;
+		const enhancedCopyFrontmatter: string[] =
+			cacheFrontmatterKeys && typeof cacheFrontmatterKeys === "string"
+				? [cacheFrontmatterKeys]
+				: cacheFrontmatterKeys;
 		const tags = cache ? getAllTags(cache) ?? [] : [];
 		const profiles = this.settings.profiles;
 		for (const profile of profiles) {
 			if (profile.autoRules) {
 				for (const rule of profile.autoRules) {
-					if (viewOfType && profile.applyingTo !== ApplyingToView.All && profile.applyingTo !== viewOfType ) continue;
+					if (
+						viewOfType &&
+						profile.applyingTo !== ApplyingToView.All &&
+						profile.applyingTo !== viewOfType
+					)
+						continue;
 					if (rule.type === "path" && path.match(rule.value)) {
 						return profile;
 					}
@@ -223,12 +236,9 @@ export default class EnhancedCopy extends Plugin {
 					editorCallback: (editor) => {
 						let selectedText = copySelectionRange(editor, this);
 						if (selectedText && selectedText.trim().length > 0) {
-							const profile = this.getProfile(ApplyingToView.Edit) ?? this.settings.editing;
-							selectedText = convertEditMarkdown(
-								selectedText,
-								profile,
-								this
-							);
+							const profile =
+								this.getProfile(ApplyingToView.Edit) ?? this.settings.editing;
+							selectedText = convertEditMarkdown(selectedText, profile, this);
 							navigator.clipboard.writeText(selectedText);
 						}
 					},
@@ -246,14 +256,11 @@ export default class EnhancedCopy extends Plugin {
 						const readingMode = view && view.getMode() !== "source";
 						if (readingMode) {
 							if (!checking) {
-								const profile = this.getProfile(ApplyingToView.Reading) ?? this.settings.reading;
+								const profile =
+									this.getProfile(ApplyingToView.Reading) ?? this.settings.reading;
 								let selectedText = getSelectionAsHTML(profile);
 								if (!this.settings.copyAsHTML) {
-									selectedText = convertMarkdown(
-										selectedText,
-										profile,
-										this
-									);
+									selectedText = convertMarkdown(selectedText, profile, this);
 								}
 								navigator.clipboard.writeText(selectedText);
 							}
@@ -300,8 +307,16 @@ export default class EnhancedCopy extends Plugin {
 								) {
 									selectedText =
 										viewIn === ApplyingToView.Edit
-											? convertEditMarkdown(selectedText, isProfile ?? this.settings.editing, this)
-											: convertMarkdown(selectedText, isProfile ?? this.settings.reading, this);
+											? convertEditMarkdown(
+													selectedText,
+													isProfile ?? this.settings.editing,
+													this
+												)
+											: convertMarkdown(
+													selectedText,
+													isProfile ?? this.settings.reading,
+													this
+												);
 								}
 								navigator.clipboard.writeText(selectedText);
 							}
@@ -358,7 +373,7 @@ export default class EnhancedCopy extends Plugin {
 		}
 		//file menu
 		this.registerEvent(
-			this.app.workspace.on("editor-menu", (menu, editor, view) => {
+			this.app.workspace.on("editor-menu", (menu, editor, _view) => {
 				menu.addItem((item) => {
 					item.setTitle(i18next.t("commands.brute"));
 					item.setIcon("clipboard");
@@ -366,7 +381,8 @@ export default class EnhancedCopy extends Plugin {
 						navigator.clipboard.writeText(copySelectionRange(editor, this));
 					});
 				});
-			}))
+			})
+		);
 		//use the native copy
 		this.addCommand({
 			id: "copy-brute",
