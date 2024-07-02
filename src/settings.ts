@@ -1,5 +1,11 @@
 import i18next from "i18next";
-import { type App, PluginSettingTab, sanitizeHTMLToDom, setIcon, Setting } from "obsidian";
+import {
+	type App,
+	PluginSettingTab,
+	sanitizeHTMLToDom,
+	setIcon,
+	Setting,
+} from "obsidian";
 
 import {
 	ApplyingToView,
@@ -279,7 +285,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage)
 			.setName(i18next.t("auto.title"))
 			.setDesc(sanitizeHTMLToDom(i18next.t("auto.desc")))
-			.addExtraButton((button) => 
+			.addExtraButton((button) =>
 				button
 					.setIcon("plus")
 					.setTooltip("Add new rule")
@@ -291,7 +297,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						});
 						await this.plugin.saveSettings();
 						this.renderSettingsPage(tab);
-					}))
+					})
+			);
 		for (const rules of profile.autoRules ?? []) {
 			new Setting(this.settingsPage)
 				.setClass("no-display")
@@ -317,17 +324,15 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						});
 				})
 				.addExtraButton((button) => {
-					button
-						.setIcon("trash")
-						.onClick(async () => {
-							const index = profile.autoRules?.findIndex((rule) => rule === rules);
-							if (index === undefined) return;
-							profile.autoRules?.splice(index, 1);
-							await this.plugin.saveSettings();
-							this.renderSettingsPage(tab);
-						});
+					button.setIcon("trash").onClick(async () => {
+						const index = profile.autoRules?.findIndex((rule) => rule === rules);
+						if (index === undefined) return;
+						profile.autoRules?.splice(index, 1);
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(tab);
+					});
 				});
-		}	
+		}
 		if (profile.applyingTo === ApplyingToView.All) {
 			this.createReadingSettings(profile, true);
 			this.createEditSettings(profile, true);
@@ -524,9 +529,13 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					.setButtonText(i18next.t("openTextReplacer"))
 					.onClick(async () => {
 						if (!settings.replaceText) settings.replaceText = [];
-						new AllReplaceTextModal(this.app, JSON.parse(JSON.stringify(settings.replaceText)), async (result) => {
-							settings.replaceText = result;
-						}).open();
+						new AllReplaceTextModal(
+							this.app,
+							structuredClone(settings.replaceText),
+							async (result) => {
+								settings.replaceText = result;
+							}
+						).open();
 						await this.plugin.saveSettings();
 					})
 					.buttonEl.classList.add("full-width");
