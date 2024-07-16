@@ -148,3 +148,7 @@
   position: revert;
   bottom: 0;
 }
+
+.enhanced-copy input {
+  font-family: var(--font-monospace);
+}
