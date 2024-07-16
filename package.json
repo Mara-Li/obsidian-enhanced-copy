@@ -41,6 +41,6 @@
 		"predeploy": "pnpm run bump",
 		"deploy": "pnpm run export"
 	},
-	"version": "0.2.12-0",
+	"version": "0.2.12-1",
 	"pnpm": true
 }
