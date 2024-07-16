@@ -4,6 +4,7 @@ import { type App, type Editor, type EditorPosition, htmlToMarkdown } from "obsi
 import { COLLAPSE_INDICATOR, type GlobalSettings } from "../interface";
 import type EnhancedCopy from "../main";
 import { reNumerateList, replaceAllDivCalloutToBlockquote } from "./node_edit";
+import { fixMetaBindCopy } from "./pluginFix";
 
 /**
  * Get the selection of the activeWindows and transform it as HTML
@@ -31,7 +32,9 @@ export function getSelectionAsHTML(settings: GlobalSettings): string {
 		return div.innerHTML;
 	}
 	const allNoConvert = div.querySelectorAll("[data-type='html']");
-	let markdown = htmlToMarkdown(div.innerHTML.replace(COLLAPSE_INDICATOR, ""));
+	let markdown = htmlToMarkdown(
+		fixMetaBindCopy(div.innerHTML.replace(COLLAPSE_INDICATOR, ""))
+	);
 	//no converting html to markdown the div that contains a class with "no-convert"
 	for (const noConvert of allNoConvert) {
 		const converted = htmlToMarkdown(noConvert.outerHTML);

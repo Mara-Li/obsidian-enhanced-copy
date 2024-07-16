@@ -30,3 +30,18 @@ export function removeDataBasePluginRelationShip(): string {
 		return getSelection.toString();
 	}
 }
+
+/**
+ * Metabind is rendered like this, in the HTML:
+ * ```html
+ * <code class="mb-view mb-view-inline"><div class="mb-view-wrapper mb-view-text mb-view-type-math">xxx</div></code>
+ * ```
+ * This return a strange formated code block in markdown, this function fix it, with converting to <code>text</code>
+ * @param html
+ */
+export function fixMetaBindCopy(html: string) {
+	return html.replace(
+		/<code class="mb-view mb-view-inline"><div class="mb-view-wrapper mb-view-text mb-view-type-math">(.+?)<\/div><\/code>/g,
+		"<code>$1</code>"
+	);
+}
