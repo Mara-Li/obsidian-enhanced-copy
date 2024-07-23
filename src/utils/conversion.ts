@@ -7,6 +7,7 @@ import {
 	type GlobalSettings,
 } from "../interface";
 import type EnhancedCopy from "../main";
+import { convertDataviewQueries } from "./dataview";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -278,11 +279,18 @@ export function convertMarkdown(
 	);
 }
 
-export function convertEditMarkdown(
+export async function convertEditMarkdown(
 	markdown: string,
 	overrides: GlobalSettings,
-	plugin: EnhancedCopy
+	plugin: EnhancedCopy,
+	path?: string | null
 ) {
+	if (
+		path &&
+		overrides.convertDataview &&
+		plugin.app.plugins.enabledPlugins.has("dataview")
+	)
+		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
 	if (overrides.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
 		markdown = removeLinksBracketsInMarkdown(markdown, overrides);

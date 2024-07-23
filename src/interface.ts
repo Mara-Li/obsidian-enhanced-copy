@@ -126,6 +126,7 @@ export interface GlobalSettings {
 	footnotes: ConversionOfFootnotes;
 	links: ConversionOfLinks;
 	callout: CalloutKeepType;
+	convertDataview?: boolean;
 	highlight: boolean;
 	hardBreak: boolean;
 	replaceText: ReplaceText[];

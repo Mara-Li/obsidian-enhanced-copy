@@ -71,12 +71,13 @@ export default class EnhancedCopy extends Plugin {
 		}
 	}
 
-	enhancedCopy(profile?: GlobalSettings) {
+	async enhancedCopy(profile?: GlobalSettings) {
 		//get default if a modal is opened
 		if (document.querySelector(".modal-container")) {
 			return activeWindow.getSelection()?.toString() ?? "";
 		}
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		const file = this.app.workspace.getActiveFile();
 		let viewIn: ApplyingToView;
 		let selectedText: string;
 		if (activeView && activeView.getMode() !== "source") {
@@ -113,7 +114,12 @@ export default class EnhancedCopy extends Plugin {
 			if (!exportAsHTML && (applyingTo === ApplyingToView.All || applyingTo === viewIn)) {
 				selectedText =
 					viewIn === ApplyingToView.Edit
-						? convertEditMarkdown(selectedText, profile ?? this.settings.editing, this)
+						? await convertEditMarkdown(
+								selectedText,
+								profile ?? this.settings.editing,
+								this,
+								file?.path
+							)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
 			return selectedText;
@@ -123,7 +129,7 @@ export default class EnhancedCopy extends Plugin {
 		return selectedText;
 	}
 
-	overrideNativeCopy(leaf: WorkspaceLeaf) {
+	async overrideNativeCopy(leaf: WorkspaceLeaf) {
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 		if (
 			activeView &&
@@ -141,9 +147,9 @@ export default class EnhancedCopy extends Plugin {
 			return around(leaf.view, {
 				//@ts-ignore
 				handleCopy: () => {
-					return (event: ClipboardEvent) => {
+					return async (event: ClipboardEvent) => {
 						try {
-							const selectedText = this.enhancedCopy();
+							const selectedText = await this.enhancedCopy();
 							if (selectedText) {
 								event.preventDefault();
 								event.clipboardData?.setData("text/plain", selectedText);
@@ -160,14 +166,15 @@ export default class EnhancedCopy extends Plugin {
 		}
 	}
 
-	editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
-		const selectedText = this.enhancedCopy();
+	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
+		const selectedText = await this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData("text/plain", selectedText);
+		return true;
 	}
 
-	editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
-		const selectedText = this.enhancedCopy();
+	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
+		const selectedText = await this.enhancedCopy();
 		event.clipboardData?.setData("text/plain", selectedText);
 		event.preventDefault();
 		//mimic cut behavior
@@ -196,7 +203,8 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: `copy-${profile.name}-in-markdown`,
 				name: profile.name,
-				checkCallback: (checking: boolean) => {
+				//@ts-ignore
+				checkCallback: async (checking: boolean) => {
 					const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 					const readingMode = view && view.getMode() !== "source";
 					if (
@@ -205,7 +213,7 @@ export default class EnhancedCopy extends Plugin {
 						(profile.applyingTo === ApplyingToView.Edit && !readingMode)
 					) {
 						if (!checking) {
-							navigator.clipboard.writeText(this.enhancedCopy(profile));
+							navigator.clipboard.writeText(await this.enhancedCopy(profile));
 						}
 						return true;
 					}
@@ -221,8 +229,8 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: "copy-all-in-markdown",
 				name: i18next.t("commands.all"),
-				callback: () => {
-					navigator.clipboard.writeText(this.enhancedCopy());
+				callback: async () => {
+					navigator.clipboard.writeText(await this.enhancedCopy());
 				},
 			});
 		} else if (this.settings.separateHotkey) {
@@ -233,12 +241,18 @@ export default class EnhancedCopy extends Plugin {
 				this.addCommand({
 					id: "copy-editor-in-markdown",
 					name: i18next.t("commands.editor"),
-					editorCallback: (editor) => {
+					editorCallback: async (editor) => {
+						const file = this.app.workspace.getActiveFile();
 						let selectedText = copySelectionRange(editor, this);
 						if (selectedText && selectedText.trim().length > 0) {
 							const profile =
 								this.getProfile(ApplyingToView.Edit) ?? this.settings.editing;
-							selectedText = convertEditMarkdown(selectedText, profile, this);
+							selectedText = await convertEditMarkdown(
+								selectedText,
+								profile,
+								this,
+								file?.path
+							);
 							navigator.clipboard.writeText(selectedText);
 						}
 					},
@@ -274,7 +288,8 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: "copy-other-in-markdown",
 				name: i18next.t("commands.other"),
-				checkCallback: (checking: boolean) => {
+				//@ts-ignore
+				checkCallback: async (checking: boolean) => {
 					//everything not markdown view
 					const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
 					this.devLog(!markdownView, checking);
@@ -307,10 +322,11 @@ export default class EnhancedCopy extends Plugin {
 								) {
 									selectedText =
 										viewIn === ApplyingToView.Edit
-											? convertEditMarkdown(
+											? await convertEditMarkdown(
 													selectedText,
 													isProfile ?? this.settings.editing,
-													this
+													this,
+													this.app.workspace.getActiveFile()?.path
 												)
 											: convertMarkdown(
 													selectedText,
@@ -361,9 +377,11 @@ export default class EnhancedCopy extends Plugin {
 			if (this.settings.editing.overrideNativeCopy) {
 				//register for editor
 				const copyExt = EditorView.domEventHandlers({
+					//@ts-ignore
 					copy: this.editorCopyHandler.bind(this),
 				});
 				const cutExt = EditorView.domEventHandlers({
+					//@ts-ignore
 					cut: this.editorCutHandler.bind(this),
 				});
 

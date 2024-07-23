@@ -41,7 +41,7 @@ export function removeDataBasePluginRelationShip(): string {
  */
 export function fixMetaBindCopy(html: string) {
 	return html.replace(
-		/<code class="mb-view mb-view-inline"><div class="mb-view-wrapper mb-view-text mb-view-type-math">(.+?)<\/div><\/code>/g,
+		/<code class="mb-view mb-view-inline"><div class="mb-view-wrapper mb-view-text mb-view-type-math">(.+?)<\/div><\/code>/gi,
 		"<code>$1</code>"
 	);
 }

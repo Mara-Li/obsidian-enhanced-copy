@@ -16,7 +16,10 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.7.3",
 		"@codemirror/view": "^6.21.4",
+		"@obsidian_publisher/obsidian-dataview": "^0.5.66",
+		"@types/electron": "npm:@ophidian/electron-types@^24.3.1",
 		"@types/node": "^20.4.8",
+		"@types/obsidian-typings": "npm:obsidian-typings@^1.1.6",
 		"commander": "^11.0.0",
 		"cross-env": "^7.0.3",
 		"dedent": "^1.5.1",

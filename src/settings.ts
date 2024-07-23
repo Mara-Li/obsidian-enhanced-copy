@@ -104,6 +104,19 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	createEditSettings(settings: GlobalSettings, profile?: boolean) {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
 
+		if (this.app.plugins.enabledPlugins.has("dataview")) {
+			new Setting(this.settingsPage)
+				.setName(i18next.t("convertDataview.title"))
+				.setDesc(i18next.t("convertDataview.desc"))
+				.addToggle((toggle) => {
+					toggle.setValue(settings.convertDataview ?? false).onChange(async (value) => {
+						settings.convertDataview = value;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(settings.name ?? "edit");
+					});
+				});
+		}
+
 		new Setting(this.settingsPage)
 			.setName(i18next.t("wikiToMarkdown.title"))
 			.setDesc(i18next.t("wikiToMarkdown.desc"))
