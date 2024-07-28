@@ -1,3 +1,8 @@
+/**
+ * @credit oleeskild
+ * @link https://github.com/oleeskild/obsidian-digital-garden/blob/main/src/compiler/DataviewCompiler.ts
+ */
+
 import { Component, htmlToMarkdown } from "obsidian";
 import type { GlobalSettings } from "../interface";
 import {
@@ -114,11 +119,16 @@ class DataviewCompiler {
 	 * @link https://blacksmithgu.github.io/obsidian-dataview/api/intro/
 	 */
 	async dataviewJS(query: string) {
+		const { isInsideCallout, finalQuery } = this.sanitizeQuery(query);
 		const div = createEl("div");
 		const component = new Component();
-		await this.dvApi.executeJs(query, div, component, this.path);
+		await this.dvApi.executeJs(finalQuery, div, component, this.path);
 		component.load();
-		return this.removeDataviewQueries(div.innerHTML);
+		const markdown = this.removeDataviewQueries(div.innerHTML);
+		if (isInsideCallout) {
+			return this.surroundWithCalloutBlock(markdown);
+		}
+		return markdown;
 	}
 	/**
 	 * Inline DQL Dataview - The SQL-like Dataview Query Language in inline
