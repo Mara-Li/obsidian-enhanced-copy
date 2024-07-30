@@ -34,8 +34,26 @@
     "to": "To"
   },
   "convertDataview": {
-    "desc": "Allows you to convert dataview queries (inline DQL, Djs...) to markdown. \nDoes not always work, use with moderation.",
-    "title": "Convert Dataview queries to markdown"
+    "block": "Code block",
+    "djs": {
+      "block": {
+      },
+      "inline": {
+      },
+      "title": "Dataview JS"
+    },
+    "dql": {
+      "block": {
+      },
+      "inline": {
+      },
+      "title": "Dataview Query Language"
+    },
+    "global": {
+      "desc": "Allows you to convert dataview queries (inline DQL, Djs...) to markdown. \nDoes not always work, use with moderation.",
+      "title": "Convert Dataview queries to markdown"
+    },
+    "inline": "Inline"
   },
   "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
   "copyLinksAsText": {
@@ -45,7 +63,6 @@
     "remove": "Remove markup for all links",
     "title": "Links format"
   },
-  "dataview": "Failed to convert Dataview query. \nPlease update the Dataview module to the latest version.",
   "debug": {
     "desc": "Show debug log in console",
     "title": "Debug information"

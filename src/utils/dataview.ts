@@ -179,7 +179,8 @@ export async function convertDataviewQueries(
 	let replacedText = text;
 	const dataViewRegex = /```dataview\s(.+?)```/gms;
 	const isDataviewEnabled = app.plugins.plugins.dataview;
-	if (!isDataviewEnabled || !isPluginEnabled(app)) return replacedText;
+	if (!isDataviewEnabled || !isPluginEnabled(app) || !settings.convertDataview?.enable)
+		return replacedText;
 	const dvApi = getAPI(app);
 	if (!dvApi || dvApi === undefined) return replacedText;
 	const matches = text.matchAll(dataViewRegex);
@@ -192,49 +193,59 @@ export async function convertDataviewQueries(
 	/**
 	 * DQL Dataview - The SQL-like Dataview Query Language
 	 */
-	for (const queryBlock of matches) {
-		try {
-			const block = queryBlock[0];
-			const markdown = await compiler.dataviewDQL(queryBlock[1]);
-			replacedText = replacedText.replace(block, markdown);
-		} catch (e) {
-			console.error(e);
-			return queryBlock[0];
+	if (settings.convertDataview?.dql?.block) {
+		for (const queryBlock of matches) {
+			try {
+				const block = queryBlock[0];
+				const markdown = await compiler.dataviewDQL(queryBlock[1]);
+				replacedText = replacedText.replace(block, markdown);
+			} catch (e) {
+				console.error(e);
+				return queryBlock[0];
+			}
 		}
 	}
-
-	for (const queryBlock of dataviewJsMatches) {
-		try {
-			const block = queryBlock[0];
-			const markdown = await compiler.dataviewJS(queryBlock[1]);
-			replacedText = replacedText.replace(block, markdown);
-		} catch (e) {
-			console.error(e);
-			return queryBlock[0];
+	/**
+	 * DataviewJS - JavaScript API for Dataview
+	 */
+	if (settings.convertDataview?.djs?.block) {
+		for (const queryBlock of dataviewJsMatches) {
+			try {
+				const block = queryBlock[0];
+				const markdown = await compiler.dataviewJS(queryBlock[1]);
+				replacedText = replacedText.replace(block, markdown);
+			} catch (e) {
+				console.error(e);
+				return queryBlock[0];
+			}
 		}
 	}
 
 	//Inline queries
-	for (const inlineQuery of inlineMatches) {
-		try {
-			const code = inlineQuery[0];
-			const query = inlineQuery[1].trim();
-			const markdown = await compiler.inlineDQLDataview(query);
-			replacedText = replacedText.replace(code, markdown);
-		} catch (e) {
-			console.error(e);
-			return inlineQuery[0];
+	if (settings.convertDataview?.dql?.inline) {
+		for (const inlineQuery of inlineMatches) {
+			try {
+				const code = inlineQuery[0];
+				const query = inlineQuery[1].trim();
+				const markdown = await compiler.inlineDQLDataview(query);
+				replacedText = replacedText.replace(code, markdown);
+			} catch (e) {
+				console.error(e);
+				return inlineQuery[0];
+			}
 		}
 	}
-
-	for (const inlineJsQuery of inlineJsMatches) {
-		try {
-			const code = inlineJsQuery[0];
-			const markdown = await compiler.inlineDataviewJS(inlineJsQuery[1].trim());
-			replacedText = replacedText.replace(code, markdown);
-		} catch (e) {
-			console.error(e);
-			return inlineJsQuery[0];
+	//Inline JS queries
+	if (settings.convertDataview?.djs?.inline) {
+		for (const inlineJsQuery of inlineJsMatches) {
+			try {
+				const code = inlineJsQuery[0];
+				const markdown = await compiler.inlineDataviewJS(inlineJsQuery[1].trim());
+				replacedText = replacedText.replace(code, markdown);
+			} catch (e) {
+				console.error(e);
+				return inlineJsQuery[0];
+			}
 		}
 	}
 	return replacedText;

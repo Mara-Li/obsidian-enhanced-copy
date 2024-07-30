@@ -34,8 +34,26 @@
     "to": "Vers"
   },
   "convertDataview": {
-    "desc": "Permet de convertir les queries dataview (inline DQL, Djs...) en markdown. Ne fonctionne pas toujours, à utiliser avec modération.",
-    "title": "Convertir les queries Dataview en markdown"
+    "block": "Bloc de code",
+    "djs": {
+      "block": {
+      },
+      "inline": {
+      },
+      "title": "Dataview JS"
+    },
+    "dql": {
+      "block": {
+      },
+      "inline": {
+      },
+      "title": "Dataview Query Language"
+    },
+    "global": {
+      "desc": "Permet de convertir les queries dataview (inline DQL, Djs...) en markdown. Ne fonctionne pas toujours, à utiliser avec modération.",
+      "title": "Convertir les queries Dataview en markdown"
+    },
+    "inline": "Inline"
   },
   "copyAsHTML": "Copier en HTML au lieu de Markdown. Certaines options peuvent ne pas être disponibles.",
   "copyLinksAsText": {
@@ -45,7 +63,6 @@
     "remove": "Supprimer les balises pour tous les liens",
     "title": "Format des liens"
   },
-  "dataview": "Impossible de convertir la requête Dataview. Veuillez mettre à jour le module Dataview à la dernière version.",
   "debug": {
     "desc": "Affiche le journal de débogage dans la console",
     "title": "Informations de débogage"

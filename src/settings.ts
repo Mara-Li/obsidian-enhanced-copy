@@ -9,6 +9,8 @@ import {
 
 import {
 	ApplyingToView,
+	DEFAULT_DATAVIEW_SETTINGS_DISABLED,
+	DEFAULT_DATAVIEW_SETTINGS_ENABLED,
 	type CalloutKeepType,
 	type ConversionOfFootnotes,
 	type ConversionOfLinks,
@@ -105,16 +107,89 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
 
 		if (this.app.plugins.enabledPlugins.has("dataview")) {
+			if (!settings.convertDataview)
+				settings.convertDataview = structuredClone(DEFAULT_DATAVIEW_SETTINGS_DISABLED);
+			//@ts-ignore
+			else if (settings.convertDataview === true)
+				settings.convertDataview = structuredClone(DEFAULT_DATAVIEW_SETTINGS_ENABLED);
+
 			new Setting(this.settingsPage)
-				.setName(i18next.t("convertDataview.title"))
-				.setDesc(i18next.t("convertDataview.desc"))
+				.setName(i18next.t("convertDataview.global.title"))
+				.setDesc(i18next.t("convertDataview.global.desc"))
 				.addToggle((toggle) => {
-					toggle.setValue(settings.convertDataview ?? false).onChange(async (value) => {
-						settings.convertDataview = value;
-						await this.plugin.saveSettings();
-						this.renderSettingsPage(settings.name ?? "edit");
-					});
+					toggle
+						.setValue(settings.convertDataview?.enable ?? false)
+						.onChange(async (value) => {
+							if (value)
+								settings.convertDataview = structuredClone(
+									DEFAULT_DATAVIEW_SETTINGS_ENABLED
+								);
+							else
+								settings.convertDataview = structuredClone(
+									DEFAULT_DATAVIEW_SETTINGS_DISABLED
+								);
+							await this.plugin.saveSettings();
+							this.renderSettingsPage(settings.name ?? "edit");
+						});
 				});
+
+			if (settings.convertDataview?.enable) {
+				new Setting(this.settingsPage)
+					.setHeading()
+					.setClass("dataview")
+					.setName(i18next.t("convertDataview.dql.title"));
+				new Setting(this.settingsPage)
+					.setName(i18next.t("convertDataview.block"))
+					.setClass("dataview")
+					.addToggle((toggle) => {
+						toggle
+							.setValue(settings.convertDataview?.djs.block ?? false)
+							.onChange(async (value) => {
+								settings.convertDataview!.djs.block = value;
+								await this.plugin.saveSettings();
+							});
+					});
+				new Setting(this.settingsPage)
+					.setName(i18next.t("convertDataview.inline"))
+					.setClass("dataview")
+					.addToggle((toggle) => {
+						toggle
+							.setValue(settings.convertDataview?.djs.inline ?? false)
+							.onChange(async (value) => {
+								settings.convertDataview!.djs.inline = value;
+								await this.plugin.saveSettings();
+								this.renderSettingsPage(settings.name ?? "edit");
+							});
+					});
+				new Setting(this.settingsPage)
+					.setHeading()
+					.setClass("dataview")
+					.setName(i18next.t("convertDataview.djs.title"));
+				new Setting(this.settingsPage)
+					.setName(i18next.t("convertDataview.block"))
+					.setClass("dataview")
+					.addToggle((toggle) => {
+						toggle
+							.setValue(settings.convertDataview?.dql.block ?? false)
+							.onChange(async (value) => {
+								settings.convertDataview!.dql.block = value;
+								await this.plugin.saveSettings();
+							});
+					});
+
+				new Setting(this.settingsPage)
+					.setName(i18next.t("convertDataview.inline"))
+					.setClass("dataview")
+					.addToggle((toggle) => {
+						toggle
+							.setValue(settings.convertDataview?.dql.inline ?? false)
+							.onChange(async (value) => {
+								settings.convertDataview!.dql.inline = value;
+								await this.plugin.saveSettings();
+								this.renderSettingsPage(settings.name ?? "edit");
+							});
+					});
+			}
 		}
 
 		new Setting(this.settingsPage)

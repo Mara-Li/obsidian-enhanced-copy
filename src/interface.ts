@@ -120,13 +120,49 @@ export interface AutoRules {
 	value: string;
 }
 
+export interface ConvertDataview {
+	enable: boolean;
+	djs: {
+		inline: boolean;
+		block: boolean;
+	};
+	dql: {
+		inline: boolean;
+		block: boolean;
+	};
+}
+
+export const DEFAULT_DATAVIEW_SETTINGS_DISABLED: ConvertDataview = {
+	enable: false,
+	djs: {
+		inline: false,
+		block: false,
+	},
+	dql: {
+		inline: false,
+		block: false,
+	},
+};
+
+export const DEFAULT_DATAVIEW_SETTINGS_ENABLED: ConvertDataview = {
+	enable: true,
+	djs: {
+		inline: true,
+		block: true,
+	},
+	dql: {
+		inline: true,
+		block: true,
+	},
+};
+
 export interface GlobalSettings {
 	name?: string;
 	copyAsHTML?: boolean;
 	footnotes: ConversionOfFootnotes;
 	links: ConversionOfLinks;
 	callout: CalloutKeepType;
-	convertDataview?: boolean;
+	convertDataview?: ConvertDataview;
 	highlight: boolean;
 	hardBreak: boolean;
 	replaceText: ReplaceText[];
