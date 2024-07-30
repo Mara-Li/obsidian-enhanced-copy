@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.12-4](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.12-3...0.2.12-4) (2024-07-30)
+
+
+### Features
+
+* better option for DJS convertion (allow to choose which one to export, like inlineDQL, inlineDJS...) ([e3b4ab5](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/e3b4ab5aa6cca09382a727a0f4edd57ee2260e6f))
+
 ## [0.2.12-3](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.12-2...0.2.12-3) (2024-07-28)
 
 
