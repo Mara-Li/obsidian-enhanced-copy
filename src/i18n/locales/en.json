@@ -1,7 +1,12 @@
 {
   "auto": {
+    "EQUAL": "EQUAL TO",
+    "and": "",
     "desc": "Allow to automatically use this profile based on the path, tag or properties.<br/>For properties, it will be matched on the <code>enhanced_copy</code> key.<br/>It also supports regex (without the need to enclose them in <code>/</code>)!",
     "frontmatter": "Properties",
+    "is": "",
+    "not": "NOT EQUAL TO",
+    "or": "OR",
     "path": "Path",
     "placeholder": "Value to match",
     "tag": "Tags",

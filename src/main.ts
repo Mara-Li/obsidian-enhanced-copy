@@ -14,6 +14,7 @@ import merge from "ts-deepmerge";
 import { resources, translationLanguage } from "./i18n/i18next";
 import {
 	ApplyingToView,
+	type AutoRules,
 	DEFAULT_SETTINGS,
 	type EnhancedCopySettings,
 	type GlobalSettings,
@@ -32,6 +33,19 @@ export default class EnhancedCopy extends Plugin {
 	//eslint-disable-next-line @typescript-eslint/no-explicit-any
 	activeMonkeys: Record<string, any> = {};
 
+	checkByRules(rule: AutoRules, path: string, tags: string[], frontmatter?: string[]) {
+		if (rule.type === "path" && path.match(rule.value)) {
+			return true;
+		}
+		if (rule.type === "tag" && tags.find((tag) => tag.match(rule.value))) {
+			return true;
+		}
+		if (rule.type === "frontmatter" && frontmatter?.find((fm) => fm.match(rule.value))) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Get the profile based on file path, tag or frontmatter
 	 * Needs a active file to work
@@ -41,31 +55,32 @@ export default class EnhancedCopy extends Plugin {
 		if (!activeFile) return;
 		const path = activeFile.path;
 		const cache = this.app.metadataCache.getFileCache(activeFile);
-		const cacheFrontmatterKeys = cache?.frontmatter?.enhanced_copy;
-		const enhancedCopyFrontmatter: string[] =
+		const cacheFrontmatterKeys = cache?.frontmatter?.enhanced_copy ?? undefined;
+		const enhancedCopyFrontmatter: string[] | undefined =
 			cacheFrontmatterKeys && typeof cacheFrontmatterKeys === "string"
 				? [cacheFrontmatterKeys]
 				: cacheFrontmatterKeys;
 		const tags = cache ? getAllTags(cache) ?? [] : [];
 		const profiles = this.settings.profiles;
+
 		for (const profile of profiles) {
+			if (
+				viewOfType &&
+				profile.applyingTo !== ApplyingToView.All &&
+				profile.applyingTo !== viewOfType
+			)
+				continue;
 			if (profile.autoRules) {
+				//search if [NOT] path, tag or frontmatter is in the profile and check if it matches
+				const matchNote = profile.autoRules.find(
+					(rule) =>
+						rule.not && this.checkByRules(rule, path, tags, enhancedCopyFrontmatter)
+				);
+				if (matchNote) continue;
 				for (const rule of profile.autoRules) {
-					if (
-						viewOfType &&
-						profile.applyingTo !== ApplyingToView.All &&
-						profile.applyingTo !== viewOfType
-					)
-						continue;
-					if (rule.type === "path" && path.match(rule.value)) {
+					if (rule.not) continue;
+					if (this.checkByRules(rule, path, tags, enhancedCopyFrontmatter))
 						return profile;
-					}
-					if (rule.type === "tag" && tags.find((tag) => tag.match(rule.value))) {
-						return profile;
-					}
-					if (rule.type === "frontmatter" && enhancedCopyFrontmatter) {
-						return profile;
-					}
 				}
 			}
 		}

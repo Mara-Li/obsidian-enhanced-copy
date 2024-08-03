@@ -118,6 +118,7 @@ export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 export interface AutoRules {
 	type: "path" | "tag" | "frontmatter";
 	value: string;
+	not?: boolean;
 }
 
 export interface ConvertDataview {

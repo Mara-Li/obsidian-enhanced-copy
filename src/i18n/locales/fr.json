@@ -1,7 +1,12 @@
 {
   "auto": {
+    "EQUAL": "ÉGAL À",
+    "and": "ET",
     "desc": "Permet d'utiliser automatiquement ce profil en se basant sur le chemin, un tag ou les propriétés.<br/>Pour les propriétés, la valeur sera sélectionnée à partir de la clé <code>enhanced_copy</code>.<br/>Les regex sont aussi supportés (sans avoir besoin de les mettre entre <code>/</code>) !",
     "frontmatter": "Propriétés",
+    "is": "Activer uniquement SI VALIDE la condition",
+    "not": "DIFFÉRENT DE",
+    "or": "OU",
     "path": "Chemin",
     "placeholder": "Valeur à trouver",
     "tag": "Tags",

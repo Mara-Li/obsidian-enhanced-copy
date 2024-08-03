@@ -389,6 +389,15 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			);
 		for (const rules of profile.autoRules ?? []) {
 			new Setting(this.settingsPage)
+				.addDropdown((dp) => {
+					dp.addOption("not", i18next.t("auto.not"))
+						.addOption("equal", i18next.t("auto.EQUAL"))
+						.setValue(!rules.not ? "equal" : "not")
+						.onChange(async (value) => {
+							rules.not = value === "not";
+							await this.plugin.saveSettings();
+						});
+				})
 				.setClass("no-display")
 				.setClass("full-width")
 				.addDropdown((dropdown) => {
@@ -416,6 +425,30 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						const index = profile.autoRules?.findIndex((rule) => rule === rules);
 						if (index === undefined) return;
 						profile.autoRules?.splice(index, 1);
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(tab);
+					});
+				})
+				.addExtraButton((button) => {
+					button.setIcon("chevron-up").onClick(async () => {
+						const index = profile.autoRules?.findIndex((rule) => rule === rules);
+						if (index === undefined || index <= 0) return;
+						profile.autoRules?.splice(index, 1);
+						profile.autoRules?.splice(index - 1, 0, rules);
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(tab);
+					});
+				})
+				.addExtraButton((button) => {
+					button.setIcon("chevron-down").onClick(async () => {
+						const index = profile.autoRules?.findIndex((rule) => rule === rules);
+						if (
+							index === undefined ||
+							(profile.autoRules && index >= profile.autoRules.length - 1)
+						)
+							return;
+						profile.autoRules?.splice(index, 1);
+						profile.autoRules?.splice(index + 1, 0, rules);
 						await this.plugin.saveSettings();
 						this.renderSettingsPage(tab);
 					});
