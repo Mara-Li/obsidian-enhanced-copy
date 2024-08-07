@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.13-2](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.13-1...0.2.13-2) (2024-08-07)
+
+
+### Bug Fixes
+
+* **metabind:** another fix for metabind cursed html ([d683e18](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/d683e18ac3e6b9d452a665baebbc0bfd1a1f82f7))
+
 ## [0.2.13-1](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.13-0...0.2.13-1) (2024-08-07)
 
 
