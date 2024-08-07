@@ -45,6 +45,10 @@ export function fixMetaBindCopy(html: string) {
 			/<code class="mb-view mb-view-inline"><div class="mb-view-wrapper mb-view-text mb-view-type-math">(.*?)<\/div><\/code>/gim,
 			"$1"
 		)
+		.replace(
+			/<div class="block-language-meta-bind-embed-internal-1"><div class="block-language-meta-bind-js-view mb-view"><div class="mb-view-wrapper"><p dir="auto">(.*)<\/p>/gim,
+			"$1"
+		)
 		.replace(/<pre class="frontmatter language-yaml cm-s-obsidian .*"/gim, "")
 		.replace(/<div class="block-language-meta-bind-embed-internal-1">(.*)/gim, "")
 		.replace(/<span class="cm-atom">.*<\/span><span class="cm-meta">(.*)/gim, "")
