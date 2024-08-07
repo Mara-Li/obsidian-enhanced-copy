@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.13-1](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.13-0...0.2.13-1) (2024-08-07)
+
+
+### Bug Fixes
+
+* crash onunload with activemonkey ([f4361c9](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/f4361c95e2683f84a5e6271811d999ff101fa41e))
+* in some case, the language of moment can be changed, breaking the translation ([b33fc94](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/b33fc942aa06f743354733f41d6923e4ed88596d))
+* **metabind:** fix code format ([dc4c018](https://github.com/Lisandra-dev/copy-reading-in-markdown/commit/dc4c01819f467d373c1e2824a0fdd7246759e9ff))
+
 ## [0.2.13-0](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.12...0.2.13-0) (2024-08-03)
 
 
