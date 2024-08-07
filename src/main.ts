@@ -430,10 +430,11 @@ export default class EnhancedCopy extends Plugin {
 			},
 		});
 	}
-	onunload() {
+	async onunload() {
 		console.log(`CopyReadingInMarkdown v.${this.manifest.version} unloaded.`);
 		for (const monkey of Object.values(this.activeMonkeys)) {
-			monkey();
+			const actived = await monkey.remove;
+			if (actived) await monkey.remove();
 		}
 	}
 	async loadSettings() {
