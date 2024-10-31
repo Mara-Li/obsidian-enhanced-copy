@@ -285,6 +285,7 @@ export async function convertEditMarkdown(
 	plugin: EnhancedCopy,
 	path?: string | null
 ) {
+	markdown = textReplacement(markdown, overrides);
 	if (
 		path &&
 		overrides.convertDataview &&
@@ -299,6 +300,5 @@ export async function convertEditMarkdown(
 	markdown = removeMarkdownFootNotes(markdown, overrides);
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
-	markdown = hardBreak(markdown, overrides, plugin);
-	return textReplacement(markdown, overrides);
+	return hardBreak(markdown, overrides, plugin);
 }
