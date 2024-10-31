@@ -51,7 +51,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		},
 	];
 
-	createReadingSettings(settings: GlobalSettings, profile?: boolean) {
+	createReadingSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
 		new Setting(this.settingsPage).setName(i18next.t("reading.desc")).setHeading();
 		new Setting(this.settingsPage)
 			.setName(i18next.t("copyAsHTML"))
@@ -100,10 +100,11 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 		if (!profile) this.overrideSetting(settings);
-		this.regexReplacementButton(settings);
+		if (!noRegex)
+			this.regexReplacementButton(settings);
 	}
 
-	createEditSettings(settings: GlobalSettings, profile?: boolean) {
+	createEditSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
 
 		if (this.app.plugins.enabledPlugins.has("dataview")) {
@@ -255,7 +256,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 
 		this.hardBreak(settings);
 		if (!profile) this.overrideSetting(settings);
-		this.regexReplacementButton(settings);
+		if (!noRegex)
+			this.regexReplacementButton(settings);
 	}
 
 	constructor(app: App, plugin: EnhancedCopy) {
@@ -343,7 +345,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						this.settings.profiles.splice(index, 1);
 						//remove from tabs
 						this.tab = this.tab.filter((tab) => tab.id !== profile.name);
-						this.plugin.saveSettings();
+						await this.plugin.saveSettings();
 						this.display();
 						this.renderGlobal();
 					})
@@ -455,8 +457,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 		if (profile.applyingTo === ApplyingToView.All) {
-			this.createReadingSettings(profile, true);
-			this.createEditSettings(profile, true);
+			this.createReadingSettings(profile, true, true);
+			this.createEditSettings(profile, true, true);
+			this.regexReplacementButton(profile);
 		} else if (profile.applyingTo === ApplyingToView.Reading) {
 			this.createReadingSettings(profile, true);
 		} else if (profile.applyingTo === ApplyingToView.Edit) {
