@@ -10,7 +10,7 @@ import {
 	isPluginEnabled,
 	type DataviewApi,
 	type Literal,
-} from "@obsidian_publisher/obsidian-dataview";
+} from "@enveloppe/obsidian-dataview";
 import type EnhancedCopy from "../main";
 
 class DataviewCompiler {
