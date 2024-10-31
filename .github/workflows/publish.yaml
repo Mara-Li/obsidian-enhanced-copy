@@ -23,7 +23,7 @@ jobs:
     uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
         PLUGIN_NAME: "enhanced-copy"
-        CACHE: pnpm
+        CACHE: bun
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   bump-version:
@@ -32,6 +32,7 @@ jobs:
     with:
         PLUGIN_NAME: "enhanced-copy"
         BETA: ${{ inputs.beta }}
+        CACHE: bun
     secrets: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
