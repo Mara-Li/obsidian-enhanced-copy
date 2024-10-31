@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.13](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.13-2...0.2.13) (2024-10-31)
+
+
+### Bug Fixes
+
+* **build:** [@obsidian](https://github.com/obsidian)_publisher was renamed to [@enveloppe](https://github.com/enveloppe) ([f0abfc8](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/f0abfc8baa4b214abb15df7f21a330c3ab93c7e9))
+* **regex:** regex-replace should follow the same order in edit than reading ([b9eb20d](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/b9eb20d69380f6cead764b0eb974b1acf7fd620a))
+* **settings:** duplicate regex when using on "all" (edit+read) ([a3542c7](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/a3542c7a234be55850d916c075d486c2f82e55cf))
+
 ## [0.2.12](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.12-4...0.2.12) (2024-07-30)
 
 ## [0.2.11](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.10...0.2.11) (2024-07-02)

@@ -45,6 +45,6 @@
 		"deploy": "pnpm run export"
 	},
 	"private": true,
-	"version": "0.2.13-2",
+	"version": "0.2.13",
 	"pnpm": true
 }
