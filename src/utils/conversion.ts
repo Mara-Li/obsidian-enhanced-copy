@@ -157,6 +157,7 @@ function removeHighlightMark(markdown: string, settings: GlobalSettings): string
  * `line1\nline2` -> `line1  \nline2  \n`
  * @param markdown {string} Markdown to convert
  * @param settings {EnhancedCopySettings} Settings of the plugin
+ * @param plugin
  * @returns {string} Markdown with hard breaks added if needed
  */
 function hardBreak(
@@ -236,8 +237,8 @@ function textReplacement(markdown: string, settings: GlobalSettings) {
 			const flags = pattern.replace(/^\/.*\/([gmiyus]+)?$/, "$1");
 			const regex = pattern.replace(/^\/(.*)\/(.*)$/, "$1");
 			pattern = new RegExp(regex, flags.length > 0 ? flags : undefined);
-		}
-		markdown = markdown.replace(pattern, replace.replacement);
+			markdown = markdown.replace(pattern, replace.replacement);
+		} else markdown = markdown.replaceAll(pattern, replace.replacement);
 	}
 	return markdown;
 }
@@ -245,8 +246,8 @@ function textReplacement(markdown: string, settings: GlobalSettings) {
 /**
  * Main function of the plugin, will convert the markdown depending of the settings
  * @param markdown {string} Markdown to convert
- * @param settings {EnhancedCopySettings} Settings of the plugin
  * @param overrides
+ * @param plugin
  * @returns {string} converted markdown
  */
 export function convertMarkdown(
