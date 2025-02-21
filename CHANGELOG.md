@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.14](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.13...0.2.14) (2025-02-21)
+
+
+### Bug Fixes
+
+* **textReplacement:** replace string should be "replaceAll" instead of first replace ([7dcd3ce](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/7dcd3cee0e8157bfcd0c728bfd2206931a57c7be)), closes [#4](https://github.com/Mara-Li/obsidian-enhanced-copy/issues/4)
+
 ## [0.2.13](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.13-2...0.2.13) (2024-10-31)
 
 
