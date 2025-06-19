@@ -14,7 +14,7 @@
 	},
 	"description": "Copy a selection in reading view while keeping the markdown formatting",
 	"devDependencies": {
-		"@biomejs/biome": "1.7.3",
+		"@biomejs/biome": "^2.0.0-beta.6",
 		"@codemirror/view": "^6.21.4",
 		"@enveloppe/obsidian-dataview": "^0.5.66",
 		"@types/electron": "npm:@ophidian/electron-types@^24.3.1",
