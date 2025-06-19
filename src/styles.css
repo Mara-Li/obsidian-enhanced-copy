@@ -1,164 +1,160 @@
 .setting-item.enhanced-copy-dp select.dropdown {
-  width: 100%;
-  height: auto;
-  white-space: break-spaces;
-  padding: 1em;
+	width: 100%;
+	height: auto;
+	white-space: break-spaces;
+	padding: 1em;
 }
 
 .enhanced-copy.setting-tab .settings-tab-bar {
-  display: flex;
-  flex-direction: row;
+	display: flex;
+	flex-direction: row;
 }
 
-.enhanced-copy.setting-tab
-  .setting-item.setting-item-heading
-  .setting-item-name {
-  font-size: var(--h1-size);
+.enhanced-copy.setting-tab .setting-item.setting-item-heading .setting-item-name {
+	font-size: var(--h1-size);
 }
 
-.enhanced-copy.setting-tab
-  .setting-item.setting-item-heading.h3
-  .setting-item-name {
-  font-size: var(--h3-size);
+.enhanced-copy.setting-tab .setting-item.setting-item-heading.h3 .setting-item-name {
+	font-size: var(--h3-size);
 }
 
 .enhanced-copy.setting-tab .settings-tab {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--size-4-2);
-  padding: 10px;
-  border: 1px solid var(--background-modifier-border);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: 10px;
+	border: 1px solid var(--background-modifier-border);
 }
 
 .enhanced-copy.setting-tab .settings-tab-active {
-  background-color: var(--color-accent);
-  color: var(--text-on-accent);
+	background-color: var(--color-accent);
+	color: var(--text-on-accent);
 }
 
 .enhanced-copy.setting-tab .tabName {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .enhanced-copy.setting-tab .settings-tab-icon {
-  display: flex;
+	display: flex;
 }
 
 @media screen and (max-width: 600px) {
-  .enhanced-copy.setting-tab .settings-tab-bar,
-  .enhanced-copy.setting-tab .setting-item > .setting-item-control {
-    flex-direction: column;
-    width: 100%;
-  }
+	.enhanced-copy.setting-tab .settings-tab-bar,
+	.enhanced-copy.setting-tab .setting-item > .setting-item-control {
+		flex-direction: column;
+		width: 100%;
+	}
 
-  .enhanced-copy.setting-tab .settings-tab {
-    border-bottom: 1px solid var(--background-modifier-border) !important;
-    border-radius: 5px !important;
-    margin-bottom: 5px;
-  }
+	.enhanced-copy.setting-tab .settings-tab {
+		border-bottom: 1px solid var(--background-modifier-border) !important;
+		border-radius: 5px !important;
+		margin-bottom: 5px;
+	}
 
-  .enhanced-copy.setting-tab .settings-tab-bar {
-    border-bottom: transparent !important;
-  }
+	.enhanced-copy.setting-tab .settings-tab-bar {
+		border-bottom: transparent !important;
+	}
 }
 
 .enhanced-copy.setting-tab .settings-tab {
-  padding: 10px;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 5px 5px 0 0;
+	padding: 10px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 5px 5px 0 0;
 }
 .enhanced-copy.setting-tab .settings-tab:hover {
-  background-color: var(--background-modifier-hover);
+	background-color: var(--background-modifier-hover);
 }
 
 .enhanced-copy.setting-tab .settings-tab-active {
-  background-color: var(--color-accent);
-  color: var(--text-on-accent);
-  border: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+	background-color: var(--color-accent);
+	color: var(--text-on-accent);
+	border: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
 }
 .enhanced-copy.setting-tab .settings-tab-name {
-  font-weight: bold;
-  text-align: center;
+	font-weight: bold;
+	text-align: center;
 }
 .enhanced-copy.setting-tab .settings-tab-icon {
-  text-align: center;
+	text-align: center;
 }
 .enhanced-copy.setting-tab .settings-tab-page > .setting-item:first-child {
-  margin-top: 15px;
+	margin-top: 15px;
 }
 
 .enhanced-copy.setting-tab nav.settings-tab-bar {
-  border-bottom: 1px solid var(--background-modifier-border);
+	border-bottom: 1px solid var(--background-modifier-border);
 }
 
 .enhanced-copy.setting-tab .settings-tab {
-  border-bottom: transparent;
+	border-bottom: transparent;
 }
 
 .enhanced-copy > .text-area .setting-item-info {
-  display: none;
+	display: none;
 }
 
 .modal-content.enhanced-copy {
-  padding-top: 1em;
+	padding-top: 1em;
 }
 
 .modal-content.enhanced-copy .setting-item {
-  border-top: 0;
+	border-top: 0;
 }
 
 .modal-content.enhanced-copy .modal-title {
-  margin-bottom: 0;
-  padding-bottom: 0;
+	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
 .enhanced-copy.setting-tab input.error {
-  border-color: var(--text-error);
+	border-color: var(--text-error);
 }
 
 .enhanced-copy .full-width input {
-  width: 100%;
+	width: 100%;
 }
 .enhanced-copy .full-width {
-  width: 100%;
+	width: 100%;
 }
 
 .enhanced-copy .min-width {
-  width: 10%;
+	width: 10%;
 }
 
 .enhanced-copy .hide-info {
-  display: none;
+	display: none;
 }
 
 .enhanced-copy .no-display .setting-item-info {
-  display: none;
+	display: none;
 }
 
 .enhanced-copy input.error {
-  border-color: var(--text-error);
-  --background-modifier-border-focus: var(--background-modifier-error);
+	border-color: var(--text-error);
+	--background-modifier-border-focus: var(--background-modifier-error);
 }
 
 .enhanced-copy code {
-  font-size: var(--font-ui-smaller);
-  padding: 0;
-  position: revert;
-  bottom: 0;
+	font-size: var(--font-ui-smaller);
+	padding: 0;
+	position: revert;
+	bottom: 0;
 }
 
 .enhanced-copy input {
-  font-family: var(--font-monospace);
+	font-family: var(--font-monospace);
 }
 
 .enhanced-copy .dataview:not(.setting-item.setting-item-heading) {
-  position: relative;
-  left: 20px;
+	position: relative;
+	left: 20px;
 }
 
 .enhanced-copy .setting-item.setting-item-heading.dataview {
-  position: relative;
-  left: 10px;
+	position: relative;
+	left: 10px;
 }
