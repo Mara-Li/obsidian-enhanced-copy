@@ -72,6 +72,7 @@ export const COLLAPSE_INDICATOR = new RegExp(
 
 export interface EnhancedCopySettings {
 	copyAsHTML: boolean;
+	rtf?: boolean;
 	applyingTo: ApplyingToView;
 	separateHotkey: boolean;
 	editing: GlobalSettings;
@@ -90,6 +91,7 @@ export interface EnhancedCopySettings {
 export const DEFAULT_SETTINGS: EnhancedCopySettings = {
 	copyAsHTML: false,
 	applyingTo: ApplyingToView.All,
+	rtf: false,
 	separateHotkey: false,
 	editing: {
 		footnotes: ConversionOfFootnotes.Keep,
@@ -160,6 +162,7 @@ export const DEFAULT_DATAVIEW_SETTINGS_ENABLED: ConvertDataview = {
 export interface GlobalSettings {
 	name?: string;
 	copyAsHTML?: boolean;
+	rtf?: boolean;
 	footnotes: ConversionOfFootnotes;
 	links: ConversionOfLinks;
 	callout: CalloutKeepType;

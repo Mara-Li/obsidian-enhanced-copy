@@ -2,18 +2,18 @@ import i18next from "i18next";
 import {
 	type App,
 	PluginSettingTab,
+	Setting,
 	sanitizeHTMLToDom,
 	setIcon,
-	Setting,
 } from "obsidian";
 
 import {
 	ApplyingToView,
-	DEFAULT_DATAVIEW_SETTINGS_DISABLED,
-	DEFAULT_DATAVIEW_SETTINGS_ENABLED,
 	type CalloutKeepType,
 	type ConversionOfFootnotes,
 	type ConversionOfLinks,
+	DEFAULT_DATAVIEW_SETTINGS_DISABLED,
+	DEFAULT_DATAVIEW_SETTINGS_ENABLED,
 	type EnhancedCopySettings,
 	type GlobalSettings,
 } from "./interface";
@@ -62,6 +62,17 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					this.renderSettingsPage(settings.name ?? "reading");
 				});
 			});
+		if (settings.copyAsHTML) {
+			new Setting(this.settingsPage)
+				.setName(i18next.t("rtf.name"))
+				.setDesc(i18next.t("rtf.desc"))
+				.addToggle((toggle) => {
+					toggle.setValue(settings.rtf ?? false).onChange(async (value) => {
+						settings.rtf = value;
+						await this.plugin.saveSettings();
+					});
+				});
+		}
 		if (!settings.copyAsHTML) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("links"))

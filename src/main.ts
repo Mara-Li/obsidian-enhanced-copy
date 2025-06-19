@@ -128,6 +128,7 @@ export default class EnhancedCopy extends Plugin {
 		const exportAsHTML = profile
 			? (profile?.copyAsHTML ?? false)
 			: (this.settings.reading.copyAsHTML ?? false);
+		const exportAsRtf = profile?.rtf ?? this.settings.reading.rtf ?? false;
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
 			if (!exportAsHTML && (applyingTo === ApplyingToView.All || applyingTo === viewIn)) {
@@ -141,11 +142,11 @@ export default class EnhancedCopy extends Plugin {
 							)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
-			return { selectedText, exportAsHTML };
+			return { selectedText, exportAsHTML: exportAsRtf };
 		} else if (viewIn === ApplyingToView.Edit) {
-			return { selectedText, exportAsHTML };
+			return { selectedText, exportAsHTML: exportAsRtf };
 		}
-		return { selectedText, exportAsHTML };
+		return { selectedText, exportAsHTML: exportAsRtf };
 	}
 
 	async overrideNativeCopy(leaf: WorkspaceLeaf) {
@@ -168,10 +169,14 @@ export default class EnhancedCopy extends Plugin {
 				handleCopy: () => {
 					return async (event: ClipboardEvent) => {
 						try {
-							const selectedText = (await this.enhancedCopy()).selectedText;
+							const { selectedText, exportAsHTML } = await this.enhancedCopy();
 							if (selectedText) {
+								console.log("Copy event triggered in view", selectedText);
 								event.preventDefault();
-								event.clipboardData?.setData("text/plain", selectedText);
+								event.clipboardData?.setData(
+									exportAsHTML ? "text/html" : "text/plain",
+									selectedText
+								);
 							}
 							//old(event);
 						} catch (e) {
@@ -186,6 +191,7 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
+		console.log("Copy event triggered in editor");
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
@@ -458,6 +464,7 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	writeBlob(selectedText: string) {
+		console.log("Writing blob for HTML copy");
 		const blob = new Blob([selectedText], { type: "text/html" });
 		const item = new ClipboardItem({
 			"text/html": blob,
