@@ -1,20 +1,16 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.0.0-beta.6/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": false,
 			"complexity": {
 				"noExtraBooleanCast": "error",
-				"noMultipleSpacesInRegularExpressionLiterals": "error",
 				"noUselessCatch": "error",
-				"noWith": "error"
+				"noAdjacentSpacesInRegex": "error"
 			},
 			"style": {
-				"noVar": "error",
 				"useFilenamingConvention": "error",
 				"useImportType": "error",
 				"useNamingConvention": {
@@ -34,7 +30,6 @@
 				"noGlobalObjectCalls": "error",
 				"noInnerDeclarations": "error",
 				"noInvalidConstructorSuper": "error",
-				"noNewSymbol": "error",
 				"noNonoctalDecimalEscape": "error",
 				"noPrecisionLoss": "error",
 				"noSelfAssign": "error",
@@ -49,7 +44,9 @@
 				"noUnusedImports": "warn",
 				"useIsNan": "error",
 				"useValidForDirection": "error",
-				"useYield": "error"
+				"useYield": "error",
+				"noInvalidBuiltinInstantiation": "error",
+				"useValidTypeof": "error"
 			},
 			"suspicious": {
 				"noAssignInExpressions": "error",
@@ -74,43 +71,33 @@
 				"noShadowRestrictedNames": "error",
 				"noUnsafeNegation": "error",
 				"useGetterReturn": "error",
-				"useValidTypeof": "error"
+				"noWith": "error",
+				"noVar": "error"
 			},
 			"nursery": {
 				"noDuplicateJsonKeys": "error"
 			}
 		},
-		"ignore": [
-			"**/npm node_modules",
-			"**/build",
-			"**/dist",
-			"**/src/i18n/locales"
+		"includes": [
+			"**",
+			"!**/npm node_modules",
+			"!**/build",
+			"!**/dist",
+			"!**/src/i18n/locales"
 		]
 	},
 	"overrides": [
 		{
-			"ignore": [
-				"**/*.js"
-			],
-			"include": [
-				"**/*.ts",
-				"**/*.tsx"
-			]
+			"includes": ["**/*.ts", "**/*.tsx", "!**/*.js"]
 		},
 		{
-			"include": [
-				"**/*.js"
-			]
+			"includes": ["**/*.js"]
 		},
 		{
-			"include": [
-				"*.json"
-			]
+			"includes": ["**/*.json"]
 		},
 		{
-			"include": [
-				"src/settings/help.ts"
-			],
+			"includes": ["**/src/settings/help.ts"],
 			"formatter": {
 				"lineWidth": 320
 			}
@@ -126,7 +113,7 @@
 		"formatter": {
 			"quoteStyle": "double",
 			"semicolons": "always",
-			"trailingComma": "es5"
+			"trailingCommas": "es5"
 		}
 	},
 	"json": {
