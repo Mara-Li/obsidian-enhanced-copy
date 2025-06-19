@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.17](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.16...0.2.17) (2025-06-19)
+
 ## [0.2.16](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.15...0.2.16) (2025-06-19)
 
 
