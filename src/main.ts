@@ -171,7 +171,6 @@ export default class EnhancedCopy extends Plugin {
 						try {
 							const { selectedText, exportAsHTML } = await this.enhancedCopy();
 							if (selectedText) {
-								console.log("Copy event triggered in view", selectedText);
 								event.preventDefault();
 								event.clipboardData?.setData(
 									exportAsHTML ? "text/html" : "text/plain",
@@ -191,7 +190,6 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
-		console.log("Copy event triggered in editor");
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
@@ -464,7 +462,6 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	writeBlob(selectedText: string) {
-		console.log("Writing blob for HTML copy");
 		const blob = new Blob([selectedText], { type: "text/html" });
 		const item = new ClipboardItem({
 			"text/html": blob,
