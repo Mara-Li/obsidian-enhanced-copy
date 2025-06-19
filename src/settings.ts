@@ -100,8 +100,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 		if (!profile) this.overrideSetting(settings);
-		if (!noRegex)
-			this.regexReplacementButton(settings);
+		if (!noRegex) this.regexReplacementButton(settings);
 	}
 
 	createEditSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
@@ -256,8 +255,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 
 		this.hardBreak(settings);
 		if (!profile) this.overrideSetting(settings);
-		if (!noRegex)
-			this.regexReplacementButton(settings);
+		if (!noRegex) this.regexReplacementButton(settings);
 	}
 
 	constructor(app: App, plugin: EnhancedCopy) {

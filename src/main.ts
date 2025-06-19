@@ -40,10 +40,9 @@ export default class EnhancedCopy extends Plugin {
 		if (rule.type === "tag" && tags.find((tag) => tag.match(rule.value))) {
 			return true;
 		}
-		if (rule.type === "frontmatter" && frontmatter?.find((fm) => fm.match(rule.value))) {
-			return true;
-		}
-		return false;
+		return !!(
+			rule.type === "frontmatter" && frontmatter?.find((fm) => fm.match(rule.value))
+		);
 	}
 
 	/**
@@ -60,7 +59,7 @@ export default class EnhancedCopy extends Plugin {
 			cacheFrontmatterKeys && typeof cacheFrontmatterKeys === "string"
 				? [cacheFrontmatterKeys]
 				: cacheFrontmatterKeys;
-		const tags = cache ? getAllTags(cache) ?? [] : [];
+		const tags = cache ? (getAllTags(cache) ?? []) : [];
 		const profiles = this.settings.profiles;
 
 		for (const profile of profiles) {
@@ -86,10 +85,15 @@ export default class EnhancedCopy extends Plugin {
 		}
 	}
 
-	async enhancedCopy(profile?: GlobalSettings) {
+	async enhancedCopy(
+		profile?: GlobalSettings
+	): Promise<{ selectedText: string; exportAsHTML: boolean }> {
 		//get default if a modal is opened
 		if (document.querySelector(".modal-container")) {
-			return activeWindow.getSelection()?.toString() ?? "";
+			return {
+				selectedText: activeWindow.getSelection()?.toString() ?? "",
+				exportAsHTML: false,
+			};
 		}
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 		const file = this.app.workspace.getActiveFile();
@@ -115,15 +119,15 @@ export default class EnhancedCopy extends Plugin {
 				selectedText =
 					leafType === "database-plugin"
 						? removeDataBasePluginRelationShip()
-						: activeWindow.getSelection()?.toString() ?? "";
+						: (activeWindow.getSelection()?.toString() ?? "");
 				viewIn = ApplyingToView.Reading;
 			}
 		}
 		if (!profile) profile = this.getProfile(viewIn);
 		this.devLog("Profile: ", profile);
 		const exportAsHTML = profile
-			? profile?.copyAsHTML ?? false
-			: this.settings.reading.copyAsHTML;
+			? (profile?.copyAsHTML ?? false)
+			: (this.settings.reading.copyAsHTML ?? false);
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
 			if (!exportAsHTML && (applyingTo === ApplyingToView.All || applyingTo === viewIn)) {
@@ -137,11 +141,11 @@ export default class EnhancedCopy extends Plugin {
 							)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
-			return selectedText;
+			return { selectedText, exportAsHTML };
 		} else if (viewIn === ApplyingToView.Edit) {
-			return selectedText;
+			return { selectedText, exportAsHTML };
 		}
-		return selectedText;
+		return { selectedText, exportAsHTML };
 	}
 
 	async overrideNativeCopy(leaf: WorkspaceLeaf) {
@@ -164,7 +168,7 @@ export default class EnhancedCopy extends Plugin {
 				handleCopy: () => {
 					return async (event: ClipboardEvent) => {
 						try {
-							const selectedText = await this.enhancedCopy();
+							const selectedText = (await this.enhancedCopy()).selectedText;
 							if (selectedText) {
 								event.preventDefault();
 								event.clipboardData?.setData("text/plain", selectedText);
@@ -182,15 +186,15 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
-		const selectedText = await this.enhancedCopy();
+		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
-		event.clipboardData?.setData("text/plain", selectedText);
+		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
 		return true;
 	}
 
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
-		const selectedText = await this.enhancedCopy();
-		event.clipboardData?.setData("text/plain", selectedText);
+		const { selectedText, exportAsHTML } = await this.enhancedCopy();
+		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
 		event.preventDefault();
 		//mimic cut behavior
 		const editorObs = this.app.workspace.activeEditor?.editor;
@@ -218,8 +222,7 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: `copy-${profile.name}-in-markdown`,
 				name: profile.name,
-				//@ts-ignore
-				checkCallback: async (checking: boolean) => {
+				checkCallback: (checking: boolean) => {
 					const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 					const readingMode = view && view.getMode() !== "source";
 					if (
@@ -228,7 +231,9 @@ export default class EnhancedCopy extends Plugin {
 						(profile.applyingTo === ApplyingToView.Edit && !readingMode)
 					) {
 						if (!checking) {
-							navigator.clipboard.writeText(await this.enhancedCopy(profile));
+							this.enhancedCopy(profile).then(({ selectedText }) => {
+								navigator.clipboard.writeText(selectedText);
+							});
 						}
 						return true;
 					}
@@ -245,7 +250,7 @@ export default class EnhancedCopy extends Plugin {
 				id: "copy-all-in-markdown",
 				name: i18next.t("commands.all"),
 				callback: async () => {
-					navigator.clipboard.writeText(await this.enhancedCopy());
+					await navigator.clipboard.writeText((await this.enhancedCopy()).selectedText);
 				},
 			});
 		} else if (this.settings.separateHotkey) {
@@ -268,7 +273,7 @@ export default class EnhancedCopy extends Plugin {
 								this,
 								file?.path
 							);
-							navigator.clipboard.writeText(selectedText);
+							await navigator.clipboard.writeText(selectedText);
 						}
 					},
 				});
@@ -291,7 +296,10 @@ export default class EnhancedCopy extends Plugin {
 								if (!this.settings.copyAsHTML) {
 									selectedText = convertMarkdown(selectedText, profile, this);
 								}
-								navigator.clipboard.writeText(selectedText);
+								if (this.settings.copyAsHTML) {
+									const item = this.writeBlob(selectedText);
+									navigator.clipboard.write(item);
+								} else navigator.clipboard.writeText(selectedText);
 							}
 							return true;
 						}
@@ -303,8 +311,7 @@ export default class EnhancedCopy extends Plugin {
 			this.addCommand({
 				id: "copy-other-in-markdown",
 				name: i18next.t("commands.other"),
-				//@ts-ignore
-				checkCallback: async (checking: boolean) => {
+				checkCallback: (checking: boolean) => {
 					//everything not markdown view
 					const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
 					this.devLog(!markdownView, checking);
@@ -324,7 +331,7 @@ export default class EnhancedCopy extends Plugin {
 								selectedText =
 									leafType === "database-plugin"
 										? removeDataBasePluginRelationShip()
-										: activeWindow.getSelection()?.toString() ?? "";
+										: (activeWindow.getSelection()?.toString() ?? "");
 								viewIn = ApplyingToView.Reading;
 							}
 							if (selectedText && selectedText.trim().length > 0) {
@@ -335,9 +342,9 @@ export default class EnhancedCopy extends Plugin {
 									(profile.applyingTo === ApplyingToView.All ||
 										profile.applyingTo === viewIn)
 								) {
-									selectedText =
+									const convertFn =
 										viewIn === ApplyingToView.Edit
-											? await convertEditMarkdown(
+											? convertEditMarkdown(
 													selectedText,
 													isProfile ?? this.settings.editing,
 													this,
@@ -348,8 +355,27 @@ export default class EnhancedCopy extends Plugin {
 													isProfile ?? this.settings.reading,
 													this
 												);
+									Promise.resolve(convertFn)
+										.then((converted) => {
+											selectedText = converted;
+
+											if (profile.copyAsHTML) {
+												const item = this.writeBlob(selectedText);
+												navigator.clipboard.write(item);
+											}
+
+											navigator.clipboard.writeText(selectedText);
+										})
+										.catch((err) => {
+											console.error("Erreur pendant la conversion :", err);
+										});
+								} else {
+									if (profile.copyAsHTML) {
+										const item = this.writeBlob(selectedText);
+										navigator.clipboard.write(item);
+									}
+									navigator.clipboard.writeText(selectedText);
 								}
-								navigator.clipboard.writeText(selectedText);
 							}
 						}
 						return true;
@@ -429,6 +455,14 @@ export default class EnhancedCopy extends Plugin {
 				}
 			},
 		});
+	}
+
+	writeBlob(selectedText: string) {
+		const blob = new Blob([selectedText], { type: "text/html" });
+		const item = new ClipboardItem({
+			"text/html": blob,
+		});
+		return [item];
 	}
 	async onunload() {
 		console.log(`CopyReadingInMarkdown v.${this.manifest.version} unloaded.`);

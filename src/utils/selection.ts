@@ -86,6 +86,7 @@ export function getAnchor(head: EditorPosition, anchor: EditorPosition) {
 /**
  * In Editor, get the selected text for all selection
  * @param editor {Editor} Editor of the activeView
+ * @param plugin
  * @returns {string} The selected text (copying behavior of Obsidian)
  */
 export function copySelectionRange(editor: Editor, plugin: EnhancedCopy): string {
@@ -116,7 +117,7 @@ export function copySelectionRange(editor: Editor, plugin: EnhancedCopy): string
  * In Canvas only, check if the selection is in editor or not
  * If in editor, return the text as in Obsidian. If not, run getSelectionAsHTML and return the output
  * @param app {App}}
- * @param settings {EnhancedCopySettings}
+ * @param plugin
  * @returns {string}
  */
 export function canvasSelectionText(app: App, plugin: EnhancedCopy): string {
