@@ -509,6 +509,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						if (this.settings.applyingTo === ApplyingToView.Edit) {
 							this.settings.copyAsHTML = false;
+							this.settings.rtf = false;
 							await this.plugin.saveSettings();
 						}
 						this.display();

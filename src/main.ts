@@ -142,11 +142,11 @@ export default class EnhancedCopy extends Plugin {
 							)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
-			return { selectedText, exportAsHTML: exportAsRtf };
+			return { selectedText, exportAsHTML: false };
 		} else if (viewIn === ApplyingToView.Edit) {
 			return { selectedText, exportAsHTML: exportAsRtf };
 		}
-		return { selectedText, exportAsHTML: exportAsRtf };
+		return { selectedText, exportAsHTML: false };
 	}
 
 	async overrideNativeCopy(leaf: WorkspaceLeaf) {
@@ -155,19 +155,35 @@ export default class EnhancedCopy extends Plugin {
 			activeView &&
 			activeView.getMode() !== "source" &&
 			!this.settings.reading.overrideNativeCopy
-		)
+		) {
 			return;
+		}
 		if (
 			activeView &&
 			activeView.getMode() === "source" &&
 			!this.settings.editing.overrideNativeCopy
-		)
+		) {
 			return;
+		}
+		const sourceView = [ApplyingToView.Edit, ApplyingToView.All];
+		const readViews = [ApplyingToView.Reading, ApplyingToView.All];
 		try {
 			return around(leaf.view, {
 				//@ts-ignore
 				handleCopy: () => {
 					return async (event: ClipboardEvent) => {
+						if (
+							leaf.view.getViewType() === "source" &&
+							!sourceView.includes(this.settings.applyingTo)
+						) {
+							return;
+						}
+						if (
+							leaf.view.getViewType() !== "source" &&
+							readViews.includes(this.settings.applyingTo)
+						) {
+							return;
+						}
 						try {
 							const { selectedText, exportAsHTML } = await this.enhancedCopy();
 							if (selectedText) {
@@ -190,6 +206,7 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
+		console.log("im here");
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
@@ -197,6 +214,7 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
+		console.log("bruh");
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
 		event.preventDefault();
