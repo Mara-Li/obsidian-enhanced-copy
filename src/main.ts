@@ -128,7 +128,8 @@ export default class EnhancedCopy extends Plugin {
 		const exportAsHTML = profile
 			? (profile?.copyAsHTML ?? false)
 			: (this.settings.reading.copyAsHTML ?? false);
-		const exportAsRtf = profile?.rtf ?? this.settings.reading.rtf ?? false;
+		const exportAsRtf =
+			(exportAsHTML && (profile?.rtf ?? this.settings.reading.rtf)) ?? false;
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
 			if (!exportAsHTML && (applyingTo === ApplyingToView.All || applyingTo === viewIn)) {
@@ -142,7 +143,10 @@ export default class EnhancedCopy extends Plugin {
 							)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
-			return { selectedText, exportAsHTML: false };
+			return {
+				selectedText,
+				exportAsHTML: viewIn === ApplyingToView.Edit ? false : exportAsHTML,
+			};
 		} else if (viewIn === ApplyingToView.Edit) {
 			return { selectedText, exportAsHTML: exportAsRtf };
 		}
@@ -176,12 +180,14 @@ export default class EnhancedCopy extends Plugin {
 							leaf.view.getViewType() === "source" &&
 							!sourceView.includes(this.settings.applyingTo)
 						) {
+							console.log("Source mode copy handler");
 							return;
 						}
 						if (
 							leaf.view.getViewType() !== "source" &&
-							readViews.includes(this.settings.applyingTo)
+							!readViews.includes(this.settings.applyingTo)
 						) {
+							console.log("Reading mode copy handler");
 							return;
 						}
 						try {
