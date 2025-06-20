@@ -180,14 +180,12 @@ export default class EnhancedCopy extends Plugin {
 							leaf.view.getViewType() === "source" &&
 							!sourceView.includes(this.settings.applyingTo)
 						) {
-							console.log("Source mode copy handler");
 							return;
 						}
 						if (
 							leaf.view.getViewType() !== "source" &&
 							!readViews.includes(this.settings.applyingTo)
 						) {
-							console.log("Reading mode copy handler");
 							return;
 						}
 						try {
@@ -212,7 +210,6 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
-		console.log("im here");
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
@@ -220,7 +217,6 @@ export default class EnhancedCopy extends Plugin {
 	}
 
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
-		console.log("bruh");
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
 		event.preventDefault();
