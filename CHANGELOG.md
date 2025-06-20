@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.19](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.18...0.2.19) (2025-06-20)
+
+
+### Bug Fixes
+
+* improve export logic for HTML and RTF formats ([fa97ff5](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/fa97ff50ebc1a93dbe7b628570b96b336fe22360))
+
 ## [0.2.18](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.17...0.2.18) (2025-06-20)
 
 
