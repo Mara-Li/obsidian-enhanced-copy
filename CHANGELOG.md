@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.20](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.19...0.2.20) (2025-06-20)
+
+
+### Bug Fixes
+
+* remove debug console logs from copy and cut handlers ([74f2ee7](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/74f2ee74fddb53d0b8a4924a1d19181390e3f20f))
+
 ## [0.2.19](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.18...0.2.19) (2025-06-20)
 
 
