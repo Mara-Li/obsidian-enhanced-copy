@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.0](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.20...1.0.0) (2025-06-21)
+
+
+### Bug Fixes
+
+* **dataview:** improve dataview with solution from [@saberzero1](https://github.com/saberzero1) :pray: ([0c63e95](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/0c63e9568604aaac49adde2b0c11ea9b3db81305))
+
 ## [0.2.20](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.19...0.2.20) (2025-06-20)
 
 
