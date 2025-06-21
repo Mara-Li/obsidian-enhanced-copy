@@ -120,11 +120,8 @@ class DataviewCompiler {
 	 */
 	async dataviewJS(query: string) {
 		const { isInsideCallout, finalQuery } = this.sanitizeQuery(query);
-		const div = createEl("div");
-		const component = new Component();
-		await this.dvApi.executeJs(finalQuery, div, component, this.path);
-		component.load();
-		const markdown = this.removeDataviewQueries(div.innerHTML);
+		const md = await this.tryExecuteJs(finalQuery, 100);
+		const markdown = this.removeDataviewQueries(md);
 		if (isInsideCallout) {
 			return this.surroundWithCalloutBlock(markdown);
 		}
@@ -145,6 +142,34 @@ class DataviewCompiler {
 			return this.removeDataviewQueries(this.dvApi.settings.renderNullAs);
 		}
 	}
+
+	/**
+	 * ExecuteJs with waiting for all processed files ;
+	 * @credit saberzero1
+	 * @private
+	 * @param evaluateQuery {string} The query to evaluate
+	 * @param max {number} The maximum number of iterations to wait for the query to be processed
+	 * @return {Promise<string>} The markdown converted from the HTML
+	 */
+	private async tryExecuteJs(evaluateQuery: string, max: number = 50): Promise<string> {
+		const div = createEl("div");
+		const component = new Component();
+		component.load();
+		await this.dvApi.executeJs(evaluateQuery, div, component, this.path);
+		let counter = 0;
+		while (!div.querySelector("[data-tag-name]") && counter < max) {
+			await this.delay(5);
+			counter++;
+		}
+
+		return htmlToMarkdown(div);
+	}
+
+	private delay(ms: number): Promise<void> {
+		return new Promise((resolve, _) => {
+			setTimeout(resolve, ms);
+		});
+	}
 	/**
 	 * Inline DataviewJS - JavaScript API for Dataview in inline
 	 * Syntax : `$=js query`
@@ -158,14 +183,15 @@ class DataviewCompiler {
 	 */
 	async inlineDataviewJS(query: string) {
 		const evaluateQuery = `
-				const query = ${query};
-				dv.paragraph(query);
+				try {
+					const query = ${query};
+					dv.el("div", query);
+				} catch(e) {
+					dv.paragraph("Evaluation Error: " + e.message);
+				}
 			`;
-		const div = createEl("div");
-		const component = new Component();
-		await this.dvApi.executeJs(evaluateQuery, div, component, this.path);
-		component.load();
-		return this.removeDataviewQueries(htmlToMarkdown(div.innerHTML));
+		const markdown = await this.tryExecuteJs(evaluateQuery);
+		return this.removeDataviewQueries(markdown);
 	}
 }
 
@@ -182,7 +208,7 @@ export async function convertDataviewQueries(
 	if (!isDataviewEnabled || !isPluginEnabled(app) || !settings.convertDataview?.enable)
 		return replacedText;
 	const dvApi = getAPI(app);
-	if (!dvApi || dvApi === undefined) return replacedText;
+	if (!dvApi) return replacedText;
 	const matches = text.matchAll(dataViewRegex);
 	const compiler = new DataviewCompiler(settings, dvApi, text, path);
 	const { dataviewJsMatches, inlineMatches, inlineJsMatches } = compiler.matches();
