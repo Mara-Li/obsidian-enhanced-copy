@@ -155,6 +155,7 @@ export default class EnhancedCopy extends Plugin {
 
 	async overrideNativeCopy(leaf: WorkspaceLeaf) {
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		const applyingToView = this.getProfile()?.applyingTo ?? this.settings.applyingTo;
 		if (
 			activeView &&
 			activeView.getMode() !== "source" &&
@@ -178,17 +179,18 @@ export default class EnhancedCopy extends Plugin {
 					return async (event: ClipboardEvent) => {
 						if (
 							leaf.view.getViewType() === "source" &&
-							!sourceView.includes(this.settings.applyingTo)
+							!sourceView.includes(applyingToView)
 						) {
 							return;
 						}
 						if (
 							leaf.view.getViewType() !== "source" &&
-							!readViews.includes(this.settings.applyingTo)
+							!readViews.includes(applyingToView)
 						) {
 							return;
 						}
 						try {
+							console.log("hello");
 							const { selectedText, exportAsHTML } = await this.enhancedCopy();
 							if (selectedText) {
 								event.preventDefault();
