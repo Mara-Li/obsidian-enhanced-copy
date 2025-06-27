@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.1](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.0.0...1.0.1) (2025-06-27)
+
+
+### Bug Fixes
+
+* should apply to profil when using the override native copy ([45a8cef](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/45a8cefee699120b4904da6000f3fda09c563ff3))
+
 ## [1.0.0](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/0.2.20...1.0.0) (2025-06-21)
 
 
