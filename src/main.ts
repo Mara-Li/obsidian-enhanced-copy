@@ -125,9 +125,9 @@ export default class EnhancedCopy extends Plugin {
 		}
 		if (!profile) profile = this.getProfile(viewIn);
 		this.devLog("Profile: ", profile);
-		const exportAsHTML = profile
+		const exportAsHTML = viewIn === ApplyingToView.Reading ? profile
 			? (profile?.copyAsHTML ?? false)
-			: (this.settings.reading.copyAsHTML ?? false);
+			: (this.settings.reading.copyAsHTML ?? false) : false
 		const exportAsRtf =
 			(exportAsHTML && (profile?.rtf ?? this.settings.reading.rtf)) ?? false;
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
@@ -136,11 +136,11 @@ export default class EnhancedCopy extends Plugin {
 				selectedText =
 					viewIn === ApplyingToView.Edit
 						? await convertEditMarkdown(
-								selectedText,
-								profile ?? this.settings.editing,
-								this,
-								file?.path
-							)
+							selectedText,
+							profile ?? this.settings.editing,
+							this,
+							file?.path
+						)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
 			return {
@@ -155,7 +155,7 @@ export default class EnhancedCopy extends Plugin {
 
 	async overrideNativeCopy(leaf: WorkspaceLeaf) {
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-		const applyingToView = this.getProfile()?.applyingTo ?? this.settings.applyingTo;
+
 		if (
 			activeView &&
 			activeView.getMode() !== "source" &&
@@ -170,45 +170,27 @@ export default class EnhancedCopy extends Plugin {
 		) {
 			return;
 		}
-		const sourceView = [ApplyingToView.Edit, ApplyingToView.All];
-		const readViews = [ApplyingToView.Reading, ApplyingToView.All];
-		try {
-			return around(leaf.view, {
-				//@ts-ignore
-				handleCopy: () => {
-					return async (event: ClipboardEvent) => {
-						if (
-							leaf.view.getViewType() === "source" &&
-							!sourceView.includes(applyingToView)
-						) {
-							return;
-						}
-						if (
-							leaf.view.getViewType() !== "source" &&
-							!readViews.includes(applyingToView)
-						) {
-							return;
-						}
-						try {
-							console.log("hello");
-							const { selectedText, exportAsHTML } = await this.enhancedCopy();
-							if (selectedText) {
-								event.preventDefault();
-								event.clipboardData?.setData(
-									exportAsHTML ? "text/html" : "text/plain",
-									selectedText
-								);
-							}
-							//old(event);
-						} catch (e) {
-							console.error(e);
-						}
-					};
-				},
-			});
-		} catch (e) {
-			console.error(e);
-		}
+
+		// Intercepter directement l'événement copy au niveau du DOM
+		const copyHandler = async (event: ClipboardEvent) => {
+			const { selectedText, exportAsHTML } = await this.enhancedCopy();
+
+			if (selectedText && selectedText.trim().length > 0) {
+				event.preventDefault();
+				event.clipboardData?.setData(
+					exportAsHTML ? "text/html" : "text/plain",
+					selectedText
+				);
+			}
+		};
+
+		// Ajouter l'événement sur l'élément container de la vue
+		leaf.view.containerEl.addEventListener('copy', copyHandler);
+
+		// Retourner une fonction de nettoyage
+		return () => {
+			leaf.view.containerEl.removeEventListener('copy', copyHandler);
+		};
 	}
 
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
@@ -371,16 +353,16 @@ export default class EnhancedCopy extends Plugin {
 									const convertFn =
 										viewIn === ApplyingToView.Edit
 											? convertEditMarkdown(
-													selectedText,
-													isProfile ?? this.settings.editing,
-													this,
-													this.app.workspace.getActiveFile()?.path
-												)
+												selectedText,
+												isProfile ?? this.settings.editing,
+												this,
+												this.app.workspace.getActiveFile()?.path
+											)
 											: convertMarkdown(
-													selectedText,
-													isProfile ?? this.settings.reading,
-													this
-												);
+												selectedText,
+												isProfile ?? this.settings.reading,
+												this
+											);
 									Promise.resolve(convertFn)
 										.then((converted) => {
 											selectedText = converted;
@@ -425,7 +407,7 @@ export default class EnhancedCopy extends Plugin {
 						return;
 					}
 					//@ts-ignore
-					this.activeMonkeys[leaf.id] = this.overrideNativeCopy(leaf);
+					this.activeMonkeys[leaf.id] = await this.overrideNativeCopy(leaf);
 					//enable clipboard event in canvas read-only
 					if (
 						leaf.view instanceof ItemView &&
