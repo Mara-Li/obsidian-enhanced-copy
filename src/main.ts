@@ -231,6 +231,8 @@ export default class EnhancedCopy extends Plugin {
 			resources,
 			returnNull: false,
 			returnEmptyString: false,
+			//Shut the fuckup
+			showSupportNotice: false,
 		});
 
 		await this.loadSettings();
