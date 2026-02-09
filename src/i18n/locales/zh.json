@@ -155,5 +155,11 @@
   "rtf": {
     "name": "RTF",
     "desc": "将html导出为\"富文本\"而非纯html。"
+  },
+  "cssFile": {
+    "title": "CSS file",
+    "desc": "Path to the CSS file to override the style in the HTML output.",
+    "notFound": "The file does not exist at the specified path.",
+    "invalid": "The file is invalid: it should be a CSS file."
   }
 }

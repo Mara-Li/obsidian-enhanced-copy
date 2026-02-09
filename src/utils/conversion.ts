@@ -1,5 +1,5 @@
 import i18next from "i18next";
-
+import { Component, MarkdownRenderer } from "obsidian";
 import {
 	CalloutKeepType,
 	ConversionOfFootnotes,
@@ -8,6 +8,7 @@ import {
 } from "../interface";
 import type EnhancedCopy from "../main";
 import { convertDataviewQueries } from "./dataview";
+import { loadCssFile } from "./loadCssForHtml";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -301,5 +302,25 @@ export async function convertEditMarkdown(
 	markdown = removeMarkdownFootNotes(markdown, overrides);
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
-	return hardBreak(markdown, overrides, plugin);
+	markdown = hardBreak(markdown, overrides, plugin);
+	if (overrides.copyAsHTML) return await markdownToHtml(markdown, overrides, plugin);
+	return markdown;
+}
+
+async function markdownToHtml(
+	markdown: string,
+	overrides: GlobalSettings,
+	plugin: EnhancedCopy
+): Promise<string> {
+	const component = new Component();
+	const div = new DocumentFragment().createEl("div");
+	component.load();
+	await MarkdownRenderer.render(plugin.app, markdown, div, "", component);
+	component.unload();
+	const html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
+	if (overrides.rtf) {
+		const css = await loadCssFile(plugin, overrides.cssFile);
+		return `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${html}</body></html>`;
+	}
+	return html;
 }

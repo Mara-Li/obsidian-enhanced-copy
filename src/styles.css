@@ -110,10 +110,6 @@
 	padding-bottom: 0;
 }
 
-.enhanced-copy.setting-tab input.error {
-	border-color: var(--text-error);
-}
-
 .enhanced-copy .full-width input {
 	width: 100%;
 }
@@ -157,4 +153,8 @@
 .enhanced-copy .setting-item.setting-item-heading.dataview {
 	position: relative;
 	left: 10px;
+}
+
+.enhanced-copy .setting-item-control:has(.error)::after {
+	content: "⚠️";
 }

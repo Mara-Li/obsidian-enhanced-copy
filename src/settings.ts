@@ -1,6 +1,8 @@
 import i18next from "i18next";
 import {
 	type App,
+	Notice,
+	normalizePath,
 	PluginSettingTab,
 	Setting,
 	sanitizeHTMLToDom,
@@ -20,6 +22,7 @@ import {
 import type EnhancedCopy from "./main";
 import { AllReplaceTextModal, EnhancedCopyViewModal, NameProfile } from "./modal";
 
+// noinspection JSClassNamingConvention
 interface Tab {
 	name: string;
 	id: string;
@@ -53,26 +56,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 
 	createReadingSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
 		new Setting(this.settingsPage).setName(i18next.t("reading.desc")).setHeading();
-		new Setting(this.settingsPage)
-			.setName(i18next.t("copyAsHTML"))
-			.addToggle((toggle) => {
-				toggle.setValue(settings.copyAsHTML ?? false).onChange(async (value) => {
-					settings.copyAsHTML = value;
-					await this.plugin.saveSettings();
-					this.renderSettingsPage(settings.name ?? "reading");
-				});
-			});
-		if (settings.copyAsHTML) {
-			new Setting(this.settingsPage)
-				.setName(i18next.t("rtf.name"))
-				.setDesc(i18next.t("rtf.desc"))
-				.addToggle((toggle) => {
-					toggle.setValue(settings.rtf ?? false).onChange(async (value) => {
-						settings.rtf = value;
-						await this.plugin.saveSettings();
-					});
-				});
-		}
+		this.html(settings ?? "reading");
 		if (!settings.copyAsHTML) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("links"))
@@ -114,8 +98,68 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		if (!noRegex) this.regexReplacementButton(settings);
 	}
 
+	html(settings: GlobalSettings, type: "reading" | "edit" = "reading") {
+		console.log(type);
+		new Setting(this.settingsPage)
+			.setName(i18next.t("copyAsHTML"))
+			.addToggle((toggle) => {
+				toggle.setValue(settings.copyAsHTML ?? false).onChange(async (value) => {
+					settings.copyAsHTML = value;
+					await this.plugin.saveSettings();
+					this.renderSettingsPage(settings.name ?? type);
+				});
+			});
+		if (settings.copyAsHTML) {
+			new Setting(this.settingsPage)
+				.setName(i18next.t("rtf.name"))
+				.setDesc(i18next.t("rtf.desc"))
+				.addToggle((toggle) => {
+					toggle.setValue(settings.rtf ?? false).onChange(async (value) => {
+						settings.rtf = value;
+						await this.plugin.saveSettings();
+						this.renderSettingsPage(settings.name ?? type);
+					});
+				});
+			if (settings.rtf) {
+				new Setting(this.settingsPage)
+					.setName(i18next.t("cssFile.title"))
+					.setDesc(i18next.t("cssFile.desc"))
+					.addText((text) => {
+						text
+							.setPlaceholder(".obsidian/snippets/export.css")
+							.setValue(settings.cssFile ?? "")
+							.onChange(async (value) => {
+								settings.cssFile = value;
+							});
+						text.inputEl.onblur = async () => {
+							const value = normalizePath(text.getValue());
+							text.inputEl.classList.remove("error");
+							if (value.trim() === "") {
+								settings.cssFile = undefined;
+								return;
+							}
+							if (!value.endsWith(".css")) {
+								new Notice(i18next.t("cssFile.invalid"));
+								text.inputEl.classList.add("error");
+								return;
+							}
+							if (!(await this.app.vault.adapter.exists(value))) {
+								new Notice(i18next.t("cssFile.notFound"));
+								text.inputEl.classList.add("error");
+								return;
+							}
+							settings.cssFile = value;
+							await this.plugin.saveSettings();
+						};
+					});
+			}
+		}
+	}
+
 	createEditSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
+
+		this.html(settings, "edit");
 
 		if (this.app.plugins.enabledPlugins.has("dataview")) {
 			if (!settings.convertDataview)

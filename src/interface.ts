@@ -163,6 +163,7 @@ export interface GlobalSettings {
 	name?: string;
 	copyAsHTML?: boolean;
 	rtf?: boolean;
+	cssFile?: string;
 	footnotes: ConversionOfFootnotes;
 	links: ConversionOfLinks;
 	callout: CalloutKeepType;

@@ -1,6 +1,6 @@
 import { EditorView } from "@codemirror/view";
+import { deepmerge as merge } from "deepmerge-ts";
 import i18next from "i18next";
-import { around } from "monkey-around";
 import {
 	getAllTags,
 	ItemView,
@@ -9,7 +9,6 @@ import {
 	Plugin,
 	type WorkspaceLeaf,
 } from "obsidian";
-import merge from "ts-deepmerge";
 
 import { resources, translationLanguage } from "./i18n/i18next";
 import {
@@ -125,27 +124,28 @@ export default class EnhancedCopy extends Plugin {
 		}
 		if (!profile) profile = this.getProfile(viewIn);
 		this.devLog("Profile: ", profile);
-		const exportAsHTML = viewIn === ApplyingToView.Reading ? profile
+		const defaultProfile =
+			viewIn === ApplyingToView.Edit ? this.settings.editing : this.settings.reading;
+		const exportAsHTML = profile
 			? (profile?.copyAsHTML ?? false)
-			: (this.settings.reading.copyAsHTML ?? false) : false
-		const exportAsRtf =
-			(exportAsHTML && (profile?.rtf ?? this.settings.reading.rtf)) ?? false;
+			: (defaultProfile.copyAsHTML ?? false);
+		const exportAsRtf = (exportAsHTML && (profile?.rtf ?? defaultProfile.rtf)) ?? false;
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
-			if (!exportAsHTML && (applyingTo === ApplyingToView.All || applyingTo === viewIn)) {
+			if (applyingTo === ApplyingToView.All || applyingTo === viewIn) {
 				selectedText =
 					viewIn === ApplyingToView.Edit
 						? await convertEditMarkdown(
-							selectedText,
-							profile ?? this.settings.editing,
-							this,
-							file?.path
-						)
+								selectedText,
+								profile ?? this.settings.editing,
+								this,
+								file?.path
+							)
 						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
 			}
 			return {
 				selectedText,
-				exportAsHTML: viewIn === ApplyingToView.Edit ? false : exportAsHTML,
+				exportAsHTML: exportAsRtf,
 			};
 		} else if (viewIn === ApplyingToView.Edit) {
 			return { selectedText, exportAsHTML: exportAsRtf };
@@ -185,11 +185,11 @@ export default class EnhancedCopy extends Plugin {
 		};
 
 		// Ajouter l'événement sur l'élément container de la vue
-		leaf.view.containerEl.addEventListener('copy', copyHandler);
+		leaf.view.containerEl.addEventListener("copy", copyHandler);
 
 		// Retourner une fonction de nettoyage
 		return () => {
-			leaf.view.containerEl.removeEventListener('copy', copyHandler);
+			leaf.view.containerEl.removeEventListener("copy", copyHandler);
 		};
 	}
 
@@ -209,6 +209,17 @@ export default class EnhancedCopy extends Plugin {
 		if (editorObs) {
 			editorObs.replaceSelection("");
 		}
+	}
+
+	getDefaultProfile(viewIn?: ApplyingToView) {
+		if (!viewIn) {
+			const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+			const readingMode = view && view.getMode() !== "source";
+			viewIn = readingMode ? ApplyingToView.Reading : ApplyingToView.Edit;
+		}
+		const defaultProfile =
+			viewIn === ApplyingToView.Edit ? this.settings.editing : this.settings.reading;
+		return this.getProfile() ?? defaultProfile;
 	}
 
 	async onload() {
@@ -240,7 +251,7 @@ export default class EnhancedCopy extends Plugin {
 					) {
 						if (!checking) {
 							this.enhancedCopy(profile).then(({ selectedText }) => {
-								navigator.clipboard.writeText(selectedText);
+								this.writeToClipboard(selectedText, profile);
 							});
 						}
 						return true;
@@ -258,7 +269,11 @@ export default class EnhancedCopy extends Plugin {
 				id: "copy-all-in-markdown",
 				name: i18next.t("commands.all"),
 				callback: async () => {
-					await navigator.clipboard.writeText((await this.enhancedCopy()).selectedText);
+					const profile = this.getProfile() ?? this.getDefaultProfile();
+					await this.writeToClipboard(
+						(await this.enhancedCopy(profile)).selectedText,
+						profile
+					);
 				},
 			});
 		} else if (this.settings.separateHotkey) {
@@ -281,7 +296,7 @@ export default class EnhancedCopy extends Plugin {
 								this,
 								file?.path
 							);
-							await navigator.clipboard.writeText(selectedText);
+							await this.writeToClipboard(selectedText, profile);
 						}
 					},
 				});
@@ -304,10 +319,7 @@ export default class EnhancedCopy extends Plugin {
 								if (!this.settings.copyAsHTML) {
 									selectedText = convertMarkdown(selectedText, profile, this);
 								}
-								if (this.settings.copyAsHTML) {
-									const item = this.writeBlob(selectedText);
-									navigator.clipboard.write(item);
-								} else navigator.clipboard.writeText(selectedText);
+								this.writeToClipboard(selectedText, profile);
 							}
 							return true;
 						}
@@ -346,43 +358,32 @@ export default class EnhancedCopy extends Plugin {
 								const isProfile = this.getProfile(viewIn);
 								const profile = isProfile ?? this.settings;
 								if (
-									!profile.copyAsHTML &&
-									(profile.applyingTo === ApplyingToView.All ||
-										profile.applyingTo === viewIn)
+									profile.applyingTo === ApplyingToView.All ||
+									profile.applyingTo === viewIn
 								) {
 									const convertFn =
 										viewIn === ApplyingToView.Edit
 											? convertEditMarkdown(
-												selectedText,
-												isProfile ?? this.settings.editing,
-												this,
-												this.app.workspace.getActiveFile()?.path
-											)
+													selectedText,
+													isProfile ?? this.settings.editing,
+													this,
+													this.app.workspace.getActiveFile()?.path
+												)
 											: convertMarkdown(
-												selectedText,
-												isProfile ?? this.settings.reading,
-												this
-											);
+													selectedText,
+													isProfile ?? this.settings.reading,
+													this
+												);
 									Promise.resolve(convertFn)
 										.then((converted) => {
 											selectedText = converted;
-
-											if (profile.copyAsHTML) {
-												const item = this.writeBlob(selectedText);
-												navigator.clipboard.write(item);
-											}
-
-											navigator.clipboard.writeText(selectedText);
+											this.writeToClipboard(selectedText, isProfile);
 										})
 										.catch((err) => {
 											console.error("Erreur pendant la conversion :", err);
 										});
 								} else {
-									if (profile.copyAsHTML) {
-										const item = this.writeBlob(selectedText);
-										navigator.clipboard.write(item);
-									}
-									navigator.clipboard.writeText(selectedText);
+									this.writeToClipboard(selectedText, isProfile);
 								}
 							}
 						}
@@ -445,7 +446,7 @@ export default class EnhancedCopy extends Plugin {
 					item.setTitle(i18next.t("commands.brute"));
 					item.setIcon("clipboard");
 					item.onClick(() => {
-						navigator.clipboard.writeText(copySelectionRange(editor, this));
+						this.writeToClipboard(copySelectionRange(editor, this));
 					});
 				});
 			})
@@ -456,11 +457,8 @@ export default class EnhancedCopy extends Plugin {
 			name: i18next.t("commands.brute"),
 			callback: () => {
 				const editor = this.app.workspace.activeEditor?.editor;
-				if (editor) {
-					navigator.clipboard.writeText(copySelectionRange(editor, this));
-				} else {
-					navigator.clipboard.writeText(activeWindow.getSelection()?.toString() ?? "");
-				}
+				if (editor) this.writeToClipboard(copySelectionRange(editor, this));
+				else this.writeToClipboard(activeWindow.getSelection()?.toString() ?? "");
 			},
 		});
 	}
@@ -482,10 +480,7 @@ export default class EnhancedCopy extends Plugin {
 	async loadSettings() {
 		const loadedData = await this.loadData();
 		try {
-			this.settings = merge(
-				DEFAULT_SETTINGS,
-				loadedData
-			) as unknown as EnhancedCopySettings;
+			this.settings = merge(DEFAULT_SETTINGS, loadedData);
 		} catch (_e) {
 			console.warn(
 				"[Enhanced copy] Error while deep merging settings, using default loading method"
@@ -509,5 +504,13 @@ export default class EnhancedCopy extends Plugin {
 		callFunction = callFunction.length > 0 ? callFunction : "main";
 		const date = new Date().toISOString().slice(11, 23);
 		console.log(`[${date}](${callFunction}):\n`, ...args);
+	}
+
+	async writeToClipboard(text: string, profile?: GlobalSettings) {
+		if (profile?.rtf) {
+			const item = this.writeBlob(text);
+			await navigator.clipboard.write(item);
+		}
+		await navigator.clipboard.writeText(text);
 	}
 }

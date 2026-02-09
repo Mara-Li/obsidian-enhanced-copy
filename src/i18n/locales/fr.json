@@ -155,5 +155,11 @@
   "rtf": {
     "name": "RTF",
     "desc": "Exporter le html en tant que « texte riche » au lieu du html simple."
+  },
+  "cssFile": {
+    "title": "Fichier CSS",
+    "desc": "Chemin vers le fichier CSS pour écraser le style dans la sortie HTML.",
+    "notFound": "Le fichier n'existe pas au chemin fourni.",
+    "invalid": "Le fichier n'est pas valide : il doit s'agir d'un fichier CSS."
   }
 }
