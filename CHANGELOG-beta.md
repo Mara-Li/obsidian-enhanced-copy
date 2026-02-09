@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0-0](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.0.2...1.1.0-0) (2026-02-09)
+
+
+### Features
+
+* export to RTF with support for style so it should works from edit view ([cf0cfcb](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/cf0cfcb1d9ca17f30e3ab4e56b0da78cd610f86e))
+
 ## [0.2.13-2](https://github.com/Lisandra-dev/copy-reading-in-markdown/compare/0.2.13-1...0.2.13-2) (2024-08-07)
 
 
