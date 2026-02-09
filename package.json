@@ -34,7 +34,7 @@
 	"main": "lib/main.js",
 	"name": "advanced-copy",
 	"scripts": {
-		"lint": "biome lint src/ --apply",
+		"lint": "biome check --write src --unsafe",
 		"prebuild": "tsc --noEmit --skipLibCheck",
 		"build": "node esbuild.config.mjs --production",
 		"dev:prod": "node esbuild.config.mjs --vault",

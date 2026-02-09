@@ -1,165 +1,165 @@
 {
-  "auto": {
-    "EQUAL": "等于",
-    "and": "",
-    "desc": "允许根据路径、标签或属性自动使用此配置文件。<br/>对于属性，将在<code>enhanced_copy</code>键上进行匹配。<br/>它还支持正则表达式(不需要用<code>/</code>包围)！",
-    "frontmatter": "属性",
-    "is": "",
-    "not": "不等于",
-    "or": "或",
-    "path": "路径",
-    "placeholder": "匹配值",
-    "tag": "标签",
-    "title": "自动使用"
-  },
-  "callout": {
-    "desc": "标注类型的格式。所有格式都将以块引用形式显示。",
-    "obsidian": "使用Obsidian的默认标注格式",
-    "remove": "移除类型和标题",
-    "removeKeepTitle": "保留标题但移除类型。",
-    "strong": "将类型转换为简单的粗体文本，保留标题",
-    "title": "标注类型"
-  },
-  "commands": {
-    "all": "复制选中文本",
-    "brute": "原生复制",
-    "editor": "从编辑视图复制选中文本",
-    "other": "从打开视图复制选中文本",
-    "reading": "从阅读视图复制选中文本"
-  },
-  "common": {
-    "add": "添加",
-    "cancel": "取消",
-    "delete": "删除",
-    "from": "从",
-    "pattern": "模式",
-    "profile": "配置文件名称",
-    "replacement": "替换",
-    "save": "保存",
-    "to": "到"
-  },
-  "convertDataview": {
-    "block": "代码块",
-    "djs": {
-      "title": "Dataview JS"
-    },
-    "dql": {
-      "title": "Dataview查询语言"
-    },
-    "global": {
-      "desc": "允许将dataview查询(内联DQL、Djs等)转换为markdown。\n并不总是有效，请谨慎使用。",
-      "title": "将Dataview查询转换为markdown"
-    },
-    "inline": "内联"
-  },
-  "copyAsHTML": "以HTML而非Markdown格式复制。某些选项可能不可用。",
-  "copyLinksAsText": {
-    "desc": "调整链接在复制到剪贴板时的格式化方式。",
-    "external": "仅移除内部链接的标记",
-    "keep": "保留标记",
-    "remove": "移除所有链接的标记",
-    "title": "链接格式"
-  },
-  "debug": {
-    "desc": "在控制台显示调试日志",
-    "title": "调试信息"
-  },
-  "edit": {
-    "desc": "编辑视图设置",
-    "title": "编辑"
-  },
-  "global": {
-    "copy": "在配置文件间复制设置",
-    "title": "通用参数"
-  },
-  "hardBreaks": {
-    "desc": "在每行末尾添加标准markdown换行符(行尾两个空格)。",
-    "title": "硬换行"
-  },
-  "highlight": {
-    "desc": "移除高亮标记(==)。",
-    "title": "高亮"
-  },
-  "hotkey": {
-    "desc": "为每种模式创建单独的命令。这允许您为每种模式分配不同的快捷键。⚠️️需要重新加载插件以应用更改。",
-    "title": "单独命令"
-  },
-  "links": "链接",
-  "log": {
-    "callout": {
-      "remove": "移除标注标题",
-      "title": "转换标注"
-    },
-    "editMode": "编辑模式",
-    "empty": "selectedText为空 // 回退到activeWindow.getSelection().toString()",
-    "noHardBreaks": "无硬换行 - 移除每行末尾的额外空格",
-    "readingMode": "阅读模式"
-  },
-  "modal": {
-    "copyView": {
-      "copy": "复制",
-      "editing": "编辑",
-      "reading": "阅读"
-    },
-    "replaceText": {
-      "down": "下移",
-      "title": "替换文本",
-      "up": "上移"
-    }
-  },
-  "openTextReplacer": "打开文本替换器",
-  "other": "其他选项",
-  "overrideCopy": {
-    "desc": "用增强复制替换原生复制(CTRL C、右键点击...)(需要重新加载Obsidian)",
-    "title": "覆盖原生复制"
-  },
-  "profile": {
-    "add": {
-      "desc": "添加复制配置文件。\n需要重新加载Obsidian才能将其用作命令。",
-      "title": "添加配置文件"
-    },
-    "delete": "删除配置文件"
-  },
-  "reading": {
-    "desc": "阅读视图设置",
-    "title": "阅读"
-  },
-  "removeFootnotesLinks": {
-    "desc": "调整脚注在复制到剪贴板时的格式化方式。",
-    "format": "移除所有链接但保留内容为[^1]",
-    "keep": "保留所有链接标记和内容",
-    "remove": "移除所有链接标记和内容",
-    "title": "脚注格式"
-  },
-  "spaceSize": {
-    "desc": "用于缩进的空格数。使用-1禁用转换。",
-    "title": "空格大小"
-  },
-  "tabSpaceSize": "用于缩进的空格数",
-  "tabToSpace": "将制表符转换为空格",
-  "unconventionalMarkdown": {
-    "desc": "移除非传统Markdown标记，因为它们不被所有Markdown解释器支持。",
-    "title": "非传统Markdown"
-  },
-  "view": {
-    "all": "所有视图",
-    "desc": "选择应在哪个视图上应用转换。",
-    "edit": "编辑视图",
-    "reading": "仅阅读视图",
-    "title": "应用设置"
-  },
-  "wikiToMarkdown": {
-    "desc": "在复制到剪贴板时必须编辑链接。如果禁用，链接格式的设置将被忽略。",
-    "title": "将wiki链接转换为Markdown链接"
-  },
-  "rtf": {
-    "name": "RTF",
-    "desc": "将html导出为\"富文本\"而非纯html。"
-  },
-  "cssFile": {
-    "title": "CSS file",
-    "desc": "Path to the CSS file to override the style in the HTML output.",
-    "notFound": "The file does not exist at the specified path.",
-    "invalid": "The file is invalid: it should be a CSS file."
-  }
+	"auto": {
+		"EQUAL": "等于",
+		"and": "",
+		"desc": "允许根据路径、标签或属性自动使用此配置文件。<br/>对于属性，将在<code>enhanced_copy</code>键上进行匹配。<br/>它还支持正则表达式(不需要用<code>/</code>包围)！",
+		"frontmatter": "属性",
+		"is": "",
+		"not": "不等于",
+		"or": "或",
+		"path": "路径",
+		"placeholder": "匹配值",
+		"tag": "标签",
+		"title": "自动使用"
+	},
+	"callout": {
+		"desc": "标注类型的格式。所有格式都将以块引用形式显示。",
+		"obsidian": "使用Obsidian的默认标注格式",
+		"remove": "移除类型和标题",
+		"removeKeepTitle": "保留标题但移除类型。",
+		"strong": "将类型转换为简单的粗体文本，保留标题",
+		"title": "标注类型"
+	},
+	"commands": {
+		"all": "复制选中文本",
+		"brute": "原生复制",
+		"editor": "从编辑视图复制选中文本",
+		"other": "从打开视图复制选中文本",
+		"reading": "从阅读视图复制选中文本"
+	},
+	"common": {
+		"add": "添加",
+		"cancel": "取消",
+		"delete": "删除",
+		"from": "从",
+		"pattern": "模式",
+		"profile": "配置文件名称",
+		"replacement": "替换",
+		"save": "保存",
+		"to": "到"
+	},
+	"convertDataview": {
+		"block": "代码块",
+		"djs": {
+			"title": "Dataview JS"
+		},
+		"dql": {
+			"title": "Dataview查询语言"
+		},
+		"global": {
+			"desc": "允许将dataview查询(内联DQL、Djs等)转换为markdown。\n并不总是有效，请谨慎使用。",
+			"title": "将Dataview查询转换为markdown"
+		},
+		"inline": "内联"
+	},
+	"copyAsHTML": "以HTML而非Markdown格式复制。某些选项可能不可用。",
+	"copyLinksAsText": {
+		"desc": "调整链接在复制到剪贴板时的格式化方式。",
+		"external": "仅移除内部链接的标记",
+		"keep": "保留标记",
+		"remove": "移除所有链接的标记",
+		"title": "链接格式"
+	},
+	"debug": {
+		"desc": "在控制台显示调试日志",
+		"title": "调试信息"
+	},
+	"edit": {
+		"desc": "编辑视图设置",
+		"title": "编辑"
+	},
+	"global": {
+		"copy": "在配置文件间复制设置",
+		"title": "通用参数"
+	},
+	"hardBreaks": {
+		"desc": "在每行末尾添加标准markdown换行符(行尾两个空格)。",
+		"title": "硬换行"
+	},
+	"highlight": {
+		"desc": "移除高亮标记(==)。",
+		"title": "高亮"
+	},
+	"hotkey": {
+		"desc": "为每种模式创建单独的命令。这允许您为每种模式分配不同的快捷键。⚠️️需要重新加载插件以应用更改。",
+		"title": "单独命令"
+	},
+	"links": "链接",
+	"log": {
+		"callout": {
+			"remove": "移除标注标题",
+			"title": "转换标注"
+		},
+		"editMode": "编辑模式",
+		"empty": "selectedText为空 // 回退到activeWindow.getSelection().toString()",
+		"noHardBreaks": "无硬换行 - 移除每行末尾的额外空格",
+		"readingMode": "阅读模式"
+	},
+	"modal": {
+		"copyView": {
+			"copy": "复制",
+			"editing": "编辑",
+			"reading": "阅读"
+		},
+		"replaceText": {
+			"down": "下移",
+			"title": "替换文本",
+			"up": "上移"
+		}
+	},
+	"openTextReplacer": "打开文本替换器",
+	"other": "其他选项",
+	"overrideCopy": {
+		"desc": "用增强复制替换原生复制(CTRL C、右键点击...)(需要重新加载Obsidian)",
+		"title": "覆盖原生复制"
+	},
+	"profile": {
+		"add": {
+			"desc": "添加复制配置文件。\n需要重新加载Obsidian才能将其用作命令。",
+			"title": "添加配置文件"
+		},
+		"delete": "删除配置文件"
+	},
+	"reading": {
+		"desc": "阅读视图设置",
+		"title": "阅读"
+	},
+	"removeFootnotesLinks": {
+		"desc": "调整脚注在复制到剪贴板时的格式化方式。",
+		"format": "移除所有链接但保留内容为[^1]",
+		"keep": "保留所有链接标记和内容",
+		"remove": "移除所有链接标记和内容",
+		"title": "脚注格式"
+	},
+	"spaceSize": {
+		"desc": "用于缩进的空格数。使用-1禁用转换。",
+		"title": "空格大小"
+	},
+	"tabSpaceSize": "用于缩进的空格数",
+	"tabToSpace": "将制表符转换为空格",
+	"unconventionalMarkdown": {
+		"desc": "移除非传统Markdown标记，因为它们不被所有Markdown解释器支持。",
+		"title": "非传统Markdown"
+	},
+	"view": {
+		"all": "所有视图",
+		"desc": "选择应在哪个视图上应用转换。",
+		"edit": "编辑视图",
+		"reading": "仅阅读视图",
+		"title": "应用设置"
+	},
+	"wikiToMarkdown": {
+		"desc": "在复制到剪贴板时必须编辑链接。如果禁用，链接格式的设置将被忽略。",
+		"title": "将wiki链接转换为Markdown链接"
+	},
+	"rtf": {
+		"name": "RTF",
+		"desc": "将html导出为\"富文本\"而非纯html。"
+	},
+	"cssFile": {
+		"title": "CSS file",
+		"desc": "Path to the CSS file to override the style in the HTML output.",
+		"notFound": "The file does not exist at the specified path.",
+		"invalid": "The file is invalid: it should be a CSS file."
+	}
 }

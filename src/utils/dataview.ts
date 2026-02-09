@@ -3,14 +3,14 @@
  * @link https://github.com/oleeskild/obsidian-digital-garden/blob/main/src/compiler/DataviewCompiler.ts
  */
 
-import { Component, htmlToMarkdown } from "obsidian";
-import type { GlobalSettings } from "../interface";
 import {
+	type DataviewApi,
 	getAPI,
 	isPluginEnabled,
-	type DataviewApi,
 	type Literal,
 } from "@enveloppe/obsidian-dataview";
+import { Component, htmlToMarkdown } from "obsidian";
+import type { GlobalSettings } from "../interface";
 import type EnhancedCopy from "../main";
 
 class DataviewCompiler {

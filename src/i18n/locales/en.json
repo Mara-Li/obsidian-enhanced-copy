@@ -1,165 +1,165 @@
 {
-  "auto": {
-    "EQUAL": "EQUAL TO",
-    "and": "",
-    "desc": "Allow to automatically use this profile based on the path, tag or properties.<br/>For properties, it will be matched on the <code>enhanced_copy</code> key.<br/>It also supports regex (without the need to enclose them in <code>/</code>)!",
-    "frontmatter": "Properties",
-    "is": "",
-    "not": "NOT EQUAL TO",
-    "or": "OR",
-    "path": "Path",
-    "placeholder": "Value to match",
-    "tag": "Tags",
-    "title": "Automatic use"
-  },
-  "callout": {
-    "desc": "Format of the callout type. All format will be in blockquote.",
-    "obsidian": "Use Obsidian's default callout format",
-    "remove": "Remove the type & title",
-    "removeKeepTitle": "Keeping the title but removing the type.",
-    "strong": "Convert the type to a simple strong text, keep the title",
-    "title": "Callout type"
-  },
-  "commands": {
-    "all": "Copy selected text",
-    "brute": "Native copy",
-    "editor": "Copy selected text from edit view",
-    "other": "Copy selected text from opened view",
-    "reading": "Copy selected text from reading view"
-  },
-  "common": {
-    "add": "Add",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "from": "From",
-    "pattern": "pattern",
-    "profile": "Profile name",
-    "replacement": "replacement",
-    "save": "Save",
-    "to": "To"
-  },
-  "convertDataview": {
-    "block": "Code block",
-    "djs": {
-      "title": "Dataview JS"
-    },
-    "dql": {
-      "title": "Dataview Query Language"
-    },
-    "global": {
-      "desc": "Allows you to convert dataview queries (inline DQL, Djs...) to markdown. \nDoes not always work, use with moderation.",
-      "title": "Convert Dataview queries to markdown"
-    },
-    "inline": "Inline"
-  },
-  "copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
-  "copyLinksAsText": {
-    "desc": "Adjust the way links are formatted when copying to the clipboard.",
-    "external": "Remove markup for internal links only",
-    "keep": "Keep markup",
-    "remove": "Remove markup for all links",
-    "title": "Links format"
-  },
-  "debug": {
-    "desc": "Show debug log in console",
-    "title": "Debug information"
-  },
-  "edit": {
-    "desc": "Edit view settings",
-    "title": "Edit"
-  },
-  "global": {
-    "copy": "Copy settings between profile",
-    "title": "General parameters"
-  },
-  "hardBreaks": {
-    "desc": "Add a standard markdown line break (two spaces at the end of the line) at the end of each line.",
-    "title": "Hard breaks"
-  },
-  "highlight": {
-    "desc": "Remove the highlight markup (==).",
-    "title": "Highlight"
-  },
-  "hotkey": {
-    "desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode. ⚠️️ You need to reload the plugin to apply the changes.",
-    "title": "Separate commands"
-  },
-  "links": "Links",
-  "log": {
-    "callout": {
-      "remove": "Remove callout title",
-      "title": "Convert callout"
-    },
-    "editMode": "Edit mode",
-    "empty": "selectedText is empty // Fallback on activeWindow.getSelection().toString()",
-    "noHardBreaks": "No hard breaks - Remove extra spaces at the end of each line",
-    "readingMode": "Reading mode"
-  },
-  "modal": {
-    "copyView": {
-      "copy": "Copy",
-      "editing": "Editing",
-      "reading": "Reading"
-    },
-    "replaceText": {
-      "down": "Move down",
-      "title": "Replace Text",
-      "up": "Move up"
-    }
-  },
-  "openTextReplacer": "Open Text replacer",
-  "other": "Other options",
-  "overrideCopy": {
-    "desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy (need a reload of Obsidian)",
-    "title": "Override native copy"
-  },
-  "profile": {
-    "add": {
-      "desc": "Add a copy profile. \nAn Obsidian reload is required to use it as a command.",
-      "title": "Add profile"
-    },
-    "delete": "Delete profile"
-  },
-  "reading": {
-    "desc": "Reading view settings",
-    "title": "Reading"
-  },
-  "removeFootnotesLinks": {
-    "desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
-    "format": "Remove all links but keep contents as [^1]",
-    "keep": "Keep all links markup and contents",
-    "remove": "Remove all links markup and contents",
-    "title": "Footnotes format"
-  },
-  "spaceSize": {
-    "desc": "Number of spaces to be used for indentation. Use -1 to disable the conversion.",
-    "title": "Space size"
-  },
-  "tabSpaceSize": "Number of spaces to be used for indentation",
-  "tabToSpace": "Convert tabs to spaces",
-  "unconventionalMarkdown": {
-    "desc": "Removed unconventional Markdown markup because they are not supported by all Markdown interpreters.",
-    "title": "Unconventional Markdown"
-  },
-  "view": {
-    "all": "All view",
-    "desc": "Choose on which view the conversion should be applied.",
-    "edit": "Edit view",
-    "reading": "Reading view only",
-    "title": "Apply settings"
-  },
-  "wikiToMarkdown": {
-    "desc": "Mandatory to edit the links when copying them to the clipboard. If disabled, the settings for links format will be ignored.",
-    "title": "Convert wiki links to Markdown link"
-  },
-  "rtf": {
-    "name": "RTF",
-    "desc": "Export the html as \"rich text\" instead of plain html."
-  },
-  "cssFile": {
-    "title": "CSS file",
-    "desc": "Path to the CSS file to override the style in the HTML output.",
-    "notFound": "The file does not exist at the specified path.",
-    "invalid": "The file is invalid: it should be a CSS file."
-  }
+	"auto": {
+		"EQUAL": "EQUAL TO",
+		"and": "",
+		"desc": "Allow to automatically use this profile based on the path, tag or properties.<br/>For properties, it will be matched on the <code>enhanced_copy</code> key.<br/>It also supports regex (without the need to enclose them in <code>/</code>)!",
+		"frontmatter": "Properties",
+		"is": "",
+		"not": "NOT EQUAL TO",
+		"or": "OR",
+		"path": "Path",
+		"placeholder": "Value to match",
+		"tag": "Tags",
+		"title": "Automatic use"
+	},
+	"callout": {
+		"desc": "Format of the callout type. All format will be in blockquote.",
+		"obsidian": "Use Obsidian's default callout format",
+		"remove": "Remove the type & title",
+		"removeKeepTitle": "Keeping the title but removing the type.",
+		"strong": "Convert the type to a simple strong text, keep the title",
+		"title": "Callout type"
+	},
+	"commands": {
+		"all": "Copy selected text",
+		"brute": "Native copy",
+		"editor": "Copy selected text from edit view",
+		"other": "Copy selected text from opened view",
+		"reading": "Copy selected text from reading view"
+	},
+	"common": {
+		"add": "Add",
+		"cancel": "Cancel",
+		"delete": "Delete",
+		"from": "From",
+		"pattern": "pattern",
+		"profile": "Profile name",
+		"replacement": "replacement",
+		"save": "Save",
+		"to": "To"
+	},
+	"convertDataview": {
+		"block": "Code block",
+		"djs": {
+			"title": "Dataview JS"
+		},
+		"dql": {
+			"title": "Dataview Query Language"
+		},
+		"global": {
+			"desc": "Allows you to convert dataview queries (inline DQL, Djs...) to markdown. \nDoes not always work, use with moderation.",
+			"title": "Convert Dataview queries to markdown"
+		},
+		"inline": "Inline"
+	},
+	"copyAsHTML": "Copy as HTML instead of Markdown. Some options may not be available.",
+	"copyLinksAsText": {
+		"desc": "Adjust the way links are formatted when copying to the clipboard.",
+		"external": "Remove markup for internal links only",
+		"keep": "Keep markup",
+		"remove": "Remove markup for all links",
+		"title": "Links format"
+	},
+	"debug": {
+		"desc": "Show debug log in console",
+		"title": "Debug information"
+	},
+	"edit": {
+		"desc": "Edit view settings",
+		"title": "Edit"
+	},
+	"global": {
+		"copy": "Copy settings between profile",
+		"title": "General parameters"
+	},
+	"hardBreaks": {
+		"desc": "Add a standard markdown line break (two spaces at the end of the line) at the end of each line.",
+		"title": "Hard breaks"
+	},
+	"highlight": {
+		"desc": "Remove the highlight markup (==).",
+		"title": "Highlight"
+	},
+	"hotkey": {
+		"desc": "Create a separate command for each mode. This allows you to assign a different hotkey for each mode. ⚠️️ You need to reload the plugin to apply the changes.",
+		"title": "Separate commands"
+	},
+	"links": "Links",
+	"log": {
+		"callout": {
+			"remove": "Remove callout title",
+			"title": "Convert callout"
+		},
+		"editMode": "Edit mode",
+		"empty": "selectedText is empty // Fallback on activeWindow.getSelection().toString()",
+		"noHardBreaks": "No hard breaks - Remove extra spaces at the end of each line",
+		"readingMode": "Reading mode"
+	},
+	"modal": {
+		"copyView": {
+			"copy": "Copy",
+			"editing": "Editing",
+			"reading": "Reading"
+		},
+		"replaceText": {
+			"down": "Move down",
+			"title": "Replace Text",
+			"up": "Move up"
+		}
+	},
+	"openTextReplacer": "Open Text replacer",
+	"other": "Other options",
+	"overrideCopy": {
+		"desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy (need a reload of Obsidian)",
+		"title": "Override native copy"
+	},
+	"profile": {
+		"add": {
+			"desc": "Add a copy profile. \nAn Obsidian reload is required to use it as a command.",
+			"title": "Add profile"
+		},
+		"delete": "Delete profile"
+	},
+	"reading": {
+		"desc": "Reading view settings",
+		"title": "Reading"
+	},
+	"removeFootnotesLinks": {
+		"desc": "Adjust the way footnotes are formatted when copying them to the clipboard.",
+		"format": "Remove all links but keep contents as [^1]",
+		"keep": "Keep all links markup and contents",
+		"remove": "Remove all links markup and contents",
+		"title": "Footnotes format"
+	},
+	"spaceSize": {
+		"desc": "Number of spaces to be used for indentation. Use -1 to disable the conversion.",
+		"title": "Space size"
+	},
+	"tabSpaceSize": "Number of spaces to be used for indentation",
+	"tabToSpace": "Convert tabs to spaces",
+	"unconventionalMarkdown": {
+		"desc": "Removed unconventional Markdown markup because they are not supported by all Markdown interpreters.",
+		"title": "Unconventional Markdown"
+	},
+	"view": {
+		"all": "All view",
+		"desc": "Choose on which view the conversion should be applied.",
+		"edit": "Edit view",
+		"reading": "Reading view only",
+		"title": "Apply settings"
+	},
+	"wikiToMarkdown": {
+		"desc": "Mandatory to edit the links when copying them to the clipboard. If disabled, the settings for links format will be ignored.",
+		"title": "Convert wiki links to Markdown link"
+	},
+	"rtf": {
+		"name": "RTF",
+		"desc": "Export the html as \"rich text\" instead of plain html."
+	},
+	"cssFile": {
+		"title": "CSS file",
+		"desc": "Path to the CSS file to override the style in the HTML output.",
+		"notFound": "The file does not exist at the specified path.",
+		"invalid": "The file is invalid: it should be a CSS file."
+	}
 }
