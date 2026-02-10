@@ -99,7 +99,6 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 	}
 
 	html(settings: GlobalSettings, type: "reading" | "edit" = "reading") {
-		console.log(type);
 		new Setting(this.settingsPage)
 			.setName(i18next.t("copyAsHTML"))
 			.addToggle((toggle) => {
