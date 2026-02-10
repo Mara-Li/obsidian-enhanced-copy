@@ -111,7 +111,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		if (settings.copyAsHTML) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("rtf.name"))
-				.setDesc(i18next.t("rtf.desc"))
+				.setDesc(`${i18next.t("rtf.desc")}`)
 				.addToggle((toggle) => {
 					toggle.setValue(settings.rtf ?? false).onChange(async (value) => {
 						settings.rtf = value;
@@ -122,7 +122,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			if (settings.rtf) {
 				new Setting(this.settingsPage)
 					.setName(i18next.t("cssFile.title"))
-					.setDesc(i18next.t("cssFile.desc"))
+					.setDesc(sanitizeHTMLToDom(`${i18next.t("cssFile.desc")}<br>${i18next.t("cssFile.link",{link: `<a href="https://github.com/Mara-Li/obsidian-enhanced-copy/blob/master/src/utils/loadCssForHtml.ts#L3-L195">${i18next.t("common.here")}</a>`})}`))
 					.addText((text) => {
 						text
 							.setPlaceholder(".obsidian/snippets/export.css")
