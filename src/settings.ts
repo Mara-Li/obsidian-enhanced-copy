@@ -136,37 +136,39 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 								settings.cssFile = value;
 							});
 						text.inputEl.onblur = async () => {
-							const value = normalizePath(text.getValue());
+							let value = text.getValue();
 							text.inputEl.classList.remove("error");
-							if (value.trim() === "") {
+							if (value.trim() === "" || !value.length) {
 								settings.cssFile = undefined;
 								//unload
 								this.plugin.profileCSS.set(settings?.name ?? type, DEFAULT_CSS);
+								await this.plugin.saveSettings();
 								return;
 							}
-							if (!value.endsWith(".css")) {
+							if (!value.length && !value.endsWith(".css")) {
 								new Notice(i18next.t("cssFile.invalid"));
 								text.inputEl.classList.add("error");
 								this.plugin.profileCSS.set(settings?.name ?? type, DEFAULT_CSS);
 								return;
 							}
+							value = normalizePath(value);
 							if (!(await this.app.vault.adapter.exists(value))) {
 								new Notice(i18next.t("cssFile.notFound"));
 								text.inputEl.classList.add("error");
 								this.plugin.profileCSS.set(settings?.name ?? type, DEFAULT_CSS);
-								return;
+							} else {
+								settings.cssFile = value;
+								await this.plugin.saveSettings();
+								if (this.plugin.profileAlreadyIn.has(value)) {
+									const profileWithCss = this.plugin.profileAlreadyIn.get(value)!;
+									const cssAlreadyLoaded = this.plugin.profileCSS.get(profileWithCss)!;
+									this.plugin.profileCSS.set(settings.name ?? type, cssAlreadyLoaded);
+								} else
+									this.plugin.profileCSS.set(
+										settings.name ?? type,
+										await loadCssFile(this.plugin, value)
+									);
 							}
-							settings.cssFile = value;
-							await this.plugin.saveSettings();
-							if (this.plugin.profileAlreadyIn.has(value)) {
-								const profileWithCss = this.plugin.profileAlreadyIn.get(value)!;
-								const cssAlreadyLoaded = this.plugin.profileCSS.get(profileWithCss)!;
-								this.plugin.profileCSS.set(settings.name ?? type, cssAlreadyLoaded);
-							} else
-								this.plugin.profileCSS.set(
-									settings.name ?? type,
-									await loadCssFile(this.plugin, value)
-								);
 						};
 					});
 			}
