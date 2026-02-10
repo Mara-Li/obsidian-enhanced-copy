@@ -46,6 +46,6 @@
 		"deploy": "pnpm run export"
 	},
 	"private": true,
-	"version": "1.1.0-2",
+	"version": "1.1.0-3",
 	"pnpm": true
 }

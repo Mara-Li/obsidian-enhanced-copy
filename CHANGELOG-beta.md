@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0-3](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-2...1.1.0-3) (2026-02-10)
+
+
+### Bug Fixes
+
+* fail loading & broken path when removing the css file ([340e420](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/340e420e9660d5ede5c8a9ff6f5890de4a8c4e89))
+* load CSS one time only at startup or during configuration ([244207e](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/244207eb3854210e274b269358c298cc0b839ec9))
+
 ## [1.1.0-2](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-1...1.1.0-2) (2026-02-10)
 
 
