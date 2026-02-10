@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0-2](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-1...1.1.0-2) (2026-02-10)
+
+
+### Bug Fixes
+
+* update descriptions for RTF and CSS file settings ([d3172f2](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/d3172f2c99af3fe06b0122ac2b24e94ea1efa244))
+
 ## [1.1.0-1](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-0...1.1.0-1) (2026-02-10)
 
 ## [1.1.0-0](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.0.2...1.1.0-0) (2026-02-09)
