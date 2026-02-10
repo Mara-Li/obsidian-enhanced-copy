@@ -15,8 +15,8 @@ body {
    Paragraphs & text
    ========================= */
 
-p {
-  margin: 0 0 8pt 0;
+strong, em, del, p, * {
+  color: inherit;
 }
 
 strong {
