@@ -17,9 +17,11 @@ import {
 	DEFAULT_SETTINGS,
 	type EnhancedCopySettings,
 	type GlobalSettings,
+	type ProfileCSS,
 } from "./interface";
 import { EnhancedCopySettingTab } from "./settings";
 import { convertEditMarkdown, convertMarkdown } from "./utils/conversion";
+import { DEFAULT_CSS, loadCssFile } from "./utils/loadCssForHtml";
 import { removeDataBasePluginRelationShip } from "./utils/pluginFix";
 import {
 	canvasSelectionText,
@@ -31,6 +33,8 @@ export default class EnhancedCopy extends Plugin {
 	settings: EnhancedCopySettings = DEFAULT_SETTINGS;
 	//eslint-disable-next-line @typescript-eslint/no-explicit-any
 	activeMonkeys: Record<string, any> = {};
+	profileCSS: ProfileCSS = new Map();
+	profileAlreadyIn: Map<string, string> = new Map();
 
 	checkByRules(rule: AutoRules, path: string, tags: string[], frontmatter?: string[]) {
 		if (rule.type === "path" && path.match(rule.value)) {
@@ -133,15 +137,25 @@ export default class EnhancedCopy extends Plugin {
 		const applyingTo = profile?.applyingTo ?? this.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
 			if (applyingTo === ApplyingToView.All || applyingTo === viewIn) {
-				selectedText =
-					viewIn === ApplyingToView.Edit
-						? await convertEditMarkdown(
-								selectedText,
-								profile ?? this.settings.editing,
-								this,
-								file?.path
-							)
-						: convertMarkdown(selectedText, profile ?? this.settings.reading, this);
+				if (viewIn === ApplyingToView.Reading) {
+					if (exportAsRtf) {
+						const css = this.profileCSS.get(profile?.name ?? "reading") ?? DEFAULT_CSS;
+						selectedText = `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${selectedText}</body></html>`;
+					} else if (!exportAsHTML) {
+						selectedText = convertMarkdown(
+							selectedText,
+							profile ?? this.settings.reading,
+							this
+						);
+					}
+				} else if (viewIn === ApplyingToView.Edit) {
+					selectedText = await convertEditMarkdown(
+						selectedText,
+						profile ?? this.settings.editing,
+						this,
+						file?.path
+					);
+				}
 			}
 			return {
 				selectedText,
@@ -174,7 +188,6 @@ export default class EnhancedCopy extends Plugin {
 		// Intercepter directement l'événement copy au niveau du DOM
 		const copyHandler = async (event: ClipboardEvent) => {
 			const { selectedText, exportAsHTML } = await this.enhancedCopy();
-
 			if (selectedText && selectedText.trim().length > 0) {
 				event.preventDefault();
 				event.clipboardData?.setData(
@@ -261,6 +274,16 @@ export default class EnhancedCopy extends Plugin {
 					return false;
 				},
 			});
+			if (profile.cssFile) {
+				if (this.profileAlreadyIn.has(profile.cssFile)) {
+					this.profileCSS.set(profile.name, this.profileCSS.get(profile.cssFile)!);
+					continue;
+				}
+				const css = await loadCssFile(this, profile.cssFile);
+				//prevent loading the same css multiple times if multiple profiles use the same css file
+				this.profileCSS.set(profile.name, css);
+				this.profileAlreadyIn.set(profile.cssFile, profile.name);
+			} else this.profileCSS.set(profile.name, DEFAULT_CSS);
 		}
 
 		if (
@@ -318,8 +341,12 @@ export default class EnhancedCopy extends Plugin {
 								const profile =
 									this.getProfile(ApplyingToView.Reading) ?? this.settings.reading;
 								let selectedText = getSelectionAsHTML(profile);
-								if (!this.settings.copyAsHTML) {
+								if (!profile.copyAsHTML) {
 									selectedText = convertMarkdown(selectedText, profile, this);
+								} else if (profile.rtf) {
+									const css =
+										this.profileCSS.get(profile.name ?? "reading") ?? DEFAULT_CSS;
+									selectedText = `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${selectedText}</body></html>`;
 								}
 								this.writeToClipboard(selectedText, profile);
 							}

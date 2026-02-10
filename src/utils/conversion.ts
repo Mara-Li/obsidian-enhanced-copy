@@ -8,7 +8,6 @@ import {
 } from "../interface";
 import type EnhancedCopy from "../main";
 import { convertDataviewQueries } from "./dataview";
-import { loadCssFile } from "./loadCssForHtml";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -256,7 +255,7 @@ export function convertMarkdown(
 	overrides: GlobalSettings,
 	plugin: EnhancedCopy
 ): string {
-	return removeEmptyLineBeforeList(
+	const res = removeEmptyLineBeforeList(
 		convertSpaceSize(
 			convertCallout(
 				hardBreak(
@@ -279,6 +278,7 @@ export function convertMarkdown(
 			overrides
 		)
 	);
+	return res;
 }
 
 export async function convertEditMarkdown(
@@ -319,7 +319,7 @@ async function markdownToHtml(
 	component.unload();
 	const html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
 	if (overrides.rtf) {
-		const css = await loadCssFile(plugin, overrides.cssFile);
+		const css = plugin.profileCSS.get(overrides.name ?? "edit");
 		return `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${html}</body></html>`;
 	}
 	return html;

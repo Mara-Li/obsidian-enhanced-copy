@@ -192,3 +192,5 @@ export enum CopySettingsView {
 	Reading = "reading",
 	Editing = "editing",
 }
+
+export type ProfileCSS = Map<string, string>;

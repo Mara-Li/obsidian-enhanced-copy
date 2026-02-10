@@ -21,6 +21,7 @@ import {
 } from "./interface";
 import type EnhancedCopy from "./main";
 import { AllReplaceTextModal, EnhancedCopyViewModal, NameProfile } from "./modal";
+import { DEFAULT_CSS, loadCssFile } from "./utils/loadCssForHtml";
 
 // noinspection JSClassNamingConvention
 interface Tab {
@@ -122,7 +123,11 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			if (settings.rtf) {
 				new Setting(this.settingsPage)
 					.setName(i18next.t("cssFile.title"))
-					.setDesc(sanitizeHTMLToDom(`${i18next.t("cssFile.desc")}<br>${i18next.t("cssFile.link",{link: `<a href="https://github.com/Mara-Li/obsidian-enhanced-copy/blob/master/src/utils/loadCssForHtml.ts#L3-L195">${i18next.t("common.here")}</a>`})}`))
+					.setDesc(
+						sanitizeHTMLToDom(
+							`${i18next.t("cssFile.desc")}<br>${i18next.t("cssFile.link", { link: `<a href="https://github.com/Mara-Li/obsidian-enhanced-copy/blob/master/src/utils/loadCssForHtml.ts#L3-L195">${i18next.t("common.here")}</a>` })}`
+						)
+					)
 					.addText((text) => {
 						text
 							.setPlaceholder(".obsidian/snippets/export.css")
@@ -135,20 +140,33 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 							text.inputEl.classList.remove("error");
 							if (value.trim() === "") {
 								settings.cssFile = undefined;
+								//unload
+								this.plugin.profileCSS.set(settings?.name ?? type, DEFAULT_CSS);
 								return;
 							}
 							if (!value.endsWith(".css")) {
 								new Notice(i18next.t("cssFile.invalid"));
 								text.inputEl.classList.add("error");
+								this.plugin.profileCSS.set(settings?.name ?? type, DEFAULT_CSS);
 								return;
 							}
 							if (!(await this.app.vault.adapter.exists(value))) {
 								new Notice(i18next.t("cssFile.notFound"));
 								text.inputEl.classList.add("error");
+								this.plugin.profileCSS.set(settings?.name ?? type, DEFAULT_CSS);
 								return;
 							}
 							settings.cssFile = value;
 							await this.plugin.saveSettings();
+							if (this.plugin.profileAlreadyIn.has(value)) {
+								const profileWithCss = this.plugin.profileAlreadyIn.get(value)!;
+								const cssAlreadyLoaded = this.plugin.profileCSS.get(profileWithCss)!;
+								this.plugin.profileCSS.set(settings.name ?? type, cssAlreadyLoaded);
+							} else
+								this.plugin.profileCSS.set(
+									settings.name ?? type,
+									await loadCssFile(this.plugin, value)
+								);
 						};
 					});
 			}

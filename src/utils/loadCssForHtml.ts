@@ -1,6 +1,6 @@
 import type EnhancedCopy from "../main";
 
-const defaultCSS = `
+export const DEFAULT_CSS = `
 /* =========================
    Base document
    ========================= */
@@ -199,12 +199,12 @@ export async function loadCssFile(
 	cssFilePath?: string
 ): Promise<string> {
 	if (!cssFilePath) {
-		return defaultCSS;
+		return DEFAULT_CSS;
 	}
 	const cssFile = await plugin.app.vault.adapter.exists(cssFilePath);
 	if (!cssFile) {
 		console.warn(`CSS file not found at path: ${cssFilePath}. Using default CSS.`);
-		return defaultCSS;
+		return DEFAULT_CSS;
 	}
 	try {
 		const css = await plugin.app.vault.adapter.read(cssFilePath);
@@ -215,7 +215,7 @@ export async function loadCssFile(
 			`Error reading CSS file at path: ${cssFilePath}. Using default CSS.`,
 			error
 		);
-		return defaultCSS;
+		return DEFAULT_CSS;
 	}
 }
 
