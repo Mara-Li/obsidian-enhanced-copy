@@ -169,7 +169,7 @@ function hardBreak(
 		markdown = markdown.replace(/ *\n/g, "  \n");
 		markdown += "  ";
 	} else {
-		plugin.devLog(i18next.t("log.noHardBreaks"));
+		plugin.core.devLog(i18next.t("log.noHardBreaks"));
 		markdown = markdown.replace(/ *\n/g, "\n");
 	}
 	return markdown;
@@ -180,13 +180,13 @@ function convertCallout(
 	overrides: GlobalSettings,
 	plugin: EnhancedCopy
 ): string {
-	plugin.devLog(i18next.t("log.callout.title"), overrides.callout);
+	plugin.core.devLog(i18next.t("log.callout.title"), overrides.callout);
 	const calloutRegex = /^>* *\[!(\w+)\|?(.*)\] *(.*)$/gm;
 	if (
 		overrides.callout === CalloutKeepType.RemoveKeepTitle ||
 		overrides.callout === CalloutKeepType.Remove
 	) {
-		plugin.devLog(i18next.t("log.callout.remove"));
+		plugin.core.devLog(i18next.t("log.callout.remove"));
 		//delete the type of the callout
 		markdown = markdown.replace(calloutRegex, (_match, _p1, _p2, p3) => {
 			if (p3 === "") {

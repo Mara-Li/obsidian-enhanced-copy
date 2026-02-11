@@ -107,7 +107,7 @@ export function copySelectionRange(editor: Editor, plugin: EnhancedCopy): string
 	selectedText = selectedText.substring(0, selectedText.length - 1);
 	if (selectedText === "") {
 		const getSelection = activeWindow.getSelection();
-		plugin.devLog(i18next.t("log.empty"));
+		plugin.core.devLog(i18next.t("log.empty"));
 		return getSelection === null ? "" : getSelection.toString();
 	}
 	return selectedText;
