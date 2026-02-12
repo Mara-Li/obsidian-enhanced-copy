@@ -35,7 +35,7 @@ class DataviewCompiler {
 		return filepath.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 	}
 
-	dvJsMatch() {
+	private dvJsMatch() {
 		const dataviewJsPrefix = this.dvApi.settings.dataviewJsKeyword || "dataviewjs";
 		const dataViewJsRegex = new RegExp(
 			`\`\`\`${this.escapeRegex(dataviewJsPrefix)}\\s(.+?)\`\`\``,
@@ -44,7 +44,7 @@ class DataviewCompiler {
 		return this.sourceText.matchAll(dataViewJsRegex);
 	}
 
-	dvInlineQueryMatches() {
+	private dvInlineQueryMatches() {
 		const inlineQueryPrefix = this.dvApi.settings.inlineQueryPrefix || "=";
 		const inlineDataViewRegex = new RegExp(
 			`\`${this.escapeRegex(inlineQueryPrefix)}(.+?)\``,
@@ -53,7 +53,7 @@ class DataviewCompiler {
 		return this.sourceText.matchAll(inlineDataViewRegex);
 	}
 
-	dvInlineJSMatches() {
+	private dvInlineJSMatches() {
 		const inlineJsQueryPrefix = this.dvApi.settings.inlineJsQueryPrefix || "$=";
 		const inlineJsDataViewRegex = new RegExp(
 			`\`${this.escapeRegex(inlineJsQueryPrefix)}(.+?)\``,
@@ -224,7 +224,8 @@ export async function convertDataviewQueries(
 			try {
 				const block = queryBlock[0];
 				const markdown = await compiler.dataviewDQL(queryBlock[1]);
-				replacedText = replacedText.replace(block, markdown);
+				if (!markdown.includes("Evaluation Error"))
+					replacedText = replacedText.replace(block, markdown);
 			} catch (e) {
 				console.error(e);
 				return queryBlock[0];
@@ -239,7 +240,8 @@ export async function convertDataviewQueries(
 			try {
 				const block = queryBlock[0];
 				const markdown = await compiler.dataviewJS(queryBlock[1]);
-				replacedText = replacedText.replace(block, markdown);
+				if (!markdown.includes("Evaluation Error"))
+					replacedText = replacedText.replace(block, markdown);
 			} catch (e) {
 				console.error(e);
 				return queryBlock[0];
@@ -254,7 +256,8 @@ export async function convertDataviewQueries(
 				const code = inlineQuery[0];
 				const query = inlineQuery[1].trim();
 				const markdown = await compiler.inlineDQLDataview(query);
-				replacedText = replacedText.replace(code, markdown);
+				if (!markdown.includes("Evaluation Error"))
+					replacedText = replacedText.replace(code, markdown);
 			} catch (e) {
 				console.error(e);
 				return inlineQuery[0];
@@ -267,7 +270,8 @@ export async function convertDataviewQueries(
 			try {
 				const code = inlineJsQuery[0];
 				const markdown = await compiler.inlineDataviewJS(inlineJsQuery[1].trim());
-				replacedText = replacedText.replace(code, markdown);
+				if (!markdown.includes("Evaluation Error"))
+					replacedText = replacedText.replace(code, markdown);
 			} catch (e) {
 				console.error(e);
 				return inlineJsQuery[0];
