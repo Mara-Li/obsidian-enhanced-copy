@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0-4](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-3...1.1.0-4) (2026-02-12)
+
+
+### Bug Fixes
+
+* shouldn't replace when error found in DV ([526aef5](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/526aef5f1b8f101fa137346c27b323d4d97ee269))
+
 ## [1.1.0-3](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-2...1.1.0-3) (2026-02-10)
 
 
