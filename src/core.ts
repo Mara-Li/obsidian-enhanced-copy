@@ -5,6 +5,7 @@ import {
 	ItemView,
 	MarkdownView,
 	Platform,
+	type TFile,
 	type WorkspaceLeaf,
 } from "obsidian";
 
@@ -47,8 +48,8 @@ export class EnhancedCopyCore {
 		);
 	}
 
-	getProfile(viewOfType?: ApplyingToView) {
-		const activeFile = this.plugin.app.workspace.getActiveFile();
+	getProfile(viewOfType?: ApplyingToView, activeFile?: TFile | null) {
+		if (!activeFile) activeFile = this.plugin.app.workspace.getActiveFile();
 		if (!activeFile) return;
 		const path = activeFile.path;
 		const cache = this.plugin.app.metadataCache.getFileCache(activeFile);
@@ -523,10 +524,10 @@ export class EnhancedCopyCore {
 						this.writeToClipboard(copySelectionRange(editor, this.plugin));
 					});
 				});
-				const profile = this.getProfile() ?? this.getDefaultProfile();
-				if (profile.rtf) {
+				const profile = this.getProfile(ApplyingToView.Edit,view.file) || this.getDefaultProfile();
+				if (profile.copyAsHTML && profile.rtf) {
 					menu.addItem((item) => {
-						item.setTitle("Copy as HTML");
+						item.setTitle(i18next.t("commands.copyAsHtml"));
 						item.setIcon("clipboard");
 						item.onClick(async () => {
 							const file = view.file;
