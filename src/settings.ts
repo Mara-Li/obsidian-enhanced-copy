@@ -55,7 +55,12 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		},
 	];
 
-	createReadingSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean, html: boolean = true) {
+	createReadingSettings(
+		settings: GlobalSettings,
+		profile?: boolean,
+		noRegex?: boolean,
+		html: boolean = true
+	) {
 		new Setting(this.settingsPage).setName(i18next.t("reading.desc")).setHeading();
 		if (html) this.html(settings ?? "reading");
 		if (!settings.copyAsHTML) {
@@ -175,7 +180,12 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		}
 	}
 
-	createEditSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean, html = true) {
+	createEditSettings(
+		settings: GlobalSettings,
+		profile?: boolean,
+		noRegex?: boolean,
+		html = true
+	) {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
 		if (html) this.html(settings, "edit");
 
