@@ -515,7 +515,7 @@ export class EnhancedCopyCore {
 
 		//file menu
 		this.plugin.registerEvent(
-			this.plugin.app.workspace.on("editor-menu", (menu, editor, _view) => {
+			this.plugin.app.workspace.on("editor-menu", (menu, editor, view) => {
 				menu.addItem((item) => {
 					item.setTitle(i18next.t("commands.brute"));
 					item.setIcon("clipboard");
@@ -523,6 +523,28 @@ export class EnhancedCopyCore {
 						this.writeToClipboard(copySelectionRange(editor, this.plugin));
 					});
 				});
+				const profile = this.getProfile() ?? this.getDefaultProfile();
+				if (profile.rtf) {
+					menu.addItem((item) => {
+						item.setTitle("Copy as HTML");
+						item.setIcon("clipboard");
+						item.onClick(async () => {
+							const file = view.file;
+							let selectedText = copySelectionRange(editor, this.plugin);
+							if (selectedText && selectedText.trim().length > 0) {
+								const profile =
+									this.getProfile(ApplyingToView.Edit) ?? this.plugin.settings.editing;
+								selectedText = await convertEditMarkdown(
+									selectedText,
+									profile,
+									this.plugin,
+									file?.path
+								);
+								await this.writeToClipboard(selectedText, profile);
+							}
+						});
+					});
+				}
 			})
 		);
 
