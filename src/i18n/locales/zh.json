@@ -25,7 +25,8 @@
 		"brute": "原生复制",
 		"editor": "从编辑视图复制选中文本",
 		"other": "从打开视图复制选中文本",
-		"reading": "从阅读视图复制选中文本"
+		"reading": "从阅读视图复制选中文本",
+		"copyAsHtml" : "Copy as HTML"
 	},
 	"common": {
 		"add": "添加",

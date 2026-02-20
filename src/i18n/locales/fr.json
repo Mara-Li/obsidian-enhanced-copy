@@ -25,7 +25,8 @@
 		"brute": "Copie native",
 		"editor": "Copier le texte sélectionné depuis l'éditeur",
 		"other": "Copier le texte sélectionné depuis la vue non markdown",
-		"reading": "Copier le texte sélectionné depuis la vue de lecture"
+		"reading": "Copier le texte sélectionné depuis la vue de lecture",
+		"copyAsHtml" : "Copier en HTML"
 	},
 	"common": {
 		"add": "Ajouter",

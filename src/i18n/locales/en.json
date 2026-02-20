@@ -25,7 +25,8 @@
 		"brute": "Native copy",
 		"editor": "Copy selected text from edit view",
 		"other": "Copy selected text from opened view",
-		"reading": "Copy selected text from reading view"
+		"reading": "Copy selected text from reading view",
+		"copyAsHtml" : "Copy as HTML"
 	},
 	"common": {
 		"add": "Add",
