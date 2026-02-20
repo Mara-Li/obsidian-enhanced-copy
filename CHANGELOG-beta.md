@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0-5](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-4...1.1.0-5) (2026-02-20)
+
+
+### Features
+
+* add 'Copy as HTML' option to English, French, and Chinese locales ([fab0350](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/fab035090181cc617ff16ef358f5a17076e9adf2))
+* add file menu to copy as HTML ([8c1b9f2](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/8c1b9f29080a53abbbd5cf1bc01f6887c388ebe7))
+
+
+### Bug Fixes
+
+* profil all switch copy as HTML ([cfad6c1](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/cfad6c1bee91e427f616050683b5abf32906949a))
+* update getProfile method to accept activeFile parameter and improve profile retrieval ([e448d19](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/e448d19f08cfcace46be24f745cabd88465664af))
+
 ## [1.1.0-4](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-3...1.1.0-4) (2026-02-12)
 
 
