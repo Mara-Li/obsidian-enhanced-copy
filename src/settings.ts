@@ -55,9 +55,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		},
 	];
 
-	createReadingSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
+	createReadingSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean, html: boolean = true) {
 		new Setting(this.settingsPage).setName(i18next.t("reading.desc")).setHeading();
-		this.html(settings ?? "reading");
+		if (html) this.html(settings ?? "reading");
 		if (!settings.copyAsHTML) {
 			new Setting(this.settingsPage)
 				.setName(i18next.t("links"))
@@ -175,10 +175,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		}
 	}
 
-	createEditSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean) {
+	createEditSettings(settings: GlobalSettings, profile?: boolean, noRegex?: boolean, html = true) {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
-
-		this.html(settings, "edit");
+		if (html) this.html(settings, "edit");
 
 		if (this.app.plugins.enabledPlugins.has("dataview")) {
 			if (!settings.convertDataview)
@@ -529,8 +528,9 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				});
 		}
 		if (profile.applyingTo === ApplyingToView.All) {
-			this.createReadingSettings(profile, true, true);
-			this.createEditSettings(profile, true, true);
+			this.html(profile, "edit");
+			this.createReadingSettings(profile, true, true, false);
+			this.createEditSettings(profile, true, true, false);
 			this.regexReplacementButton(profile);
 		} else if (profile.applyingTo === ApplyingToView.Reading) {
 			this.createReadingSettings(profile, true);
