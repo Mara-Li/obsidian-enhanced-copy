@@ -356,9 +356,19 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		if (this.settings.applyingTo === ApplyingToView.Reading) {
 			this.tab.push(this.reading);
 			this.tab.remove(this.edit);
+			if (this.settings.editing.overrideNativeCopy) {
+				this.settings.editing.overrideNativeCopy = false;
+				new Notice(i18next.t("overrideCopy.editingNotice"));
+				this.plugin.saveSettings().then();
+			}
 		} else if (this.settings.applyingTo === ApplyingToView.Edit) {
 			this.tab.push(this.edit);
 			this.tab.remove(this.reading);
+			if (this.settings.reading.overrideNativeCopy) {
+				this.settings.reading.overrideNativeCopy = false;
+				new Notice(i18next.t("overrideCopy.readingNotice"));
+				this.plugin.saveSettings().then();
+			}
 		} else {
 			this.tab.push(this.edit);
 			this.tab.push(this.reading);
