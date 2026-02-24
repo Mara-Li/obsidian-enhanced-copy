@@ -514,7 +514,7 @@ export class EnhancedCopyCore {
 			}
 		}
 
-		//file menu
+		/* EDITOR menu */
 		this.plugin.registerEvent(
 			this.plugin.app.workspace.on("editor-menu", (menu, editor, view) => {
 				menu.addItem((item) => {
@@ -524,7 +524,8 @@ export class EnhancedCopyCore {
 						this.writeToClipboard(copySelectionRange(editor, this.plugin));
 					});
 				});
-				const profile = this.getProfile(ApplyingToView.Edit,view.file) || this.getDefaultProfile();
+				const profile =
+					this.getProfile(ApplyingToView.Edit, view.file) || this.getDefaultProfile();
 				if (profile.copyAsHTML && profile.rtf) {
 					menu.addItem((item) => {
 						item.setTitle(i18next.t("commands.copyAsHtml"));
