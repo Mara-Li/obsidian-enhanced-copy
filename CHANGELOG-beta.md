@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0-6](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-5...1.1.0-6) (2026-02-24)
+
+
+### Bug Fixes
+
+* should disable the override native copy when disabling a mode ([bb8d47d](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/bb8d47d8b2539ca0f3b0ce87b16ae815c6e088ad))
+
 ## [1.1.0-5](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-4...1.1.0-5) (2026-02-20)
 
 
