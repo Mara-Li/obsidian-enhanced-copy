@@ -259,9 +259,7 @@ export class EnhancedCopyCore {
 	}
 
 	htmlToPlainText(html: string) {
-		const div = document.createElement("div");
-		div.innerHTML = html;
-		return div.textContent ?? "";
+		return new DOMParser().parseFromString(html, "text/html").body.textContent ?? "";
 	}
 
 	devLog(...args: unknown[]) {
