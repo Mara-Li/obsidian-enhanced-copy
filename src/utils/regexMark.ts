@@ -9,7 +9,7 @@ type RegexMarkRule = {
 		open: RegExp | null;
 		close: RegExp | null;
 	};
-	shouldSkip?: (activeMode?: "source" | "preview" | "Live" | "Source") => boolean;
+	shouldSkip?: (activeMode?: "source" | "preview") => boolean;
 };
 
 type RegexMarkSettings = {
