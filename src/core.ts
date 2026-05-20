@@ -284,7 +284,14 @@ export class EnhancedCopyCore {
 
 		await Promise.all(
 			uniqueSources.map(async (source) => {
-				if (source.startsWith("data:") || /^(javascript|vbscript):/i.test(source)) {
+				if (/^(javascript|vbscript):/i.test(source)) {
+					return;
+				}
+				if (source.startsWith("data:")) {
+					// Keep only image data URIs in clipboard HTML.
+					if (!/^data:image\//i.test(source)) {
+						convertedSources.set(source, "");
+					}
 					return;
 				}
 				const resolvedSource = (() => {
@@ -307,6 +314,7 @@ export class EnhancedCopyCore {
 		);
 
 		let content = html.replace(
+			// Remove srcset to prevent paste targets selecting non-inlined image sources.
 			/(<img\b[^>]*?)\s+srcset\s*=\s*(['"])[\s\S]*?\2([^>]*>)/gim,
 			"$1$3"
 		);
@@ -315,7 +323,10 @@ export class EnhancedCopyCore {
 				`(<img\\b[^>]*\\bsrc\\s*=\\s*['"])${this.escapeRegExp(source)}(['"][^>]*>)`,
 				"gim"
 			);
-			content = content.replace(sourceRegex, `$1${dataUrl}$2`);
+			content =
+				dataUrl.length > 0
+					? content.replace(sourceRegex, `$1${dataUrl}$2`)
+					: content.replace(sourceRegex, "$1$2");
 		}
 		return content;
 	}
