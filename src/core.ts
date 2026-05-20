@@ -190,7 +190,10 @@ export class EnhancedCopyCore {
 			if (selectedText && selectedText.trim().length > 0) {
 				event.preventDefault();
 				if (exportAsHTML) {
-					event.clipboardData?.setData("text/html", selectedText);
+					event.clipboardData?.setData(
+						"text/html",
+						await this.inlineImagesForClipboard(selectedText)
+					);
 				} else {
 					event.clipboardData?.setData("text/plain", selectedText);
 				}
@@ -210,7 +213,10 @@ export class EnhancedCopyCore {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		if (exportAsHTML) {
-			event.clipboardData?.setData("text/html", selectedText);
+			event.clipboardData?.setData(
+				"text/html",
+				await this.inlineImagesForClipboard(selectedText)
+			);
 		} else {
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
@@ -220,7 +226,10 @@ export class EnhancedCopyCore {
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		if (exportAsHTML) {
-			event.clipboardData?.setData("text/html", selectedText);
+			event.clipboardData?.setData(
+				"text/html",
+				await this.inlineImagesForClipboard(selectedText)
+			);
 		} else {
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
@@ -253,6 +262,49 @@ export class EnhancedCopyCore {
 		return [item];
 	}
 
+	private async blobToDataUrl(blob: Blob): Promise<string> {
+		return await new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result as string);
+			reader.onerror = () => reject(reader.error);
+			reader.readAsDataURL(blob);
+		});
+	}
+
+	private async inlineImagesForClipboard(html: string): Promise<string> {
+		const hasHtmlEnvelope = /<html[\s>]|<head[\s>]|<body[\s>]/i.test(html);
+		const doc = new DOMParser().parseFromString(html, "text/html");
+		const images = [...doc.querySelectorAll("img[src]")];
+
+		await Promise.all(
+			images.map(async (img) => {
+				const source = img.getAttribute("src")?.trim();
+				if (!source || source.startsWith("data:") || source.startsWith("javascript:")) {
+					return;
+				}
+				const resolvedSource = (() => {
+					try {
+						return new URL(source, activeWindow.location.href).href;
+					} catch {
+						return source;
+					}
+				})();
+				try {
+					const response = await fetch(resolvedSource);
+					if (!response.ok) return;
+					const blob = await response.blob();
+					const dataUrl = await this.blobToDataUrl(blob);
+					img.setAttribute("src", dataUrl);
+					img.removeAttribute("srcset");
+				} catch (error) {
+					this.devLog("Unable to inline image for clipboard", source, error);
+				}
+			})
+		);
+
+		return hasHtmlEnvelope ? doc.documentElement.outerHTML : doc.body.innerHTML;
+	}
+
 	devLog(...args: unknown[]) {
 		if (!(Platform.isDesktop && this.plugin.settings.devMode)) {
 			return;
@@ -270,7 +322,8 @@ export class EnhancedCopyCore {
 
 	async writeToClipboard(text: string, profile?: GlobalSettings) {
 		if (profile?.copyAsHTML) {
-			const item = this.writeBlob(text);
+			const htmlWithInlinedImages = await this.inlineImagesForClipboard(text);
+			const item = this.writeBlob(htmlWithInlinedImages);
 			await navigator.clipboard.write(item);
 			return;
 		}
