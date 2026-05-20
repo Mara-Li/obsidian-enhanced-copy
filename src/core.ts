@@ -132,7 +132,8 @@ export class EnhancedCopyCore {
 		const exportAsHTML = profile
 			? (profile?.copyAsHTML ?? false)
 			: (defaultProfile.copyAsHTML ?? false);
-		const exportAsRtf = (exportAsHTML && (profile?.rtf ?? defaultProfile.rtf)) ?? false;
+		const exportAsRtf =
+			exportAsHTML && (profile ? (profile.rtf ?? false) : (defaultProfile.rtf ?? false));
 		const applyingTo = profile?.applyingTo ?? this.plugin.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
 			if (applyingTo === ApplyingToView.All || applyingTo === viewIn) {
