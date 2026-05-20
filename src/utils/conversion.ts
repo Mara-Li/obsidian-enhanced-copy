@@ -288,7 +288,9 @@ export async function convertEditMarkdown(
 	plugin: EnhancedCopy,
 	path?: string | null
 ) {
-	markdown = textReplacement(markdown, overrides);
+	if (!overrides.copyAsHTML) {
+		markdown = textReplacement(markdown, overrides);
+	}
 	if (path && overrides.convertDataview && isPluginEnabled(plugin.app))
 		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
 	if (overrides.wikiToMarkdown) {
@@ -314,7 +316,8 @@ async function markdownToHtml(
 	component.load();
 	await MarkdownRenderer.render(plugin.app, markdown, div, "", component);
 	component.unload();
-	const html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
+	let html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
+	html = textReplacement(html, overrides);
 	if (overrides.rtf) {
 		const css = plugin.profileCSS.get(overrides.name ?? "edit");
 		return `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${html}</body></html>`;
