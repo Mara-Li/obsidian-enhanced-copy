@@ -191,7 +191,6 @@ export class EnhancedCopyCore {
 				event.preventDefault();
 				if (exportAsHTML) {
 					event.clipboardData?.setData("text/html", selectedText);
-					event.clipboardData?.setData("text/plain", this.htmlToPlainText(selectedText));
 				} else {
 					event.clipboardData?.setData("text/plain", selectedText);
 				}
@@ -212,7 +211,6 @@ export class EnhancedCopyCore {
 		event.preventDefault();
 		if (exportAsHTML) {
 			event.clipboardData?.setData("text/html", selectedText);
-			event.clipboardData?.setData("text/plain", this.htmlToPlainText(selectedText));
 		} else {
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
@@ -223,7 +221,6 @@ export class EnhancedCopyCore {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		if (exportAsHTML) {
 			event.clipboardData?.setData("text/html", selectedText);
-			event.clipboardData?.setData("text/plain", this.htmlToPlainText(selectedText));
 		} else {
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
@@ -248,22 +245,12 @@ export class EnhancedCopyCore {
 		return this.getProfile() ?? defaultProfile;
 	}
 
-	writeBlob(selectedText: string, plainText: string) {
+	writeBlob(selectedText: string) {
 		const blob = new Blob([selectedText], { type: "text/html" });
-		const plainBlob = new Blob([plainText], { type: "text/plain" });
 		const item = new ClipboardItem({
-			"text/plain": plainBlob,
 			"text/html": blob,
 		});
 		return [item];
-	}
-
-	htmlToPlainText(html: string) {
-		return html
-			.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-			.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
-			.replace(/<[^>]+>/g, "")
-			.replace(/&nbsp;/g, " ");
 	}
 
 	devLog(...args: unknown[]) {
@@ -283,7 +270,7 @@ export class EnhancedCopyCore {
 
 	async writeToClipboard(text: string, profile?: GlobalSettings) {
 		if (profile?.copyAsHTML) {
-			const item = this.writeBlob(text, this.htmlToPlainText(text));
+			const item = this.writeBlob(text);
 			await navigator.clipboard.write(item);
 			return;
 		}
