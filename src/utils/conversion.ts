@@ -9,6 +9,7 @@ import {
 } from "../interface";
 import type EnhancedCopy from "../main";
 import { convertDataviewQueries } from "./dataview";
+import { applyRegexMarkRules } from "./regexMark";
 
 /**
  * If a list is preceded by an empty line, remove the empty line
@@ -288,6 +289,7 @@ export async function convertEditMarkdown(
 	plugin: EnhancedCopy,
 	path?: string | null
 ) {
+	markdown = applyRegexMarkRules(markdown, plugin);
 	markdown = textReplacement(markdown, overrides);
 	if (path && overrides.convertDataview && isPluginEnabled(plugin.app))
 		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
