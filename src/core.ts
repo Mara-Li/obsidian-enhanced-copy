@@ -259,7 +259,11 @@ export class EnhancedCopyCore {
 	}
 
 	htmlToPlainText(html: string) {
-		return new DOMParser().parseFromString(html, "text/html").body.textContent ?? "";
+		return html
+			.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+			.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
+			.replace(/<[^>]+>/g, "")
+			.replace(/&nbsp;/g, " ");
 	}
 
 	devLog(...args: unknown[]) {

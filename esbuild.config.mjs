@@ -15,7 +15,11 @@ if you want to view the source, please visit the github repository of this plugi
 
 function cleanOutDir(outdir) {
 	if (fs.existsSync(outdir)) {
-		fs.rmSync(outdir, { recursive: true });
+		try {
+			fs.rmSync(outdir, { recursive: true });
+		} catch (error) {
+			console.warn(`Failed to clean output directory "${outdir}":`, error);
+		}
 	}
 }
 
