@@ -158,10 +158,10 @@ export class EnhancedCopyCore {
 			}
 			return {
 				selectedText,
-				exportAsHTML: exportAsRtf,
+				exportAsHTML,
 			};
 		} else if (viewIn === ApplyingToView.Edit) {
-			return { selectedText, exportAsHTML: exportAsRtf };
+			return { selectedText, exportAsHTML };
 		}
 		return { selectedText, exportAsHTML: false };
 	}
@@ -189,10 +189,12 @@ export class EnhancedCopyCore {
 			const { selectedText, exportAsHTML } = await this.enhancedCopy();
 			if (selectedText && selectedText.trim().length > 0) {
 				event.preventDefault();
-				event.clipboardData?.setData(
-					exportAsHTML ? "text/html" : "text/plain",
-					selectedText
-				);
+				if (exportAsHTML) {
+					event.clipboardData?.setData("text/html", selectedText);
+					event.clipboardData?.setData("text/plain", this.htmlToPlainText(selectedText));
+				} else {
+					event.clipboardData?.setData("text/plain", selectedText);
+				}
 			}
 		};
 
@@ -208,13 +210,23 @@ export class EnhancedCopyCore {
 	async editorCopyHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
-		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
+		if (exportAsHTML) {
+			event.clipboardData?.setData("text/html", selectedText);
+			event.clipboardData?.setData("text/plain", this.htmlToPlainText(selectedText));
+		} else {
+			event.clipboardData?.setData("text/plain", selectedText);
+		}
 		return true;
 	}
 
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
-		event.clipboardData?.setData(exportAsHTML ? "text/html" : "text/plain", selectedText);
+		if (exportAsHTML) {
+			event.clipboardData?.setData("text/html", selectedText);
+			event.clipboardData?.setData("text/plain", this.htmlToPlainText(selectedText));
+		} else {
+			event.clipboardData?.setData("text/plain", selectedText);
+		}
 		event.preventDefault();
 		//mimic cut behavior
 		const editorObs = this.plugin.app.workspace.activeEditor?.editor;
@@ -236,12 +248,20 @@ export class EnhancedCopyCore {
 		return this.getProfile() ?? defaultProfile;
 	}
 
-	writeBlob(selectedText: string) {
+	writeBlob(selectedText: string, plainText: string) {
 		const blob = new Blob([selectedText], { type: "text/html" });
+		const plainBlob = new Blob([plainText], { type: "text/plain" });
 		const item = new ClipboardItem({
+			"text/plain": plainBlob,
 			"text/html": blob,
 		});
 		return [item];
+	}
+
+	htmlToPlainText(html: string) {
+		const div = document.createElement("div");
+		div.innerHTML = html;
+		return div.textContent ?? "";
 	}
 
 	devLog(...args: unknown[]) {
@@ -260,9 +280,10 @@ export class EnhancedCopyCore {
 	}
 
 	async writeToClipboard(text: string, profile?: GlobalSettings) {
-		if (profile?.rtf) {
-			const item = this.writeBlob(text);
+		if (profile?.copyAsHTML) {
+			const item = this.writeBlob(text, this.htmlToPlainText(text));
 			await navigator.clipboard.write(item);
+			return;
 		}
 		await navigator.clipboard.writeText(text);
 	}
