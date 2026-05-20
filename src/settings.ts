@@ -1,5 +1,5 @@
-import i18next from "i18next";
 import { isPluginEnabled } from "@enveloppe/obsidian-dataview";
+import i18next from "i18next";
 import {
 	type App,
 	Notice,

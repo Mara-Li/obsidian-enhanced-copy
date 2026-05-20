@@ -1,6 +1,6 @@
+import { isPluginEnabled } from "@enveloppe/obsidian-dataview";
 import i18next from "i18next";
 import { Component, MarkdownRenderer } from "obsidian";
-import { isPluginEnabled } from "@enveloppe/obsidian-dataview";
 import {
 	CalloutKeepType,
 	ConversionOfFootnotes,
@@ -289,11 +289,7 @@ export async function convertEditMarkdown(
 	path?: string | null
 ) {
 	markdown = textReplacement(markdown, overrides);
-	if (
-		path &&
-		overrides.convertDataview &&
-		isPluginEnabled(plugin.app)
-	)
+	if (path && overrides.convertDataview && isPluginEnabled(plugin.app))
 		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
 	if (overrides.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
