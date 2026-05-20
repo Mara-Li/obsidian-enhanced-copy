@@ -190,7 +190,10 @@ export class EnhancedCopyCore {
 			if (selectedText && selectedText.trim().length > 0) {
 				event.preventDefault();
 				if (exportAsHTML) {
-					event.clipboardData?.setData("text/html", selectedText);
+					event.clipboardData?.setData(
+						"text/html",
+						await this.inlineImagesForClipboard(selectedText)
+					);
 				} else {
 					event.clipboardData?.setData("text/plain", selectedText);
 				}
@@ -210,7 +213,10 @@ export class EnhancedCopyCore {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		if (exportAsHTML) {
-			event.clipboardData?.setData("text/html", selectedText);
+			event.clipboardData?.setData(
+				"text/html",
+				await this.inlineImagesForClipboard(selectedText)
+			);
 		} else {
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
@@ -220,7 +226,10 @@ export class EnhancedCopyCore {
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		if (exportAsHTML) {
-			event.clipboardData?.setData("text/html", selectedText);
+			event.clipboardData?.setData(
+				"text/html",
+				await this.inlineImagesForClipboard(selectedText)
+			);
 		} else {
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
@@ -253,6 +262,75 @@ export class EnhancedCopyCore {
 		return [item];
 	}
 
+	private async blobToDataUrl(blob: Blob): Promise<string> {
+		return await new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result as string);
+			reader.onerror = () => reject(reader.error);
+			reader.readAsDataURL(blob);
+		});
+	}
+
+	private escapeRegExp(value: string): string {
+		return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
+	private async inlineImagesForClipboard(html: string): Promise<string> {
+		const sources = [...html.matchAll(/<img\b[^>]*\bsrc\s*=\s*(['"])(.*?)\1[^>]*>/gim)]
+			.map((match) => match[2]?.trim())
+			.filter((source): source is string => Boolean(source));
+		const uniqueSources = [...new Set(sources)];
+		const convertedSources = new Map<string, string>();
+
+		await Promise.all(
+			uniqueSources.map(async (source) => {
+				if (/^(javascript|vbscript):/i.test(source)) {
+					return;
+				}
+				if (source.startsWith("data:")) {
+					// Keep only image data URIs in clipboard HTML.
+					if (!/^data:image\//i.test(source)) {
+						convertedSources.set(source, "");
+					}
+					return;
+				}
+				const resolvedSource = (() => {
+					try {
+						return new URL(source, activeWindow.location.href).href;
+					} catch {
+						return source;
+					}
+				})();
+				try {
+					const response = await fetch(resolvedSource);
+					if (!response.ok) return;
+					const blob = await response.blob();
+					const dataUrl = await this.blobToDataUrl(blob);
+					convertedSources.set(source, dataUrl);
+				} catch (error) {
+					this.devLog("Unable to inline image for clipboard", source, error);
+				}
+			})
+		);
+
+		let content = html.replace(
+			// Remove srcset to prevent paste targets selecting non-inlined image sources.
+			/(<img\b[^>]*?)\s+srcset\s*=\s*(['"])[\s\S]*?\2([^>]*>)/gim,
+			"$1$3"
+		);
+		for (const [source, dataUrl] of convertedSources) {
+			const sourceRegex = new RegExp(
+				`(<img\\b[^>]*\\bsrc\\s*=\\s*['"])${this.escapeRegExp(source)}(['"][^>]*>)`,
+				"gim"
+			);
+			content =
+				dataUrl.length > 0
+					? content.replace(sourceRegex, `$1${dataUrl}$2`)
+					: content.replace(sourceRegex, "$1$2");
+		}
+		return content;
+	}
+
 	devLog(...args: unknown[]) {
 		if (!(Platform.isDesktop && this.plugin.settings.devMode)) {
 			return;
@@ -270,7 +348,8 @@ export class EnhancedCopyCore {
 
 	async writeToClipboard(text: string, profile?: GlobalSettings) {
 		if (profile?.copyAsHTML) {
-			const item = this.writeBlob(text);
+			const htmlWithInlinedImages = await this.inlineImagesForClipboard(text);
+			const item = this.writeBlob(htmlWithInlinedImages);
 			await navigator.clipboard.write(item);
 			return;
 		}
