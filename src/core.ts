@@ -271,15 +271,20 @@ export class EnhancedCopyCore {
 		});
 	}
 
+	private escapeRegExp(value: string): string {
+		return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
 	private async inlineImagesForClipboard(html: string): Promise<string> {
-		const hasHtmlEnvelope = /<html[\s>]|<head[\s>]|<body[\s>]/i.test(html);
-		const doc = new DOMParser().parseFromString(html, "text/html");
-		const images = [...doc.querySelectorAll("img[src]")];
+		const sources = [...html.matchAll(/<img\b[^>]*\bsrc\s*=\s*(['"])(.*?)\1[^>]*>/gim)]
+			.map((match) => match[2]?.trim())
+			.filter((source): source is string => Boolean(source));
+		const uniqueSources = [...new Set(sources)];
+		const convertedSources = new Map<string, string>();
 
 		await Promise.all(
-			images.map(async (img) => {
-				const source = img.getAttribute("src")?.trim();
-				if (!source || source.startsWith("data:") || source.startsWith("javascript:")) {
+			uniqueSources.map(async (source) => {
+				if (source.startsWith("data:") || /^(javascript|vbscript):/i.test(source)) {
 					return;
 				}
 				const resolvedSource = (() => {
@@ -294,15 +299,25 @@ export class EnhancedCopyCore {
 					if (!response.ok) return;
 					const blob = await response.blob();
 					const dataUrl = await this.blobToDataUrl(blob);
-					img.setAttribute("src", dataUrl);
-					img.removeAttribute("srcset");
+					convertedSources.set(source, dataUrl);
 				} catch (error) {
 					this.devLog("Unable to inline image for clipboard", source, error);
 				}
 			})
 		);
 
-		return hasHtmlEnvelope ? doc.documentElement.outerHTML : doc.body.innerHTML;
+		let content = html.replace(
+			/(<img\b[^>]*?)\s+srcset\s*=\s*(['"])[\s\S]*?\2([^>]*>)/gim,
+			"$1$3"
+		);
+		for (const [source, dataUrl] of convertedSources) {
+			const sourceRegex = new RegExp(
+				`(<img\\b[^>]*\\bsrc\\s*=\\s*['"])${this.escapeRegExp(source)}(['"][^>]*>)`,
+				"gim"
+			);
+			content = content.replace(sourceRegex, `$1${dataUrl}$2`);
+		}
+		return content;
 	}
 
 	devLog(...args: unknown[]) {
