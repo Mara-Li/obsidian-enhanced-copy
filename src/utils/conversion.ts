@@ -300,19 +300,21 @@ export async function convertEditMarkdown(
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
 	markdown = hardBreak(markdown, overrides, plugin);
-	if (overrides.copyAsHTML) return await markdownToHtml(markdown, overrides, plugin);
+	if (overrides.copyAsHTML)
+		return await markdownToHtml(markdown, overrides, plugin, path);
 	return markdown;
 }
 
 async function markdownToHtml(
 	markdown: string,
 	overrides: GlobalSettings,
-	plugin: EnhancedCopy
+	plugin: EnhancedCopy,
+	path?: string | null
 ): Promise<string> {
 	const component = new Component();
 	const div = new DocumentFragment().createEl("div");
 	component.load();
-	await MarkdownRenderer.render(plugin.app, markdown, div, "", component);
+	await MarkdownRenderer.render(plugin.app, markdown, div, path ?? "", component);
 	component.unload();
 	let html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
 	html = textReplacement(html, overrides);
