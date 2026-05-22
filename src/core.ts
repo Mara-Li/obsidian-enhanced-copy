@@ -255,9 +255,11 @@ export class EnhancedCopyCore {
 	}
 
 	writeBlob(selectedText: string) {
-		const blob = new Blob([selectedText], { type: "text/html" });
+		const htmlBlob = new Blob([selectedText], { type: "text/html" });
+		const plainBlob = new Blob([selectedText], { type: "text/plain" });
 		const item = new ClipboardItem({
-			"text/html": blob,
+			"text/html": htmlBlob,
+			"text/plain": plainBlob,
 		});
 		return [item];
 	}
@@ -368,7 +370,7 @@ export class EnhancedCopyCore {
 		if (profile?.copyAsHTML === true) {
 			const htmlWithInlinedImages = await this.inlineImagesForClipboard(text);
 			this.logClipboardMime(
-				"navigator.clipboard.write",
+				"navigator.clipboard.write (text/html + text/plain fallback)",
 				"text/html",
 				htmlWithInlinedImages,
 				profile
