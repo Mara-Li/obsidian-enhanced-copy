@@ -129,11 +129,14 @@ export class EnhancedCopyCore {
 			viewIn === ApplyingToView.Edit
 				? this.plugin.settings.editing
 				: this.plugin.settings.reading;
-		const exportAsHTML = profile
-			? (profile?.copyAsHTML ?? false)
-			: (defaultProfile.copyAsHTML ?? false);
-		const exportAsRtf =
-			exportAsHTML && (profile ? (profile.rtf ?? false) : (defaultProfile.rtf ?? false));
+		const selectedProfile = profile ?? defaultProfile;
+		const exportAsHTML = selectedProfile.copyAsHTML === true;
+		const exportAsRtf = exportAsHTML && selectedProfile.rtf === true;
+		const resolvedProfile: GlobalSettings = {
+			...selectedProfile,
+			copyAsHTML: exportAsHTML,
+			rtf: exportAsRtf,
+		};
 		const applyingTo = profile?.applyingTo ?? this.plugin.settings.applyingTo;
 		if (selectedText && selectedText.trim().length > 0) {
 			if (applyingTo === ApplyingToView.All || applyingTo === viewIn) {
@@ -142,16 +145,12 @@ export class EnhancedCopyCore {
 						const css = this.profileCSS.get(profile?.name ?? "reading") ?? DEFAULT_CSS;
 						selectedText = `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${selectedText}</body></html>`;
 					} else if (!exportAsHTML) {
-						selectedText = convertMarkdown(
-							selectedText,
-							profile ?? this.plugin.settings.reading,
-							this.plugin
-						);
+						selectedText = convertMarkdown(selectedText, resolvedProfile, this.plugin);
 					}
 				} else if (viewIn === ApplyingToView.Edit) {
 					selectedText = await convertEditMarkdown(
 						selectedText,
-						profile ?? this.plugin.settings.editing,
+						resolvedProfile,
 						this.plugin,
 						file?.path
 					);
@@ -348,7 +347,7 @@ export class EnhancedCopyCore {
 	}
 
 	async writeToClipboard(text: string, profile?: GlobalSettings) {
-		if (profile?.copyAsHTML) {
+		if (profile?.copyAsHTML === true) {
 			const htmlWithInlinedImages = await this.inlineImagesForClipboard(text);
 			const item = this.writeBlob(htmlWithInlinedImages);
 			await navigator.clipboard.write(item);
@@ -418,13 +417,18 @@ export class EnhancedCopyCore {
 				if (selectedText && selectedText.trim().length > 0) {
 					const profile =
 						this.getProfile(ApplyingToView.Edit) ?? this.plugin.settings.editing;
+					const resolvedProfile: GlobalSettings = {
+						...profile,
+						copyAsHTML: profile.copyAsHTML === true,
+						rtf: profile.rtf === true,
+					};
 					selectedText = await convertEditMarkdown(
 						selectedText,
-						profile,
+						resolvedProfile,
 						this.plugin,
 						file?.path
 					);
-					await this.writeToClipboard(selectedText, profile);
+					await this.writeToClipboard(selectedText, resolvedProfile);
 				}
 			},
 		});
@@ -444,7 +448,7 @@ export class EnhancedCopyCore {
 						let selectedText = getSelectionAsHTML(profile);
 						if (!profile.copyAsHTML) {
 							selectedText = convertMarkdown(selectedText, profile, this.plugin);
-						} else if (profile.rtf) {
+						} else if (profile.rtf === true) {
 							const css = this.profileCSS.get(profile.name ?? "reading") ?? DEFAULT_CSS;
 							selectedText = `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${selectedText}</body></html>`;
 						}
@@ -616,7 +620,7 @@ export class EnhancedCopyCore {
 				});
 				const profile =
 					this.getProfile(ApplyingToView.Edit, view.file) || this.getDefaultProfile();
-				if (profile.copyAsHTML && profile.rtf) {
+				if (profile.copyAsHTML === true && profile.rtf === true) {
 					menu.addItem((item) => {
 						item.setTitle(i18next.t("commands.copyAsHtml"));
 						item.setIcon("clipboard");
@@ -626,13 +630,18 @@ export class EnhancedCopyCore {
 							if (selectedText && selectedText.trim().length > 0) {
 								const profile =
 									this.getProfile(ApplyingToView.Edit) ?? this.plugin.settings.editing;
+								const resolvedProfile: GlobalSettings = {
+									...profile,
+									copyAsHTML: profile.copyAsHTML === true,
+									rtf: profile.rtf === true,
+								};
 								selectedText = await convertEditMarkdown(
 									selectedText,
-									profile,
+									resolvedProfile,
 									this.plugin,
 									file?.path
 								);
-								await this.writeToClipboard(selectedText, profile);
+								await this.writeToClipboard(selectedText, resolvedProfile);
 							}
 						});
 					});
