@@ -288,7 +288,10 @@ export async function convertEditMarkdown(
 	plugin: EnhancedCopy,
 	path?: string | null
 ) {
-	markdown = textReplacement(markdown, overrides);
+	// In HTML mode, skip pre-render textReplacement so that MarkdownRenderer can
+	// correctly render inline markdown (e.g. **bold**) before the pattern is matched.
+	// All replacements will run on the final HTML via markdownToHtml's post-render call.
+	if (!overrides.copyAsHTML) markdown = textReplacement(markdown, overrides);
 	if (path && overrides.convertDataview && isPluginEnabled(plugin.app))
 		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
 	if (overrides.wikiToMarkdown) {
