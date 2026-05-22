@@ -190,11 +190,11 @@ export class EnhancedCopyCore {
 			if (selectedText && selectedText.trim().length > 0) {
 				event.preventDefault();
 				if (exportAsHTML) {
-					event.clipboardData?.setData(
-						"text/html",
-						await this.inlineImagesForClipboard(selectedText)
-					);
+					const htmlWithInlinedImages = await this.inlineImagesForClipboard(selectedText);
+					this.logClipboardMime("dom.copy.setData", "text/html", htmlWithInlinedImages);
+					event.clipboardData?.setData("text/html", htmlWithInlinedImages);
 				} else {
+					this.logClipboardMime("dom.copy.setData", "text/plain", selectedText);
 					event.clipboardData?.setData("text/plain", selectedText);
 				}
 			}
@@ -213,11 +213,11 @@ export class EnhancedCopyCore {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		event.preventDefault();
 		if (exportAsHTML) {
-			event.clipboardData?.setData(
-				"text/html",
-				await this.inlineImagesForClipboard(selectedText)
-			);
+			const htmlWithInlinedImages = await this.inlineImagesForClipboard(selectedText);
+			this.logClipboardMime("editor.copy.setData", "text/html", htmlWithInlinedImages);
+			event.clipboardData?.setData("text/html", htmlWithInlinedImages);
 		} else {
+			this.logClipboardMime("editor.copy.setData", "text/plain", selectedText);
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
 		return true;
@@ -226,11 +226,11 @@ export class EnhancedCopyCore {
 	async editorCutHandler(event: ClipboardEvent, _editor?: EditorView) {
 		const { selectedText, exportAsHTML } = await this.enhancedCopy();
 		if (exportAsHTML) {
-			event.clipboardData?.setData(
-				"text/html",
-				await this.inlineImagesForClipboard(selectedText)
-			);
+			const htmlWithInlinedImages = await this.inlineImagesForClipboard(selectedText);
+			this.logClipboardMime("editor.cut.setData", "text/html", htmlWithInlinedImages);
+			event.clipboardData?.setData("text/html", htmlWithInlinedImages);
 		} else {
+			this.logClipboardMime("editor.cut.setData", "text/plain", selectedText);
 			event.clipboardData?.setData("text/plain", selectedText);
 		}
 		event.preventDefault();
@@ -260,6 +260,24 @@ export class EnhancedCopyCore {
 			"text/html": blob,
 		});
 		return [item];
+	}
+
+	private logClipboardMime(
+		context: string,
+		mimeType: "text/plain" | "text/html",
+		payload: string,
+		profile?: GlobalSettings
+	) {
+		this.devLog("[clipboard:mime]", {
+			context,
+			mimeType,
+			length: payload.length,
+			copyAsHTML: profile?.copyAsHTML === true,
+			rtf: profile?.rtf === true,
+			hasHtmlWrapper: /<html[\s>]/i.test(payload),
+			hasStyleTag: /<style[\s>]/i.test(payload),
+			preview: payload.slice(0, 120),
+		});
 	}
 
 	private async blobToDataUrl(blob: Blob): Promise<string> {
@@ -349,10 +367,17 @@ export class EnhancedCopyCore {
 	async writeToClipboard(text: string, profile?: GlobalSettings) {
 		if (profile?.copyAsHTML === true) {
 			const htmlWithInlinedImages = await this.inlineImagesForClipboard(text);
+			this.logClipboardMime(
+				"navigator.clipboard.write",
+				"text/html",
+				htmlWithInlinedImages,
+				profile
+			);
 			const item = this.writeBlob(htmlWithInlinedImages);
 			await navigator.clipboard.write(item);
 			return;
 		}
+		this.logClipboardMime("navigator.clipboard.writeText", "text/plain", text, profile);
 		await navigator.clipboard.writeText(text);
 	}
 
