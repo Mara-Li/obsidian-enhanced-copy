@@ -15,7 +15,7 @@ import { fixMetaBindCopy } from "./pluginFix";
  */
 export function getSelectionAsHTML(settings: GlobalSettings): string {
 	const getSelection = activeWindow.getSelection();
-	if (getSelection === null) return "";
+	if (getSelection === null || getSelection.rangeCount === 0) return "";
 	const range = getSelection.getRangeAt(0);
 	if (!range) return "";
 	const fragment = range.cloneContents();

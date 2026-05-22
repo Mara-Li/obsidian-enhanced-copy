@@ -1,3 +1,4 @@
+import { isPluginEnabled } from "@enveloppe/obsidian-dataview";
 import i18next from "i18next";
 import { Component, MarkdownRenderer } from "obsidian";
 import {
@@ -229,16 +230,45 @@ function convertSpaceSize(markdown: string, settings: GlobalSettings) {
 	return markdown;
 }
 
+const regexpFlagsPattern = /^[gmiyus]+$/;
+const regexpCache = new Map<string, RegExp>();
+
+function parseReplacementPattern(pattern: string): string | RegExp {
+	if (!pattern.startsWith("/") || pattern.length < 2) return pattern;
+	let separator = -1;
+	for (let i = pattern.length - 1; i > 0; i--) {
+		if (pattern[i] !== "/") continue;
+		let slashCount = 0;
+		let index = i - 1;
+		while (index >= 0 && pattern[index] === "\\") {
+			slashCount++;
+			index--;
+		}
+		if (slashCount % 2 === 0) {
+			separator = i;
+			break;
+		}
+	}
+	if (separator <= 1) return pattern;
+	const cached = regexpCache.get(pattern);
+	if (cached) return cached;
+	const regex = pattern.slice(1, separator);
+	const flags = pattern.slice(separator + 1);
+	if (flags.length > 0 && !regexpFlagsPattern.test(flags)) return pattern;
+	const compiled = new RegExp(regex, flags);
+	regexpCache.set(pattern, compiled);
+	return compiled;
+}
+
 function textReplacement(markdown: string, settings: GlobalSettings) {
 	const replacement = settings.replaceText;
+	if (!replacement || replacement.length === 0) return markdown;
 	for (const replace of replacement) {
-		let pattern: string | RegExp = replace.pattern;
-		if (pattern.match(/^\/.*\/([gmiyus]+)?$/)) {
-			const flags = pattern.replace(/^\/.*\/([gmiyus]+)?$/, "$1");
-			const regex = pattern.replace(/^\/(.*)\/(.*)$/, "$1");
-			pattern = new RegExp(regex, flags.length > 0 ? flags : undefined);
-			markdown = markdown.replace(pattern, replace.replacement);
-		} else markdown = markdown.replaceAll(pattern, replace.replacement);
+		const pattern = parseReplacementPattern(replace.pattern);
+		markdown =
+			typeof pattern === "string"
+				? markdown.replaceAll(pattern, replace.replacement)
+				: markdown.replace(pattern, replace.replacement);
 	}
 	return markdown;
 }
@@ -287,12 +317,9 @@ export async function convertEditMarkdown(
 	plugin: EnhancedCopy,
 	path?: string | null
 ) {
-	markdown = textReplacement(markdown, overrides);
-	if (
-		path &&
-		overrides.convertDataview &&
-		plugin.app.plugins.enabledPlugins.has("dataview")
-	)
+	// Keep HTML path lightweight: run replacement only after MarkdownRenderer.
+	if (!overrides.copyAsHTML) markdown = textReplacement(markdown, overrides);
+	if (path && overrides.convertDataview && isPluginEnabled(plugin.app))
 		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
 	if (overrides.wikiToMarkdown) {
 		markdown = convertWikiToMarkdown(markdown);
@@ -303,21 +330,24 @@ export async function convertEditMarkdown(
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
 	markdown = hardBreak(markdown, overrides, plugin);
-	if (overrides.copyAsHTML) return await markdownToHtml(markdown, overrides, plugin);
+	if (overrides.copyAsHTML)
+		return await markdownToHtml(markdown, overrides, plugin, path);
 	return markdown;
 }
 
 async function markdownToHtml(
 	markdown: string,
 	overrides: GlobalSettings,
-	plugin: EnhancedCopy
+	plugin: EnhancedCopy,
+	path?: string | null
 ): Promise<string> {
 	const component = new Component();
 	const div = new DocumentFragment().createEl("div");
 	component.load();
-	await MarkdownRenderer.render(plugin.app, markdown, div, "", component);
+	await MarkdownRenderer.render(plugin.app, markdown, div, path ?? "", component);
 	component.unload();
-	const html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
+	let html = div.innerHTML.replaceAll('dir="auto"', "").replaceAll(" >", ">").trim();
+	html = textReplacement(html, overrides);
 	if (overrides.rtf) {
 		const css = plugin.profileCSS.get(overrides.name ?? "edit");
 		return `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${html}</body></html>`;

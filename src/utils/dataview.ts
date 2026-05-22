@@ -204,9 +204,7 @@ export async function convertDataviewQueries(
 	const app = plugin.app;
 	let replacedText = text;
 	const dataViewRegex = /```dataview\s(.+?)```/gms;
-	const isDataviewEnabled = app.plugins.plugins.dataview;
-	if (!isDataviewEnabled || !isPluginEnabled(app) || !settings.convertDataview?.enable)
-		return replacedText;
+	if (!isPluginEnabled(app) || !settings.convertDataview?.enable) return replacedText;
 	const dvApi = getAPI(app);
 	if (!dvApi) return replacedText;
 	const matches = text.matchAll(dataViewRegex);

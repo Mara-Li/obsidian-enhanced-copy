@@ -17,6 +17,8 @@ on:
       - "*"
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 jobs:
   release:
     if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && !inputs.bump)

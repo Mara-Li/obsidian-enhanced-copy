@@ -1,3 +1,4 @@
+import { isPluginEnabled } from "@enveloppe/obsidian-dataview";
 import i18next from "i18next";
 import {
 	type App,
@@ -189,7 +190,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 		new Setting(this.settingsPage).setName(i18next.t("edit.desc")).setHeading();
 		if (html) this.html(settings, "edit");
 
-		if (this.app.plugins.enabledPlugins.has("dataview")) {
+		if (isPluginEnabled(this.app)) {
 			if (!settings.convertDataview)
 				settings.convertDataview = structuredClone(DEFAULT_DATAVIEW_SETTINGS_DISABLED);
 			//@ts-ignore
