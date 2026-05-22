@@ -288,9 +288,7 @@ export async function convertEditMarkdown(
 	plugin: EnhancedCopy,
 	path?: string | null
 ) {
-	if (!overrides.copyAsHTML) {
-		markdown = textReplacement(markdown, overrides);
-	}
+	markdown = textReplacement(markdown, overrides);
 	if (path && overrides.convertDataview && isPluginEnabled(plugin.app))
 		markdown = await convertDataviewQueries(overrides, path, markdown, plugin);
 	if (overrides.wikiToMarkdown) {
@@ -302,10 +300,7 @@ export async function convertEditMarkdown(
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
 	markdown = hardBreak(markdown, overrides, plugin);
-	if (overrides.copyAsHTML) {
-		markdown = textReplacement(markdown, overrides);
-		return await markdownToHtml(markdown, overrides, plugin);
-	}
+	if (overrides.copyAsHTML) return await markdownToHtml(markdown, overrides, plugin);
 	return markdown;
 }
 
