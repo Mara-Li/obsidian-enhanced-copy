@@ -302,7 +302,10 @@ export async function convertEditMarkdown(
 	markdown = convertCallout(markdown, overrides, plugin);
 	markdown = removeHighlightMark(markdown, overrides);
 	markdown = hardBreak(markdown, overrides, plugin);
-	if (overrides.copyAsHTML) return await markdownToHtml(markdown, overrides, plugin);
+	if (overrides.copyAsHTML) {
+		markdown = textReplacement(markdown, overrides);
+		return await markdownToHtml(markdown, overrides, plugin);
+	}
 	return markdown;
 }
 
