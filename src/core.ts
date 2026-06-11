@@ -5,6 +5,7 @@ import {
 	ItemView,
 	MarkdownView,
 	Platform,
+	requestUrl,
 	type TFile,
 	type WorkspaceLeaf,
 } from "obsidian";
@@ -325,6 +326,15 @@ export class EnhancedCopyCore {
 					const response = await fetch(resolvedSource);
 					if (!response.ok) return;
 					const blob = await response.blob();
+					const response = await requestUrl({
+						url: resolvedSource,
+						method: "GET",
+						throw: false,
+					});
+					if (response.status >= 400) return;
+					const contentType =
+						response.headers["content-type"] ?? "application/octet-stream";
+					const blob = new Blob([response.arrayBuffer], { type: contentType });
 					const dataUrl = await this.blobToDataUrl(blob);
 					convertedSources.set(source, dataUrl);
 				} catch (error) {
