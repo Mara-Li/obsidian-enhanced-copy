@@ -1,4 +1,4 @@
-# Copy Reading In Markdown
+# Enhanced Copy
 
 Copy a selection in reading view while keeping the Markdown formatting
 
