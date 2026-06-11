@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-6...1.1.0) (2026-06-11)
+
+
+### Features
+
+* add support for regexmark, improve perf + obsidian API ([91742b7](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/91742b74c219aec4d17485f40385dc51e414e08a))
+* apply regex-mark hide rules during markdown copy conversion ([e0fff0d](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/e0fff0dcbe78abdfe72e0a19b8aad85dbc8dccbe))
+
+
+### Bug Fixes
+
+* add text/plain fallback in ClipboardItem so Discord/Notepad++ can paste HTML content ([e956c9b](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/e956c9b1f97bab84a117296aeac2a8f3baad5d7c))
+* address validation feedback for html parsing and build cleanup ([d4a3298](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/d4a3298c887d9411f7e4e1d3955c995740db076a))
+* apply regex text replacements after markdown render in edit HTML mode ([2f95efe](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/2f95efe357a85961cab0bc8f1409a077761ecf80))
+* apply textReplacement before and after HTML render for regexMark compatibility ([ad2eb8d](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/ad2eb8d6a63188e9be9abae6bc7e648c7e27b901))
+* avoid dom parsing in html image inlining and harden url scheme checks ([4f69174](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/4f691744d32f1e6b8c52b3f18752a99666840480))
+* correct html/rtf clipboard mime handling and update dataview api checks ([1560c39](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/1560c395bbc7d0209b67a17550819e9e8520448a))
+* exportAsRtf no longer inherits rtf from global defaults when a profile is active ([a745d46](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/a745d4691196a7b210c71b4bf7c873ab552fef34))
+* harden plain-text html fallback and build dir cleanup handling ([cc6edaf](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/cc6edaf83e8580b4ec571dfc70a210181e381654))
+* inline image sources in html clipboard payload for rtf copy ([4977420](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/4977420d84069d413a3bb2c2a2f0bc79ca20f1b1))
+* normalize html/rtf option booleans in copy flows ([376145d](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/376145dd101698fbb3565d6e359eebc6d9db4409))
+* pass source path to MarkdownRenderer in edit html conversion ([c3a627e](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/c3a627e85e306757680b41d26c61be2c7a1e3978))
+* remove unnecessary support notice option from i18next initialization ([6eb4411](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/6eb44114867100753ed4a9580551d1b3fdcef573))
+* revert regex-mark stripping; HTML copy now uses MarkdownRenderer post-processor ([230b52f](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/230b52f2c7fe92d92bd265334150a2b660c5d8a5))
+* run edit-mode textReplacement before markdown transforms ([f88423c](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/f88423c719890e93203b24c3b5a3ed100024dba5))
+* simplify html clipboard fallback to avoid sanitizer warnings ([46ea968](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/46ea968f68947894ec1b13527c314b81b4102272))
+* skip pre-render textReplacement in HTML mode to fix bold inside !!...!! markers ([046181b](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/046181bbf879dfd8a98b1770a8edc59a8131b70e))
+* tighten data-url image filtering in html clipboard inlining ([1b25c19](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/1b25c19ca29c964203524391fb7e9f65c7914508))
+
 ## [1.0.2](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.0.1...1.0.2) (2025-07-18)
 
 
