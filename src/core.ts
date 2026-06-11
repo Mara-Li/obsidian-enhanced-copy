@@ -186,19 +186,21 @@ export class EnhancedCopyCore {
 		}
 
 		// Intercepter directement l'événement copy au niveau du DOM
-		const copyHandler = async (event: ClipboardEvent) => {
-			const { selectedText, exportAsHTML } = await this.enhancedCopy();
-			if (selectedText && selectedText.trim().length > 0) {
-				event.preventDefault();
-				if (exportAsHTML) {
-					const htmlWithInlinedImages = await this.inlineImagesForClipboard(selectedText);
-					this.logClipboardMime("dom.copy.setData", "text/html", htmlWithInlinedImages);
-					event.clipboardData?.setData("text/html", htmlWithInlinedImages);
-				} else {
-					this.logClipboardMime("dom.copy.setData", "text/plain", selectedText);
-					event.clipboardData?.setData("text/plain", selectedText);
+		const copyHandler = (event: ClipboardEvent) => {
+			void (async () => {
+				const { selectedText, exportAsHTML } = await this.enhancedCopy();
+				if (selectedText && selectedText.trim().length > 0) {
+					event.preventDefault();
+					if (exportAsHTML) {
+						const htmlWithInlinedImages = await this.inlineImagesForClipboard(selectedText);
+						this.logClipboardMime("dom.copy.setData", "text/html", htmlWithInlinedImages);
+						event.clipboardData?.setData("text/html", htmlWithInlinedImages);
+					} else {
+						this.logClipboardMime("dom.copy.setData", "text/plain", selectedText);
+						event.clipboardData?.setData("text/plain", selectedText);
+					}
 				}
-			}
+			})();
 		};
 
 		// Ajouter l'événement sur l'élément container de la vue
@@ -602,29 +604,31 @@ export class EnhancedCopyCore {
 			this.plugin.settings.editing.overrideNativeCopy
 		) {
 			this.plugin.registerEvent(
-				this.plugin.app.workspace.on("active-leaf-change", async (leaf) => {
-					if (!leaf) {
-						for (const monkey of Object.values(this.activeMonkeys)) {
-							monkey();
+				this.plugin.app.workspace.on("active-leaf-change", (leaf) => {
+					void (async () => {
+						if (!leaf) {
+							for (const monkey of Object.values(this.activeMonkeys)) {
+								monkey();
+							}
+							this.activeMonkeys = {};
+							return;
 						}
-						this.activeMonkeys = {};
-						return;
-					}
-					//@ts-ignore
-					this.activeMonkeys[leaf.id] = await this.overrideNativeCopy(leaf);
-					//enable clipboard event in canvas read-only
-					if (
-						leaf.view instanceof ItemView &&
-						leaf.view.getViewType() === "canvas" &&
-						this.plugin.settings.reading.overrideNativeCopy
-					) {
-						leaf.view.containerEl.addEventListener("copy", (event) => {
-							void this.editorCopyHandler(event);
-						});
-						leaf.view.containerEl.addEventListener("cut", (event) => {
-							void this.editorCutHandler(event);
-						});
-					}
+						//@ts-ignore
+						this.activeMonkeys[leaf.id] = await this.overrideNativeCopy(leaf);
+						//enable clipboard event in canvas read-only
+						if (
+							leaf.view instanceof ItemView &&
+							leaf.view.getViewType() === "canvas" &&
+							this.plugin.settings.reading.overrideNativeCopy
+						) {
+							leaf.view.containerEl.addEventListener("copy", (event) => {
+								void this.editorCopyHandler(event);
+							});
+							leaf.view.containerEl.addEventListener("cut", (event) => {
+								void this.editorCutHandler(event);
+							});
+						}
+					})();
 				})
 			);
 			if (this.plugin.settings.editing.overrideNativeCopy) {

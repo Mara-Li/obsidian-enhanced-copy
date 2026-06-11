@@ -750,7 +750,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 						new AllReplaceTextModal(
 							this.app,
 							structuredClone(settings.replaceText),
-							async (result) => {
+							(result) => {
 								settings.replaceText = result;
 							}
 						).open();
