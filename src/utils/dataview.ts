@@ -105,7 +105,7 @@ class DataviewCompiler {
 	async dataviewDQL(query: string) {
 		const { isInsideCallout, finalQuery } = this.sanitizeQuery(query);
 		const markdown = this.removeDataviewQueries(
-			(await this.dvApi.tryQueryMarkdown(finalQuery, this.path)) as string
+			await this.dvApi.tryQueryMarkdown(finalQuery, this.path)
 		);
 		if (isInsideCallout) {
 			return this.surroundWithCalloutBlock(markdown);
@@ -167,7 +167,7 @@ class DataviewCompiler {
 
 	private delay(ms: number): Promise<void> {
 		return new Promise((resolve, _) => {
-			setTimeout(resolve, ms);
+			window.setTimeout(resolve, ms);
 		});
 	}
 	/**
