@@ -8,7 +8,7 @@
 
 export function removeDataBasePluginRelationShip(): string {
 	if (activeDocument.querySelector("div.database-plugin__container")) {
-		const div = document.createElement("div");
+		const div = activeDocument.createElement("div");
 		const getSelection = activeWindow.getSelection();
 		if (!getSelection) return "";
 		const selection = getSelection.getRangeAt(0);

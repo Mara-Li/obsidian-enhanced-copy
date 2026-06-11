@@ -19,7 +19,7 @@ export function getSelectionAsHTML(settings: GlobalSettings): string {
 	const range = getSelection.getRangeAt(0);
 	if (!range) return "";
 	const fragment = range.cloneContents();
-	let div = document.createElement("div");
+	let div = activeDocument.createElement("div");
 	div.appendChild(fragment);
 	const commonAncestor = range.commonAncestorContainer;
 	if (commonAncestor.nodeName === "OL" || commonAncestor.nodeName === "UL") {

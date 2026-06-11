@@ -27,7 +27,7 @@ import {
 
 export class EnhancedCopyCore {
 	plugin: EnhancedCopy;
-	//eslint-disable-next-line @typescript-eslint/no-explicit-any
+	//eslint-disable-next-line @typescript-eslint/no-explicit-any Necessary because we don't know the type of the monkeys
 	activeMonkeys: Record<string, any> = {};
 	profileCSS: ProfileCSS = new Map();
 	profileAlreadyIn: Map<string, string> = new Map();
@@ -87,7 +87,7 @@ export class EnhancedCopyCore {
 		profile?: GlobalSettings
 	): Promise<{ selectedText: string; exportAsHTML: boolean }> {
 		//get default if a modal is opened
-		if (document.querySelector(".modal-container")) {
+		if (activeDocument.querySelector(".modal-container")) {
 			return {
 				selectedText: activeWindow.getSelection()?.toString() ?? "",
 				exportAsHTML: false,

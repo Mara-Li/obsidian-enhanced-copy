@@ -16,7 +16,7 @@ export function reNumerateList(div: HTMLDivElement, type: string) {
 		}
 	}
 	if (allHaveDataLine) {
-		const ol = document.createElement(type);
+		const ol = activeDocument.createElement(type);
 		for (const li of allLi) {
 			ol.appendChild(li);
 		}
@@ -66,7 +66,7 @@ export function replaceAllDivCalloutToBlockquote(
 				titleInner?.replaceWith(calloutTitle + titleInner?.innerHTML);
 			else titleInner?.replaceWith(calloutTitle);
 		}
-		const blockquote = document.createElement("blockquote");
+		const blockquote = activeDocument.createElement("blockquote");
 		blockquote.innerHTML = divCallout.innerHTML;
 		//replace div by blockquote<
 		divCallout.replaceWith(blockquote);
@@ -110,7 +110,7 @@ export function replaceAllDivCalloutToBlockquote(
 function simplifyBlockquote(div: HTMLDivElement): HTMLDivElement {
 	const blockquotes = div.querySelectorAll("blockquote");
 	blockquotes.forEach((blockquote) => {
-		const modifiedDivElement = document.createElement("div");
+		const modifiedDivElement = activeDocument.createElement("div");
 		const calloutTitleInner = blockquote.querySelector(".callout-title-inner");
 		const calloutContent = blockquote.querySelector(".callout-content");
 		if (!calloutTitleInner && !calloutContent) return;
