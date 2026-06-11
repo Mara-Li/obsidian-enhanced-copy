@@ -1,6 +1,6 @@
 # Copy Reading In Markdown
 
-Copy a selection in reading view while keeping the markdown formatting
+Copy a selection in reading view while keeping the Markdown formatting
 
 ## 🛠️ Usage
 
