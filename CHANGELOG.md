@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.1](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0...1.1.1) (2026-06-11)
+
+
+### Bug Fixes
+
+* '_e' is defined but never used. ([1d7e968](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/1d7e9681bbaa4ef2596103b38ec588a2b9beda42))
+* expected the Promise rejection reason to be an Error. ([f310759](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/f310759b5b916cacf3e6cddfaebe90be7a5f8f8b))
+* promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the void operator. ([f74f45e](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/f74f45ee1bda29be731ec9e0d50145e7dfadb4da))
+* unexpected use of 'fetch'. ([b9a2e76](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/b9a2e7685e3a1f33104b6f711a0504d9af2d47e2))
+* use 'window.setTimeout()' instead of 'setTimeout()' for popout window compatibility. ([40cac69](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/40cac692800b83a3c93a3bf85d8faff3fc5532b6))
+
 ## [1.1.0](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0-6...1.1.0) (2026-06-11)
 
 
