@@ -323,9 +323,6 @@ export class EnhancedCopyCore {
 					}
 				})();
 				try {
-					const response = await fetch(resolvedSource);
-					if (!response.ok) return;
-					const blob = await response.blob();
 					const response = await requestUrl({
 						url: resolvedSource,
 						method: "GET",
@@ -409,8 +406,8 @@ export class EnhancedCopyCore {
 						(profile.applyingTo === ApplyingToView.Edit && !readingMode)
 					) {
 						if (!checking) {
-							this.enhancedCopy(profile).then(({ selectedText }) => {
-								this.writeToClipboard(selectedText, profile);
+							void this.enhancedCopy(profile).then(({ selectedText }) => {
+								void this.writeToClipboard(selectedText, profile);
 							});
 						}
 						return true;
@@ -489,7 +486,7 @@ export class EnhancedCopyCore {
 							const css = this.profileCSS.get(profile.name ?? "reading") ?? DEFAULT_CSS;
 							selectedText = `<html><head><meta charset="utf-8"><style>${css}</style></head><body>${selectedText}</body></html>`;
 						}
-						this.writeToClipboard(selectedText, profile);
+						void this.writeToClipboard(selectedText, profile);
 					}
 					return true;
 				}
@@ -531,24 +528,24 @@ export class EnhancedCopyCore {
 								profile.applyingTo === ApplyingToView.All ||
 								profile.applyingTo === viewIn
 							) {
-								const convertFn =
-									viewIn === ApplyingToView.Edit
-										? convertEditMarkdown(
-												selectedText,
-												isProfile ?? this.plugin.settings.editing,
-												this.plugin,
-												this.plugin.app.workspace.getActiveFile()?.path
-											)
-										: convertMarkdown(
-												selectedText,
-												isProfile ?? this.plugin.settings.reading,
-												this.plugin
-											);
-								Promise.resolve(convertFn)
-									.then((converted) => {
-										selectedText = converted;
-										this.writeToClipboard(selectedText, isProfile);
-									})
+							const convertFn =
+								viewIn === ApplyingToView.Edit
+									? convertEditMarkdown(
+											selectedText,
+											isProfile ?? this.plugin.settings.editing,
+											this.plugin,
+											this.plugin.app.workspace.getActiveFile()?.path
+										)
+									: convertMarkdown(
+											selectedText,
+											isProfile ?? this.plugin.settings.reading,
+											this.plugin
+										);
+							void Promise.resolve(convertFn)
+								.then((converted) => {
+									selectedText = converted;
+									void this.writeToClipboard(selectedText, isProfile);
+								})
 									.catch((err) => {
 										console.error("Erreur pendant la conversion :", err);
 									});
@@ -570,8 +567,8 @@ export class EnhancedCopyCore {
 			name: i18next.t("commands.brute"),
 			callback: () => {
 				const editor = this.plugin.app.workspace.activeEditor?.editor;
-				if (editor) this.writeToClipboard(copySelectionRange(editor, this.plugin));
-				else this.writeToClipboard(activeWindow.getSelection()?.toString() ?? "");
+				if (editor) void this.writeToClipboard(copySelectionRange(editor, this.plugin));
+				else void this.writeToClipboard(activeWindow.getSelection()?.toString() ?? "");
 			},
 		});
 	}
@@ -622,10 +619,10 @@ export class EnhancedCopyCore {
 						this.plugin.settings.reading.overrideNativeCopy
 					) {
 						leaf.view.containerEl.addEventListener("copy", (event) => {
-							this.editorCopyHandler(event);
+							void this.editorCopyHandler(event);
 						});
 						leaf.view.containerEl.addEventListener("cut", (event) => {
-							this.editorCutHandler(event);
+							void this.editorCutHandler(event);
 						});
 					}
 				})
@@ -652,7 +649,7 @@ export class EnhancedCopyCore {
 					item.setTitle(i18next.t("commands.brute"));
 					item.setIcon("clipboard");
 					item.onClick(() => {
-						this.writeToClipboard(copySelectionRange(editor, this.plugin));
+						void this.writeToClipboard(copySelectionRange(editor, this.plugin));
 					});
 				});
 				const profile =

@@ -115,7 +115,7 @@ function simplifyBlockquote(div: HTMLDivElement): HTMLDivElement {
 		const calloutContent = blockquote.querySelector(".callout-content");
 		if (!calloutTitleInner && !calloutContent) return;
 		const calloutTitleInnerText = calloutTitleInner?.innerHTML
-			? `${calloutTitleInner!.innerHTML}<br>`
+			? `${calloutTitleInner.innerHTML}<br>`
 			: "";
 		const calloutContentHTML = calloutContent?.innerHTML ?? "";
 		modifiedDivElement.innerHTML = `

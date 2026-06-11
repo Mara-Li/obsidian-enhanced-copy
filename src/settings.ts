@@ -360,7 +360,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			if (this.settings.editing.overrideNativeCopy) {
 				this.settings.editing.overrideNativeCopy = false;
 				new Notice(i18next.t("overrideCopy.editingNotice"));
-				this.plugin.saveSettings().then();
+				void this.plugin.saveSettings();
 			}
 		} else if (this.settings.applyingTo === ApplyingToView.Edit) {
 			this.tab.push(this.edit);
@@ -368,7 +368,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			if (this.settings.reading.overrideNativeCopy) {
 				this.settings.reading.overrideNativeCopy = false;
 				new Notice(i18next.t("overrideCopy.readingNotice"));
-				this.plugin.saveSettings().then();
+				void this.plugin.saveSettings();
 			}
 		} else {
 			this.tab.push(this.edit);
@@ -573,7 +573,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 							name: result,
 							...this.settings.editing,
 						});
-						this.plugin.saveSettings();
+						void this.plugin.saveSettings();
 						this.display();
 					}).open();
 				});
@@ -618,7 +618,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 					.onClick(async () => {
 						new EnhancedCopyViewModal(this.app, this.settings, (result) => {
 							this.settings = result;
-							this.plugin.saveSettings();
+							void this.plugin.saveSettings();
 							this.display();
 						}).open();
 					})
