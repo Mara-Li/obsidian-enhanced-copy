@@ -24,17 +24,16 @@ jobs:
     if: (github.event_name == 'push') || (github.event_name == 'workflow_dispatch' && !inputs.bump)
     uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-release.yaml@main
     with:
-        PLUGIN_NAME: "enhanced-copy"
-        CACHE: bun
-    secrets: 
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PLUGIN_NAME: "enhanced-copy"
+      CACHE: pnpm
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   bump-version:
     if: ${{ inputs.bump }}
     uses: mara-li/reusable-workflows/.github/workflows/obsidian-plugin-bump-version.yaml@main
     with:
-        PLUGIN_NAME: "enhanced-copy"
-        BETA: ${{ inputs.beta }}
-        CACHE: bun
-    secrets: 
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+      PLUGIN_NAME: "enhanced-copy"
+      BETA: ${{ inputs.beta }}
+      CACHE: pnpm
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

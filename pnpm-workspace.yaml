@@ -1,0 +1,11 @@
+onlyBuiltDependencies:
+  - '@codemirror/language'
+  - esbuild
+
+overrides:
+  svelte@<3.49.0: '>=3.49.0'
+  svelte@<4.2.19: '>=4.2.19'
+  svelte@<=5.51.4: '>=5.51.5'
+  svelte@<=5.53.4: '>=5.53.5'
+  svelte@<=5.55.6: '>=5.55.7'
+  svelte@>=3.0.0 <3.59.2: '>=3.59.2'
