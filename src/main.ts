@@ -45,7 +45,7 @@ export default class EnhancedCopy extends Plugin {
 		const loadedData = await this.loadData();
 		try {
 			this.settings = merge(DEFAULT_SETTINGS, loadedData);
-		} catch (_e) {
+		} catch {
 			console.warn(
 				"[Enhanced copy] Error while deep merging settings, using default loading method"
 			);
