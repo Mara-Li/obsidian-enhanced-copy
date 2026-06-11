@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.2](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.1...1.1.2) (2026-06-11)
+
+
+### Bug Fixes
+
+* '_e' is defined but never used. ([5230eee](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/5230eee38f9f9fb8399d952d16e41318409e6409))
+* ensure async functions are properly awaited in copy event handlers ([b3e055e](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/b3e055e8ee8b0f06a869402504b4cf09f210a1c7))
+
 ## [1.1.1](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.0...1.1.1) (2026-06-11)
 
 
