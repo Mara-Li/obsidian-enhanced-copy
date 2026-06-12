@@ -1,48 +1,58 @@
 {
-	"commit-and-tag-version": {
-		"t": ""
-	},
-	"dependencies": {
-		"ansi-colors": "^4.1.3",
-		"commit-and-tag-version": "^12.7.3",
-		"deepmerge-ts": "^7.1.5",
-		"dotenv-cli": "^11.0.0",
-		"esbuild": "^0.28.0",
-		"i18next": "^26.3.1",
-		"tslib": "^2.6.1"
-	},
-	"description": "Copy a selection in reading view while keeping the markdown formatting",
-	"devDependencies": {
-		"@biomejs/biome": "^2.4.16",
-		"@codemirror/view": "^6.43.1",
-		"@enveloppe/obsidian-dataview": "^0.5.70-2",
-		"@obsidian-typings/obsidian-public-latest": "^6.15.0",
-		"@types/electron": "npm:@ophidian/electron-types@^24.3.1",
-		"@types/node": "^25.9.3",
-		"commander": "^15.0.0",
-		"cross-env": "^10.1.0",
-		"dedent": "^1.7.2",
-		"env-cmd": "^11.0.0",
-		"monkey-around": "^3.0.0",
-		"obsidian": "^1.13.1",
-		"ts-deepmerge": "^8.0.0",
-		"typescript": "^5.9.3"
-	},
-	"license": "GPL-3.0-only",
-	"main": "lib/main.js",
-	"name": "advanced-copy",
-	"scripts": {
-		"lint": "biome check --write src --unsafe",
-		"prebuild": "tsc --noEmit --skipLibCheck",
-		"build": "node esbuild.config.mjs --production",
-		"dev:prod": "node esbuild.config.mjs --vault",
-		"dev": "node esbuild.config.mjs",
-		"export": "node esbuild.config.mjs --production --vault",
-		"bump": "node commit-and-tag-version.mjs",
-		"postbump": "git push --follow-tags origin master",
-		"predeploy": "bun run bump",
-		"deploy": "pnpm run export"
-	},
-	"private": true,
-	"version": "1.1.2"
+  "commit-and-tag-version": {
+    "t": ""
+  },
+  "dependencies": {
+    "ansi-colors": "^4.1.3",
+    "commit-and-tag-version": "^12.7.3",
+    "deepmerge-ts": "^7.1.5",
+    "dotenv-cli": "^11.0.0",
+    "esbuild": "^0.28.0",
+    "i18next": "^26.3.1",
+    "tslib": "^2.6.1"
+  },
+  "description": "Copy a selection in reading view while keeping the markdown formatting",
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
+    "@codemirror/view": "^6.43.1",
+    "@enveloppe/obsidian-dataview": "^0.5.70-2",
+    "@obsidian-typings/obsidian-public-latest": "^6.15.0",
+    "@types/electron": "npm:@ophidian/electron-types@^24.3.1",
+    "@types/node": "^25.9.3",
+    "commander": "^15.0.0",
+    "cross-env": "^10.1.0",
+    "dedent": "^1.7.2",
+    "env-cmd": "^11.0.0",
+    "eslint": "^10.4.1",
+    "eslint-plugin-obsidianmd": "^0.3.0",
+    "monkey-around": "^3.0.0",
+    "obsidian": "^1.13.1",
+    "ts-deepmerge": "^8.0.0",
+    "typescript": "^5.9.3"
+  },
+  "license": "GPL-3.0-only",
+  "main": "lib/main.js",
+  "name": "advanced-copy",
+  "scripts": {
+    "lint": "biome check --write src --unsafe",
+    "prebuild": "tsc --noEmit --skipLibCheck",
+    "build": "node esbuild.config.mjs --production",
+    "dev:prod": "node esbuild.config.mjs --vault",
+    "dev": "node esbuild.config.mjs",
+    "export": "node esbuild.config.mjs --production --vault",
+    "bump": "node commit-and-tag-version.mjs",
+    "postbump": "git push --follow-tags origin master",
+    "predeploy": "bun run bump",
+    "deploy": "pnpm run export"
+  },
+  "private": true,
+  "version": "1.1.2",
+  "overrides": {
+    "svelte@<3.49.0": ">=3.49.0",
+    "svelte@<4.2.19": ">=4.2.19",
+    "svelte@<=5.51.4": ">=5.51.5",
+    "svelte@<=5.53.4": ">=5.53.5",
+    "svelte@<=5.55.6": ">=5.55.7",
+    "svelte@>=3.0.0 <3.59.2": ">=3.59.2"
+  }
 }
