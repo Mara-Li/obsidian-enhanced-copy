@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.3](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.2...1.1.3) (2026-06-21)
+
+
+### Bug Fixes
+
+* empty settings at install after upgrading deepmerge ([9537c82](https://github.com/Mara-Li/obsidian-enhanced-copy/commit/9537c8266eb7a133a3d79f5de648667fafb3ce17)), closes [#8](https://github.com/Mara-Li/obsidian-enhanced-copy/issues/8)
+
 ## [1.1.2](https://github.com/Mara-Li/obsidian-enhanced-copy/compare/1.1.1...1.1.2) (2026-06-11)
 
 
