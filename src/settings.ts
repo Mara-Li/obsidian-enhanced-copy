@@ -175,8 +175,8 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 				action: () => {
 					new NameProfile(this.app, (result) => {
 						this.settings.profiles.push({
+							...structuredClone(this.settings.editing),
 							name: result,
-							...this.settings.editing,
 						});
 						void this.plugin.saveSettings();
 						this.update();
@@ -438,7 +438,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 
 			const dataviewVisible = () => settings.convertDataview?.enable ?? false;
 			items.push({
-				name: i18next.t("convertDataview.dql.title"),
+				name: i18next.t("convertDataview.djs.title"),
 				visible: dataviewVisible,
 				render: (setting) => {
 					setting.setHeading().setClass("dataview");
@@ -447,7 +447,7 @@ export class EnhancedCopySettingTab extends PluginSettingTab {
 			items.push(this.dataviewToggleItem(settings, "djs", "block", dataviewVisible));
 			items.push(this.dataviewToggleItem(settings, "djs", "inline", dataviewVisible));
 			items.push({
-				name: i18next.t("convertDataview.djs.title"),
+				name: i18next.t("convertDataview.dql.title"),
 				visible: dataviewVisible,
 				render: (setting) => {
 					setting.setHeading().setClass("dataview");
