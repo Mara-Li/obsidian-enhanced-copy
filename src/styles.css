@@ -5,92 +5,12 @@
 	padding: 1em;
 }
 
-.enhanced-copy.setting-tab .settings-tab-bar {
-	display: flex;
-	flex-direction: row;
-}
-
 .enhanced-copy.setting-tab .setting-item.setting-item-heading .setting-item-name {
 	font-size: var(--h1-size);
 }
 
 .enhanced-copy.setting-tab .setting-item.setting-item-heading.h3 .setting-item-name {
 	font-size: var(--h3-size);
-}
-
-.enhanced-copy.setting-tab .settings-tab {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: var(--size-4-2);
-	padding: 10px;
-	border: 1px solid var(--background-modifier-border);
-}
-
-.enhanced-copy.setting-tab .settings-tab-active {
-	background-color: var(--color-accent);
-	color: var(--text-on-accent);
-}
-
-.enhanced-copy.setting-tab .tabName {
-	font-weight: bold;
-}
-
-.enhanced-copy.setting-tab .settings-tab-icon {
-	display: flex;
-}
-
-@media screen and (max-width: 600px) {
-	.enhanced-copy.setting-tab .settings-tab-bar,
-	.enhanced-copy.setting-tab .setting-item > .setting-item-control {
-		flex-direction: column;
-		width: 100%;
-	}
-
-	.enhanced-copy.setting-tab .settings-tab {
-		border-bottom: 1px solid var(--background-modifier-border) !important;
-		border-radius: 5px !important;
-		margin-bottom: 5px;
-	}
-
-	.enhanced-copy.setting-tab .settings-tab-bar {
-		border-bottom: transparent !important;
-	}
-}
-
-.enhanced-copy.setting-tab .settings-tab {
-	padding: 10px;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: 5px 5px 0 0;
-}
-.enhanced-copy.setting-tab .settings-tab:hover {
-	background-color: var(--background-modifier-hover);
-}
-
-.enhanced-copy.setting-tab .settings-tab-active {
-	background-color: var(--color-accent);
-	color: var(--text-on-accent);
-	border: 0;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-}
-.enhanced-copy.setting-tab .settings-tab-name {
-	font-weight: bold;
-	text-align: center;
-}
-.enhanced-copy.setting-tab .settings-tab-icon {
-	text-align: center;
-}
-.enhanced-copy.setting-tab .settings-tab-page > .setting-item:first-child {
-	margin-top: 15px;
-}
-
-.enhanced-copy.setting-tab nav.settings-tab-bar {
-	border-bottom: 1px solid var(--background-modifier-border);
-}
-
-.enhanced-copy.setting-tab .settings-tab {
-	border-bottom: transparent;
 }
 
 .enhanced-copy > .text-area .setting-item-info {

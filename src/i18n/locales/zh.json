@@ -109,14 +109,9 @@
 			"copy": "复制",
 			"editing": "编辑",
 			"reading": "阅读"
-		},
-		"replaceText": {
-			"down": "下移",
-			"title": "替换文本",
-			"up": "上移"
 		}
 	},
-	"openTextReplacer": "打开文本替换器",
+	"openTextReplacer": "替换文本",
 	"other": "其他选项",
 	"overrideCopy": {
 		"desc": "用增强复制替换原生复制(CTRL C、右键点击...)(需要重新加载Obsidian)",
@@ -129,7 +124,8 @@
 			"desc": "添加复制配置文件。\n需要重新加载Obsidian才能将其用作命令。",
 			"title": "添加配置文件"
 		},
-		"delete": "删除配置文件"
+		"delete": "删除配置文件",
+		"title": "配置文件"
 	},
 	"reading": {
 		"desc": "阅读视图设置",

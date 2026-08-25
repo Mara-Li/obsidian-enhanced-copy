@@ -5,7 +5,7 @@
 	"fundingUrl": "https://ko-fi.com/Mara__Li",
 	"id": "enhanced-copy",
 	"isDesktopOnly": false,
-	"minAppVersion": "0.16.0",
+	"minAppVersion": "1.13.0",
 	"name": "Enhanced Copy",
 	"version": "1.1.2"
 }

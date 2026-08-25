@@ -109,14 +109,9 @@
 			"copy": "Copy",
 			"editing": "Editing",
 			"reading": "Reading"
-		},
-		"replaceText": {
-			"down": "Move down",
-			"title": "Replace Text",
-			"up": "Move up"
 		}
 	},
-	"openTextReplacer": "Open Text replacer",
+	"openTextReplacer": "Replace text",
 	"other": "Other options",
 	"overrideCopy": {
 		"desc": "Replace the native copy (CTRL C, right-click...) with the enhanced copy (need a reload of Obsidian)",
@@ -129,7 +124,8 @@
 			"desc": "Add a copy profile. \nAn Obsidian reload is required to use it as a command.",
 			"title": "Add profile"
 		},
-		"delete": "Delete profile"
+		"delete": "Delete profile",
+		"title": "Profiles"
 	},
 	"reading": {
 		"desc": "Reading view settings",

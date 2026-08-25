@@ -109,14 +109,9 @@
 			"copy": "Copier",
 			"editing": "Édition",
 			"reading": "Lecture"
-		},
-		"replaceText": {
-			"down": "Descendre",
-			"title": "Remplacer du texte",
-			"up": "Monter"
 		}
 	},
-	"openTextReplacer": "Ouvrir le remplacement de texte",
+	"openTextReplacer": "Remplacer du texte",
 	"other": "Autres options",
 	"overrideCopy": {
 		"desc": "Remplacer la copie native (CTRL + C, clic-droit...) par la copie améliorée (nécessite un rechargement d'Obsidian)",
@@ -129,7 +124,8 @@
 			"desc": "Ajouter un profil de copy. Un rechargement d'Obsidian est nécessaire pour l'utiliser comme commande.",
 			"title": "Ajouter un profile"
 		},
-		"delete": "Supprimer le profile"
+		"delete": "Supprimer le profile",
+		"title": "Profils"
 	},
 	"reading": {
 		"desc": "Paramètre pour la vue de lecture",
